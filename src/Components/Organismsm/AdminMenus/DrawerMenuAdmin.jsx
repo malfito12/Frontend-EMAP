@@ -56,11 +56,11 @@ const DrawerMenuAdmin = (props) => {
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controluser')
         },
-        // {
-        //     text: 'Libros',
-        //     icon: <InboxIcon color='primary' />,
-        //     oncl: ()=>history.push('/books')
-        // },
+        {
+            text: 'Enpleados',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/controlEmp')
+        },
     ]
     return (
         <Drawer

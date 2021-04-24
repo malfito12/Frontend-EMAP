@@ -2,6 +2,7 @@ import { Button, Container, Dialog, makeStyles, TextField, Typography } from '@m
 import axios from 'axios'
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { PORT_URL } from '../../../PortURL'
 
 const useStyles=makeStyles((theme)=>({
@@ -102,7 +103,7 @@ const ControlUsers = () => {
     return (<>
         <Container fixed>
             <Typography variant='h4' align='center' style={{ marginTop: '1.5rem' }}>Lista de Usuarios</Typography>
-            <Button variant='contained' color='primary' href='/registeruser'>Registrar Usuario</Button>
+            <Button component={Link} to='/registeruser' variant='contained' color='primary'>Registrar Usuario</Button>
             <Container maxWidth='md' style={{ marginTop: '2rem' }}>
                 <MaterialTable
                     title='Lista de Usuarios'
