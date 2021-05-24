@@ -1,29 +1,35 @@
-import { Button, Container, Dialog, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Container, Dialog, makeStyles, Snackbar, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PORT_URL } from '../../../PortURL'
+import MuiAlert from '@material-ui/lab/Alert'
+import AlertEdit from '../../Atoms/Alerts/AlertEdit'
+import AlertDelete from '../../Atoms/Alerts/AlertDelete'
 
-const useStyles=makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
     alineation: {
         width: '93%',
         paddingBottom: 10,
-        marginLeft:'1rem',
-        marginRight:'1rem',
+        marginLeft: '1rem',
+        marginRight: '1rem',
     },
-    nose:{
-        marginTop:'1rem', 
-        marginBottom:'1.5rem',
-        marginLeft:'10rem',
-        marginRight:'10rem'
+    nose: {
+        marginTop: '1rem',
+        marginBottom: '1.5rem',
+        marginLeft: '10rem',
+        marginRight: '10rem'
     }
 }))
+
 const ControlUsers = () => {
-    const classes=useStyles()
+    const classes = useStyles()
     const [user, setUser] = useState([])
     const [openEdit, setOpenEdit] = useState(false)
-    const [openDelete,setOpenDelete]=useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
+    const [openAlertDelete, setOpenAlertDelete] = useState(false)
+    const [openAlertEdit, setOpenAlertEdit] = useState(false)
     const [changeData, setChangeData] = useState({
         username: '',
         password: '',
@@ -45,26 +51,19 @@ const ControlUsers = () => {
                 setUser(resp.data)
             })
     }
-
-    const editUser=async(e)=>{
+    //----------------------------------------------------------------------
+    //EDITAR USUARIO
+    const editUser = async (e) => {
         e.preventDefault()
-        const otroid=changeData._id
+        const otroid = changeData._id
         // console.log(otroid)
-        await axios.put(`${PORT_URL}user/${otroid}`,changeData)
-        // await axios.patch(`${PORT_URL}user?id=${otroid}`,changeData)
-        .then(resp=>console.log(resp.data))
+        await axios.put(`${PORT_URL}user/${otroid}`, changeData)
+            .then(resp => console.log(resp.data))
         setOpenEdit(false)
+        openCloseAlertEdit()
+        
         getUser()
     }
-
-    const deleteUser=async()=>{
-        const id=changeData._id
-        await axios.delete(`${PORT_URL}user?id=${id}`)
-        closeModalDelete()
-        getUser()
-
-    }
-
     const openModalEdit = (ele) => {
         setChangeData(ele);
         setOpenEdit(true)
@@ -72,14 +71,26 @@ const ControlUsers = () => {
     const closeModalEdit = () => {
         setOpenEdit(false)
     }
+    //----------------------------------------------------------------------
+    //ELIMINAR USUARIO
+    const deleteUser = async () => {
+        const id = changeData._id
+        await axios.delete(`${PORT_URL}user/${id}`)
+            .then(resp => console.log(resp.data))
+        closeModalDelete()
+        openCloseAlertDelete()
+        getUser()
 
-    const openModalDelete=(ele)=>{
+    }
+
+    const openModalDelete = (ele) => {
         setChangeData(ele);
         setOpenDelete(true)
     }
-    const closeModalDelete=()=>{
+    const closeModalDelete = () => {
         setOpenDelete(false)
     }
+    //----------------------------------------------------------------------
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -88,6 +99,15 @@ const ControlUsers = () => {
             [name]: value
         }))
     }
+    //------------------------------------------------------------------------
+    //ALERT
+    const openCloseAlertDelete = () => {
+        setOpenAlertDelete(!openAlertDelete)
+    }
+    const openCloseAlertEdit = () => {
+        setOpenAlertEdit(!openAlertEdit)
+    }
+
 
 
 
@@ -101,7 +121,7 @@ const ControlUsers = () => {
 
 
     return (<>
-        <Container fixed>
+        <Container style={{ marginTop: '5rem' }} fixed>
             <Typography variant='h4' align='center' style={{ marginTop: '1.5rem' }}>Lista de Usuarios</Typography>
             <Button component={Link} to='/registeruser' variant='contained' color='primary'>Registrar Usuario</Button>
             <Container maxWidth='md' style={{ marginTop: '2rem' }}>
@@ -128,7 +148,7 @@ const ControlUsers = () => {
                             icon: 'delete',
                             iconProps: { style: { color: 'red' } },
                             tooltip: 'eliminar',
-                            onClick: (e, rowData)=>openModalDelete(rowData)
+                            onClick: (e, rowData) => openModalDelete(rowData)
                         }
                     ]}
                     localization={{
@@ -208,17 +228,19 @@ const ControlUsers = () => {
             </form>
         </Dialog>
         <Dialog
-                maxWidth='sm'
-                open={openDelete}
-                onClose={closeModalDelete}
-            >
-                <Typography align='center' style={{marginLeft:'3rem',marginRight:'3rem', marginTop:'1rem', marginBottom:'1rem'}} variant='h6'>estas seguro de borrar a {changeData && changeData.username} </Typography>
-                <div style={{marginBottom:'2rem'}} align='center'>
-                    <Button onClick={deleteUser} variant='contained' color='primary'>aceptar</Button>
-                    <Button variant='contained'  style={{marginLeft:'2rem', backgroundColor:'red', color:'white'}} onClick={closeModalDelete}>cancelar</Button>
+            maxWidth='sm'
+            open={openDelete}
+            onClose={closeModalDelete}
+        >
+            <Typography align='center' style={{ marginLeft: '3rem', marginRight: '3rem', marginTop: '1rem', marginBottom: '1rem' }} variant='h6'>estas seguro de borrar a {changeData && changeData.username} </Typography>
+            <div style={{ marginBottom: '2rem' }} align='center'>
+                <Button onClick={deleteUser} variant='contained' color='primary'>aceptar</Button>
+                <Button variant='contained' style={{ marginLeft: '2rem', backgroundColor: 'red', color: 'white' }} onClick={closeModalDelete}>cancelar</Button>
 
-                </div>
-            </Dialog>
+            </div>
+        </Dialog>
+        <AlertDelete name={changeData.username} open={openAlertDelete} onClose={openCloseAlertDelete} />
+        <AlertEdit name={changeData.username} open={openAlertEdit} onClose={openCloseAlertEdit} />
     </>
     )
 }

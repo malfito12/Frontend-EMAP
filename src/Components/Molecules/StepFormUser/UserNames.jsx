@@ -4,7 +4,7 @@ import React from 'react'
 const UserNames = (props) => {
     const {username, password, email}=props.formData
     return (
-        <Container maxWidth='xs'>
+        <Container style={{marginTop:'5rem'}} maxWidth='xs'>
             <Typography variant='h4' style={{paddingTop:'2rem'}} align='center'>Crear Cuenta</Typography>
             <TextField
                 label='Nombre de Usuario'

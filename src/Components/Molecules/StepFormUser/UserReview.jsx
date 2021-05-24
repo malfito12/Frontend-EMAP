@@ -3,6 +3,7 @@ import React from 'react'
 import EditIcon from '@material-ui/icons/Edit'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 import {PORT_URL} from '../../../PortURL'
 
 
@@ -24,7 +25,7 @@ const UserReview = (props) => {
         go('submit')
     }
     return (
-        <Container maxWidth='sm'>
+        <Container style={{marginTop:'5rem'}} maxWidth='sm'>
             <Typography variant='h4' style={{paddingTop:'2rem'}} align='center'>Vista de Cuenta</Typography>
             
             <RenderAccordion
@@ -55,9 +56,10 @@ const UserReview = (props) => {
                     // onClick={()=>go('submit')}
                 >Enviar</Button>
                 <Button
+                    component={Link}
                     color='secondary'
                     variant='contained'
-                    href='/controluser'
+                    to='/controluser'
                 >Cancelar</Button>
             </div>
             

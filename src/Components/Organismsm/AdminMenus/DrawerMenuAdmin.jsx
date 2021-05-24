@@ -35,9 +35,13 @@ const useStyles=makeStyles((theme)=>({
 const DrawerMenuAdmin = (props) => {
     const classes=useStyles()
     const [abrir,setAbrir]=useState(false)
+    const [abrir2,setAbrir2]=useState(false)
 
     const handleClick=()=>{
         setAbrir(!abrir)
+    }
+    const handleClick2=()=>{
+        setAbrir2(!abrir2)
     }
     const removeToken=()=>{
         localStorage.removeItem('token')
@@ -61,6 +65,24 @@ const DrawerMenuAdmin = (props) => {
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controlEmp')
         },
+        {
+            text: 'Cargos',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/controlCargos')
+        },
+        
+    ]
+    const ItemList2=[
+        {
+            text: 'Asistencia',
+            icon: <InboxIcon color='primary' />,
+            // oncl: ()=>history.push('/controlEmp')
+        },
+        {
+            text: 'Permisos',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/controlPermisos')
+        },
     ]
     return (
         <Drawer
@@ -83,12 +105,36 @@ const DrawerMenuAdmin = (props) => {
                     <ListItemIcon>
                         <SendIcon color='primary' />
                     </ListItemIcon>
-                    <ListItemText primary='Modulos' />
+                    <ListItemText primary='Control Personal' />
                     {abrir ? <ExpandLess /> : <ExpandMore /> }
                 </ListItem>
                 <Collapse in={abrir} timeout='auto' unmountOnExit>
                 <List component='div' disablePadding onClick={props.CloseDrawer}>
                     {ItemList.map((item)=>{
+                        const {text, icon, oncl}=item
+                        return(
+                            <div key={text}>
+                                <ListItem button className={classes.nested} onClick={oncl}>
+                                    {icon&&<ListItemIcon>{icon}</ListItemIcon>}
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            </div>
+                        )
+                    })
+
+                    }
+                </List>
+                </Collapse>
+                <ListItem button onClick={handleClick2} className={classes.diseño} >
+                    <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon>
+                    <ListItemText primary='Asistencias' />
+                    {abrir2 ? <ExpandLess /> : <ExpandMore /> }
+                </ListItem>
+                <Collapse in={abrir2} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding onClick={props.CloseDrawer}>
+                    {ItemList2.map((item)=>{
                         const {text, icon, oncl}=item
                         return(
                             <div key={text}>

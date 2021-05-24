@@ -13,7 +13,7 @@ const AppBarAdmin = (props) => {
     return (
         <div>
         <CssBaseline/>
-        <AppBar position='static' className={classes.diseño}>
+        <AppBar position='fixed' className={classes.diseño}>
             <Toolbar>
                 <IconButton
                     color='inherit'

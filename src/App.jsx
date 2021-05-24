@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppAdmin from './Components/Routes/RouterAdmin/AppAdmin';
 import AppPublic from './Components/Routes/RouterPublic/AppPublic';
 import AppUsers from './Components/Routes/RouterUser/AppUsers';
-
+import './index.css'
 
 function App() {
   let roles=localStorage.getItem('rols')

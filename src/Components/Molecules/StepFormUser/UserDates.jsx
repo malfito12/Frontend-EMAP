@@ -4,7 +4,7 @@ import { Button, Container, TextField, Typography } from '@material-ui/core'
 const UserDates = (props) => {
     const {sexo, rols}=props.formData
     return (
-        <Container maxWidth='xs'>
+        <Container style={{marginTop:'5rem'}} maxWidth='xs'>
             <Typography variant='h4' style={{paddingTop:'2rem'}} align='center'>Datos Personales</Typography>
             <TextField
                 label='Sexo'
