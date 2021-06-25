@@ -18,7 +18,8 @@ const useStyles=makeStyles((theme)=>({
         background: '#212121'
     },
     color:{
-        color:'#4e342e'
+        // color:'#4e342e'
+        color:'#283593'
     },
     drawerHeader:{
         display:'flex',
@@ -50,20 +51,30 @@ const DrawerMenuUser = (props) => {
     const {history}=props
     const ItemList=[
         {
-            text: 'Home User',
+            text: 'Personal',
             icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/homeuser')
+            oncl: ()=>history.push('/userControlEmp')
         },
-        // {
-        //     text: 'Registro',
-        //     icon: <InboxIcon color='primary' />,
-        //     oncl: ()=>history.push('/registeruser')
-        // },
-        // {
-        //     text: 'Libros',
-        //     icon: <InboxIcon color='primary' />,
-        //     oncl: ()=>history.push('/books')
-        // },
+        {
+            text: 'Permisos',
+            icon: <SendIcon className={classes.color} />,
+            oncl: ()=>history.push('/userControlPermiso')
+        },
+        {
+            text: 'Horarios',
+            icon: <SendIcon className={classes.color} />,
+            oncl: ()=>history.push('/userControlHorario')
+        },
+        {
+            text: 'Reportes',
+            icon: <SendIcon className={classes.color} />,
+            oncl: ()=>history.push('/userControlReporte')
+        },
+        {
+            text: 'Planillas',
+            icon: <SendIcon className={classes.color} />,
+            oncl: ()=>history.push('/userControlPlanilla')
+        }
     ]
     return (
         <Drawer

@@ -17,8 +17,8 @@ export const AlertRegister=(props)=>{
 export const AlertDelete = (props) => {
     return (
         <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
-            <Alert onClose={props.onClose} severity='error'>
-                Has eliminado a {props.name} 
+            <Alert onClose={props.onClose} severity='success'>
+                Has eliminado a {props.name}
             </Alert>
         </Snackbar>
     )
@@ -28,8 +28,77 @@ export const AlertEdit = (props) => {
     return (
         <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
             <Alert onClose={props.onClose} severity='success'>
-                Edicion exitosa {props.name}
+                Se a editado a {props.name}
             </Alert>
         </Snackbar>
     )
 }
+//------------------ALERTAS DE PERMISOS--------------------------
+export const AlertErrorRegisterPermiso=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                ID Biometico incorrecto, no se puede registrar el permiso
+            </Alert>
+        </Snackbar>
+    )
+}
+//------------------ALERTAS DE CARGOS--------------------------
+export const AlertRegisterCargo=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Cargo registrado corretamente
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertErrorRegisterCargo=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                No se puede registrar el cargo por que ya existe un cargo asignado
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertEditCargo=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Se edito correctamente a {props.name}
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertErrorEditCargo=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                No se puede editar un registro que no existe
+            </Alert>
+        </Snackbar>
+    )
+}
+
+export const AlertErrorDeleteCargo=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                No se puede eliminar un registro que no existe
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertDeleteCargo = (props) => {
+    return (
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Has eliminado el cargo de {props.name}
+            </Alert>
+        </Snackbar>
+    )
+}
+
+//------------------ELIMINACION DE CARGOS--------------------------
+

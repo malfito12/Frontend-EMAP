@@ -1,11 +1,14 @@
-import { Button, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography } from '@material-ui/core'
+import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton } from '@material-ui/core'
 import axios from 'axios'
 import MaterialTable from 'material-table'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { PORT_URL } from '../../../PortURL'
+import { PORT_URL, PORT_URL_IMAGE } from '../../../PortURL'
 import AlertDelete from '../../Atoms/Alerts/AlertDelete'
 import AlertEdit from '../../Atoms/Alerts/AlertEdit'
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import InfoIcon from '@material-ui/icons/Info';
 
 const useStyles = makeStyles((theme) => ({
     TyphoAlineation: {
@@ -43,7 +46,8 @@ const ControlEmpleado = (props) => {
     const [openDelete, setOpenDelete] = useState(false)
     const [openAlertDelete, setOpenAlertDelete] = useState(false)
     const [openAlertEdit, setOpenAlertEdit] = useState(false)
-    const [pathImage, setPathImage] = useState("https://img2.freepng.es/20181108/gkx/kisspng-computer-icons-clip-art-portable-network-graphics-government-los-santos-5be4b7db1f0f80.4023802615417159311272.jpg")
+    const [image, setImage] = useState(null)
+    const [preview, setPreview] = useState(null)
     const [changeData, setChangeData] = useState({
         itemEmp: '',
         id_bio: '',
@@ -61,6 +65,8 @@ const ControlEmpleado = (props) => {
         professionEmp: '',//
         institutionDegreeEmp: '',//
         ObserEmp: '',//
+        estadoEmp: '',
+        image: '',
         fechaNacEmp: Date()
     })
 
@@ -85,8 +91,29 @@ const ControlEmpleado = (props) => {
     const editEmpleado = async (e) => {
         e.preventDefault()
         const id = changeData._id
-        await axios.put(`${PORT_URL}empleado/${id}`, changeData)
+        const formData = new FormData()
+        formData.append('image', image)
+        formData.append('itemEmp', changeData.itemEmp)
+        formData.append('id_bio', changeData.id_bio)
+        formData.append('firstNameEmp', changeData.firstNameEmp)
+        formData.append('lastNameEmpP', changeData.lastNameEmpP)
+        formData.append('lastNameEmpM', changeData.lastNameEmpM)
+        formData.append('CIEmp', changeData.CIEmp)
+        formData.append('emailEmp', changeData.emailEmp)
+        formData.append('sexoEmp', changeData.sexoEmp)
+        formData.append('numCelEmp', changeData.numCelEmp)
+        formData.append('dirEmp', changeData.dirEmp)
+        formData.append('nacionalityEmp', changeData.nacionalityEmp)
+        formData.append('civilStatusEmp', changeData.civilStatusEmp)
+        formData.append('professionEmp', changeData.professionEmp)
+        formData.append('institutionDegreeEmp', changeData.institutionDegreeEmp)
+        formData.append('ObserEmp', changeData.ObserEmp)
+        formData.append('fechaNacEmp', changeData.fechaNacEmp)
+        formData.append('estadoEmp', changeData.estadoEmp)
+        await axios.put(`${PORT_URL}empleado/${id}`, formData)
             .then(resp => console.log(resp.data))
+        setPreview(null)
+        setImage(null)
         setOpenEdit(false)
         openCloseAlertEdit()
         getEmpleado()
@@ -103,12 +130,22 @@ const ControlEmpleado = (props) => {
     }
     const deleteEmpleado = async () => {
         const id = changeData._id
-        await axios.delete(`${PORT_URL}empleado?id=${id}`)
+        // console.log(id)
+        await axios.delete(`${PORT_URL}empleado/${id}`)
             .then(resp => console.log(resp.data))
-        // .catch(err=>console.log(err))
+            .catch(err => console.log(err))
         closeModalDelete()
         openCloseAlertDelete()
         getEmpleado()
+
+    }
+    //--------------------------------------------------------------
+    //INFORMACION
+    const infoEmpleado=(e)=>{
+        const id=e._id
+        const id_bio=e.id_bio
+        history.push('/infoEmp/'+id+"/"+id_bio)
+
     }
     //--------------------------------------------------------------
 
@@ -118,8 +155,9 @@ const ControlEmpleado = (props) => {
             if (file.type.includes('image')) {
                 const reader = new FileReader()
                 reader.readAsDataURL(file)
-                reader.onload = function load() {
-                    setPathImage(reader.result)
+                reader.onload = () => {
+                    setPreview(reader.result)
+                    setImage(e.target.file[0])
                 }
             }
             else { console.log('no funciona') }
@@ -128,6 +166,15 @@ const ControlEmpleado = (props) => {
             ...changeData,
             [e.target.name]: e.target.value
         })
+    }
+    const handleChange2 = e => {
+        const file = e.target.files[0]
+        const reader = new FileReader();
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+            setPreview(reader.result)
+            setImage(file)
+        }
     }
     //------------------------------------------------------------------------
     //ALERT
@@ -149,13 +196,18 @@ const ControlEmpleado = (props) => {
         { title: 'Nombre', field: 'firstNameEmp' },
         { title: 'Email', field: 'emailEmp' },
         { title: 'Sexo', field: 'sexoEmp' },
-        { title: 'Estado Civil', field: 'civilStatusEmp' },
+        {
+            title: 'Estado', field: 'estadoEmp', render: (row) => row.estadoEmp == 'activo'
+                ? <div style={{ color: 'green' }}>{row.estadoEmp}</div>
+                : <div style={{ color: 'red' }}>{row.estadoEmp}</div>
+        },
     ]
 
-
+    // console.log(empleado)
+    // console.log(changeData)
     return (
         <>
-            <Container style={{ marginTop: '5rem' }} maxWidth='lg'>
+            <Container style={{ paddingTop: '5rem' }} maxWidth='lg'>
                 <Typography variant='h4' align='center' className={classes.TyphoAlineation}>Lista de Empleados</Typography>
                 <Button component={Link} to='/registerEmp' style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
                 <Container maxWidth='md'>
@@ -192,6 +244,51 @@ const ControlEmpleado = (props) => {
                     >
                     </MaterialTable>
                 </Container>
+            </Container>
+            <Container maxWidth='lg'>
+                <Typography align='center' variant='h5' style={{ paddingTop: '1rem', paddingBottom: '1rem', color: 'white' }}>Nueva lista</Typography>
+                <Grid container spacing={3} justify='center'>
+                    {empleado &&
+                        empleado.map(e => (
+                            <Grid key={e._id} item xs={12} sm={3}>
+                                <Paper component={Box} p={2}>
+                                    <div align='center'>
+                                        <Paper component={Box} p={1} style={{ width: '80%', height: '200px', background: '#bdbdbd' }}>
+                                            {
+                                                e.path
+                                                    ? <img src={`${PORT_URL_IMAGE}` + e.path} style={{ width: '100%', height: '100% ' }} />
+                                                    : <img src={preview} style={{ width: '100%', height: '100%' }} />
+                                            }
+
+                                        </Paper>
+                                    </div>
+                                    <div align='center'>
+                                        <Typography variant='subtitle1'>ID Biometrico : {e.id_bio}</Typography>
+                                        <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography>
+                                        <Typography variant='subtitle1'>{e.emailEmp}</Typography>
+                                    </div>
+                                    <Grid container justify='space-evenly'>
+                                        <Tooltip title='edit'>
+                                            <IconButton style={{ color: 'green' }} onClick={() => openModalEdit(e)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title='delete'>
+                                            <IconButton style={{ color: 'red' }} onClick={() => openModalDelete(e)} >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        <Tooltip title='info'>
+                                            <IconButton style={{ color: 'black' }} onClick={() => infoEmpleado(e)}>
+                                                <InfoIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+                        ))
+                    }
+                </Grid>
             </Container>
             <Dialog
                 maxWidth='lg'
@@ -327,42 +424,28 @@ const ControlEmpleado = (props) => {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <div align='center'>
-                                <div>
-                                    <img
-                                        className={classes.image}
-                                        src={pathImage}
-                                        alt="imagen"
-                                        style={{ marginBottom: '2rem' }}
-                                        defaultValue={changeData.photoImgEmp}
-
-
-                                    />
-                                    <input
-                                        name='photoImgEmp'
-                                        type="file"
-                                        style={{ display: 'none' }}
-                                        ref={fileInputRef}
-                                        accept='image/*'
-                                        onChange={handleChange}
-
-                                    />
-                                </div>
-                                <div style={{ marginBottom: '2rem' }}>
-                                    <Button
-                                        variant='contained'
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            fileInputRef.current.click()
-                                        }}
-                                        style={{ backgroundColor: 'green', color: 'white' }}
-                                    >add image</Button>
-                                </div>
-
+                                <Paper component={Box} p={1} style={{ background: '#bdbdbd', width: '270px', height: '270px' }}>
+                                    {/* {changeData.path ? <img src={'http://192.168.100.6:8000/' + changeData.path} style={{ width: '100%', height: '100% ' }} /> */}
+                                    {changeData.path ? <img src={`${PORT_URL_IMAGE}` + changeData.path} style={{ width: '100%', height: '100% ' }} />
+                                        // : <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} style={{ width: '100%', height: '100%' }} />}
+                                        : <img src={preview} style={{ width: '100%', height: '100%' }} />}
+                                </Paper>
+                                <input
+                                    name='image'
+                                    type='file'
+                                    accept='image/*'
+                                    id='file-name'
+                                    style={{ display: 'none' }}
+                                    onChange={e => handleChange2(e)}
+                                />
+                                <label htmlFor="file-name">
+                                    <Button style={{ marginBottom: '1rem', marginTop: '1rem' }} variant='contained' color='primary' component='span' >cargar</Button>
+                                </label>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <FormControl>
                                     <Typography variant='h6'>Estado Civil
-                                    <span style={{ marginLeft: '2rem' }}>
+                                        <span style={{ marginLeft: '2rem' }}>
                                             <NativeSelect
                                                 name='civilStatusEmp'
                                                 style={{
@@ -387,7 +470,7 @@ const ControlEmpleado = (props) => {
                             <div >
                                 <FormControl >
                                     <Typography variant='h6'>Grado de Institucion
-                                <span style={{ marginLeft: '2rem' }}>
+                                        <span style={{ marginLeft: '2rem' }}>
                                             <Select
                                                 style={{
                                                     minWidth: 220,
@@ -415,7 +498,7 @@ const ControlEmpleado = (props) => {
                             <div align='center' style={{ marginBottom: '1.5rem' }}>
                                 <Typography variant='h6'>Sexo</Typography>
                                 <span>Hombre
-                                <Radio
+                                    <Radio
                                         name='sexoEmp'
                                         color='primary'
                                         value='Masculino'
@@ -433,7 +516,7 @@ const ControlEmpleado = (props) => {
                                 />
 
                             </div>
-                            <div style={{ marginBottom: '1.5rem', marginTop: '3.2rem' }}>
+                            <div style={{ marginBottom: '1.5rem' }}>
                                 <form style={{ display: 'flex', flexWrap: 'wrap' }} noValidate>
                                     <Typography variant='h6' style={{ marginTop: '1rem', marginRight: '1rem' }}>Fecha de Nacimiento</Typography>
 
@@ -452,7 +535,7 @@ const ControlEmpleado = (props) => {
 
                                 </form>
                             </div>
-                            <div style={{ marginBottom: '1.5rem', marginTop: '2.2rem' }}>
+                            <div style={{ marginBottom: '1.5rem', marginTop: '2.3rem' }}>
                                 <TextField
                                     name='professionEmp'
                                     variant='outlined'
@@ -463,6 +546,21 @@ const ControlEmpleado = (props) => {
                                     defaultValue={changeData.professionEmp}
 
                                 />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='estadoEmp'
+                                    variant='outlined'
+                                    label='Estado'
+                                    select
+                                    style={{ minWidth: 300 }}
+                                    onChange={handleChange}
+                                    value={changeData.estadoEmp}
+
+                                >
+                                    <MenuItem value='activo'>Activo</MenuItem>
+                                    <MenuItem value='baja'>Dar de Baja</MenuItem>
+                                </TextField>
                             </div>
                         </Grid>
                     </Grid>

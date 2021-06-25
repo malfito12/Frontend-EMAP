@@ -1,4 +1,4 @@
-import { Button, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography } from '@material-ui/core'
+import { Button,Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Paper, Radio, Select, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import React, { useRef, useState } from 'react'
@@ -23,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
         width: 200,
       },
 }))
-const RegisterEmp = (props) => {
+const RegisterEmp = () => {
     const classes = useStyles()
-    const [pathImage, setPathImage] = useState("https://img2.freepng.es/20181108/gkx/kisspng-computer-icons-clip-art-portable-network-graphics-government-los-santos-5be4b7db1f0f80.4023802615417159311272.jpg")
+    const [image,setImage]=useState(null)
+    const [preview,setPreview]=useState(null)
     const [openMessage,setOpenMessage]=useState(false)
     const [changeData, setChangeData] = useState({
         itemEmp: '',
@@ -44,12 +45,33 @@ const RegisterEmp = (props) => {
         professionEmp: '',//
         institutionDegreeEmp: '',//
         ObserEmp: '',//
-        fechaNacEmp: Date()
+        fechaNacEmp: Date(),
+        estadoEmp:'activo',
     })
 
     const fileInputRef = useRef();
+
     const postEmpleado = async () => {
-        await axios.post(`${PORT_URL}empleado`, changeData)
+        const formData= new FormData()
+        formData.append('image', image)
+        formData.append('itemEmp',changeData.itemEmp)
+        formData.append('id_bio',changeData.id_bio)
+        formData.append('firstNameEmp',changeData.firstNameEmp)
+        formData.append('lastNameEmpP',changeData.lastNameEmpP)
+        formData.append('lastNameEmpM',changeData.lastNameEmpM)
+        formData.append('CIEmp',changeData.CIEmp)
+        formData.append('emailEmp',changeData.emailEmp)
+        formData.append('sexoEmp',changeData.sexoEmp)
+        formData.append('numCelEmp',changeData.numCelEmp)
+        formData.append('dirEmp',changeData.dirEmp)
+        formData.append('nacionalityEmp',changeData.nacionalityEmp)
+        formData.append('civilStatusEmp',changeData.civilStatusEmp)
+        formData.append('professionEmp',changeData.professionEmp)
+        formData.append('institutionDegreeEmp',changeData.institutionDegreeEmp)
+        formData.append('ObserEmp',changeData.ObserEmp)
+        formData.append('fechaNacEmp',changeData.fechaNacEmp)
+        formData.append('estadoEmp',changeData.estadoEmp)
+        await axios.post(`${PORT_URL}empleado`, formData)
             .then(resp => {
                 // alert('empleado registrado')
                 console.log(resp.data)
@@ -75,8 +97,9 @@ const RegisterEmp = (props) => {
             if(file.type.includes('image')){
                 const reader= new FileReader()
                 reader.readAsDataURL(file)
-                reader.onload=function load(){
-                    setPathImage(reader.result)
+                reader.onload=()=>{
+                    setPreview(reader.result)
+                    setImage(e.target.files[0])
                 }
             }
             else{console.log('no funciona')}
@@ -86,10 +109,11 @@ const RegisterEmp = (props) => {
             [e.target.name]:e.target.value
         })
     }
-    console.log(props)
+    // console.log(props)
     console.log(changeData)
-    return (<>
-        <Container style={{marginTop:'5rem'}} maxWidth='lg'>
+    return (
+    <>
+        <Container style={{paddingTop:'5rem'}} maxWidth='lg'>
             <Typography className={classes.TyphoAlineation} variant='h4' align='center'>Registro de Empleado</Typography>
             <Container maxWidth='lg'>
                 <Grid container spacing={3}>
@@ -101,6 +125,7 @@ const RegisterEmp = (props) => {
                                 label='N° de Item'
                                 type='number'
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -110,6 +135,7 @@ const RegisterEmp = (props) => {
                                 label='ID Biometrico'
                                 type='number'
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -120,6 +146,7 @@ const RegisterEmp = (props) => {
                                 type='text'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -130,6 +157,7 @@ const RegisterEmp = (props) => {
                                 type='text'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -140,6 +168,7 @@ const RegisterEmp = (props) => {
                                 type='text'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -149,7 +178,7 @@ const RegisterEmp = (props) => {
                                 label='Celdula de Identidad'
                                 type='text'
                                 onChange={handleChange}
-                                style={{minWidth:300}}
+                                style={{minWidth:300,background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -160,6 +189,7 @@ const RegisterEmp = (props) => {
                                 type='email'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -170,6 +200,7 @@ const RegisterEmp = (props) => {
                                 type='text'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -180,6 +211,7 @@ const RegisterEmp = (props) => {
                                 type='text'
                                 fullWidth={true}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -190,6 +222,7 @@ const RegisterEmp = (props) => {
                                 type='number'
                                 style={{minWidth:300}}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                                 
                             />
                         </div>
@@ -199,42 +232,30 @@ const RegisterEmp = (props) => {
                                 variant='outlined'
                                 label='Observaciones'
                                 type='text'
-                                fullWidth={true}
+                                fullWidth
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                                 
                             />
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <div align='center'>
-                            <div>
-                                <img
-                                    className={classes.image}
-                                    src={pathImage}
-                                    alt="imagen"
-                                    style={{ marginBottom: '2rem' }}
-                                    
-                                />
-                                <input
-                                    name='photoImgEmp'
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    ref={fileInputRef}
-                                    accept='image/*'
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '2rem' }}>
-                                <Button
-                                    variant='contained'
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        fileInputRef.current.click()
-                                    }}
-                                    style={{ backgroundColor: 'green', color: 'white' }}
-                                >add image</Button>
-                            </div>
-
+                        <div align='center' style={{ marginBottom: '1.5rem' }}>
+                        <Paper component={Box} p={1} style={{background:'#bdbdbd', width:'290px',height:'277px'}}>
+                            <img src={preview} style={{width:'100%', height:'100%'}} />
+                        </Paper>
+                        <input 
+                            name='image'
+                            type='file'
+                            accept='image/*'
+                            id='file-image'
+                            style={{display:'none'}}
+                            onChange={handleChange}
+                            
+                        />
+                        <label htmlFor='file-image' >
+                            <Button style={{ marginTop: '1rem' }} variant='contained' color='primary' component='span'>cargar</Button>
+                        </label>
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
                             <FormControl >
@@ -245,7 +266,8 @@ const RegisterEmp = (props) => {
                                             style={{
                                                 minWidth: 220,
                                                 border: '1px solid #ced4da',
-                                                borderRadius: 4
+                                                borderRadius: 4,
+                                                background:'white'
                                             }}
                                             onChange={handleChange}
 
@@ -269,12 +291,14 @@ const RegisterEmp = (props) => {
                                         minWidth: 220,
                                         marginBottom: '1.5rem',
                                         border: '1px solid #ced4da',
-                                        borderRadius: 4
+                                        borderRadius: 4,
+                                        background:'white'
                                     }}
                                     name='institutionDegreeEmp'
                                     value={changeData.institutionDegreeEmp}
                                     onChange={handleChange}
                                     align='center'
+                                    
                                 >
                                     <MenuItem value=''>
                                         <em>None</em>
@@ -297,6 +321,7 @@ const RegisterEmp = (props) => {
                                     value='Masculino'
                                     checked={changeData.sexoEmp==='Masculino'}
                                     onChange={handleChange}
+                                    style={{color:'white'}}
                                 />
                                 </span>
                                 <span>Mujer</span>
@@ -306,10 +331,11 @@ const RegisterEmp = (props) => {
                                     value='Femenino'
                                     checked={changeData.sexoEmp==='Femenino'}
                                     onChange={handleChange}
+                                    style={{color:'white'}}
                                 />
                             
                         </div>
-                        <div style={{ marginBottom: '1.5rem',marginTop:'3.2rem'}}>
+                        <div style={{ marginBottom: '1.5rem'}}>
                         <form style={{display:'flex',flexWrap:'wrap'}} noValidate>
                             <Typography variant='h6' style={{marginTop:'1rem'}}>Fecha de Nacimiento</Typography>
                                 
@@ -317,23 +343,25 @@ const RegisterEmp = (props) => {
                                 name='fechaNacEmp'
                                 label='fecha de Nacimiento'
                                 type='date'
-                                defaultValue='yyyy-MM-dd'
+                                // defaultValue='yyyy-MM-dd'
                                 className={classes.textField}
                                 InputLabelProps={{shrink:true}}
                                 onChange={handleChange}
+                                style={{background:'white',borderRadius:5}}
                             />
                                 
                             
                         </form>
                         </div>
-                        <div style={{ marginBottom: '1.5rem', marginTop:'2.2rem' }}>
+                        <div style={{ marginBottom: '1.5rem' }}>
                             <TextField
                                 name='professionEmp'
                                 variant='outlined'
                                 label='Profesión'
                                 type='text'
-                                style={{minWidth:300}}
                                 onChange={handleChange}
+                                fullWidth
+                                style={{background:'white',borderRadius:5}}
                                 
                             />
                         </div>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const UserSubmit = () => {
     
     return (
-        <Container  maxWidth='sm' style={{marginTop: '5rem'}}>
+        <Container  maxWidth='sm' style={{paddingTop: '5rem'}}>
             <div>
             <Typography variant='h4' style={{paddingTop:'2rem'}} align='center'>Felicidades, tu cuenta a sido registrada</Typography>
             </div>

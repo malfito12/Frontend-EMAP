@@ -20,7 +20,7 @@ function App() {
   // }
   return (<>
     <Router>
-      {roles==='admin'? <AppAdmin /> : roles==='usuario' ?<AppUsers />: <AppPublic />}
+      {roles==='admin'? <div id='admin'><AppAdmin /></div> : roles==='usuario' ?<div id='user'><AppUsers /></div>: <div id='public'><AppPublic /></div>}
     </Router>
     </>
   );

@@ -1,4 +1,4 @@
-import { Button, Container, Dialog, makeStyles, Snackbar, TextField, Typography } from '@material-ui/core'
+import { Button, Container, Dialog, makeStyles, MenuItem, Snackbar, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
@@ -30,6 +30,7 @@ const ControlUsers = () => {
     const [openDelete, setOpenDelete] = useState(false)
     const [openAlertDelete, setOpenAlertDelete] = useState(false)
     const [openAlertEdit, setOpenAlertEdit] = useState(false)
+    
     const [changeData, setChangeData] = useState({
         username: '',
         password: '',
@@ -61,7 +62,7 @@ const ControlUsers = () => {
             .then(resp => console.log(resp.data))
         setOpenEdit(false)
         openCloseAlertEdit()
-        
+
         getUser()
     }
     const openModalEdit = (ele) => {
@@ -71,6 +72,7 @@ const ControlUsers = () => {
     const closeModalEdit = () => {
         setOpenEdit(false)
     }
+    
     //----------------------------------------------------------------------
     //ELIMINAR USUARIO
     const deleteUser = async () => {
@@ -82,7 +84,7 @@ const ControlUsers = () => {
         getUser()
 
     }
-
+    
     const openModalDelete = (ele) => {
         setChangeData(ele);
         setOpenDelete(true)
@@ -107,21 +109,16 @@ const ControlUsers = () => {
     const openCloseAlertEdit = () => {
         setOpenAlertEdit(!openAlertEdit)
     }
-
-
-
-
-
     const columnas = [
         { title: 'Name', field: 'username' },
         { title: 'Email', field: 'email' },
         { title: 'Sexo', field: 'sexo' },
         { title: 'Rol', field: 'rols' },
     ]
-
-
+    
+    // console.log(changeData)
     return (<>
-        <Container style={{ marginTop: '5rem' }} fixed>
+        <Container style={{ paddingTop: '5rem' }} fixed>
             <Typography variant='h4' align='center' style={{ marginTop: '1.5rem' }}>Lista de Usuarios</Typography>
             <Button component={Link} to='/registeruser' variant='contained' color='primary'>Registrar Usuario</Button>
             <Container maxWidth='md' style={{ marginTop: '2rem' }}>
@@ -202,11 +199,15 @@ const ControlUsers = () => {
                 <div className={classes.alineation}>
                     <TextField
                         variant="outlined"
+                        select
                         name='rols'
                         label='Rol'
                         onChange={handleChange}
-                        defaultValue={changeData && changeData.rols}
-                        className={classes.alineation} />
+                        value={changeData&&changeData.rols}
+                        className={classes.alineation}>
+                        <MenuItem value={'usuario'}>Usuario</MenuItem>
+                        <MenuItem value={'admin'}>Administrador</MenuItem>
+                    </TextField>
 
                 </div>
                 <div className={classes.alineation}>

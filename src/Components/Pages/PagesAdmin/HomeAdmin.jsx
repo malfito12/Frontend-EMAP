@@ -1,9 +1,12 @@
-import { Button, Container, Dialog, Fade, Grid, makeStyles, Modal, Typography } from '@material-ui/core'
+import { Button, Paper, Container, Grid, makeStyles, Typography } from '@material-ui/core'
 import axios from 'axios'
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import ReactFileReader from 'react-file-reader'
 import { Link } from 'react-router-dom'
 import { PORT_URL } from '../../../PortURL'
+import espacio3 from '../../../images/espacio3.jpg'
+import espacio4 from '../../../images/espacio4.jpg'
+import espacio5 from '../../../images/espacio5.jpg'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 const HomeAdmin = () => {
     const classes = useStyles()
-    const [openDialog, setOpenDialog] = useState(false)
+    // const [openDialog, setOpenDialog] = useState(false)
 
-    const openCloseDialogUpdate = () => {
-        setOpenDialog(!openDialog)
-    }
+    // const openCloseDialogUpdate = () => {
+    //     setOpenDialog(!openDialog)
+    // }
     var data;
     const hadle = files => {
         const reader = new FileReader()
@@ -84,7 +87,7 @@ const HomeAdmin = () => {
             await axios.post(`${PORT_URL}asistencia`, data[i])
                 .then(resp => {
                     console.log(resp.data)
-                    if (i >= data.length -1) {
+                    if (i >= data.length - 1) {
                         alert('informacion subida al servidor')
                     }
                 })
@@ -92,43 +95,62 @@ const HomeAdmin = () => {
             console.log(data[i])
         }
     }
-    const nuevo=(e)=>{
-        const a=window.confirm('¿deseas subir los datos?')
-        if(a==true){
+    const nuevo = (e) => {
+        const a = window.confirm('¿deseas subir los datos?')
+        if (a === true) {
             postAsistencia(e)
         }
     }
     return (
-    <>
-        <Container fixed style={{ marginTop: '5rem' }}>
-            <Typography align='center' variant='h5' style={{ marginBottom: '2rem' }}>ADMINISTRACION</Typography>
-            <Container maxWidth='lg' align='center' style={{ marginBottom: '2rem' }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={8} sm={4}>
-                        <Button component={Link} to='/controluser' classes={{ root: classes.root1, label: classes.label }}>USUARIOS</Button>
+        <>
+            <Container fixed style={{ paddingTop: '5rem' }}>
+                {/* <Container fixed > */}
+                <Typography align='center' variant='h5' style={{ marginBottom: '2rem' }}>ADMINISTRACION</Typography>
+                <Container maxWidth='lg' align='center' style={{ marginBottom: '2rem' }}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={8} sm={4}>
+                            <Button component={Link} to='/controluser' style={{ marginBottom: '1rem' }} classes={{ root: classes.root1, label: classes.label }}>USUARIOS</Button>
+                            <Paper style={{ width: 300, height: 200 }}>
+                                <Button component={Link} to='/controlHorarios' >
+                                    <img src={espacio3} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
+                                    <div style={{ position: 'absolute', fontSize: '15px', color: 'white' }}>HORARIOS</div>
+                                </Button>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={8} sm={4}>
+                            <Button component={Link} to='/controlEmp' style={{ marginBottom: '1rem' }} classes={{ root: classes.root2, label: classes.label }}>EMPLEADOS</Button>
+                            <Paper style={{ width: 300, height: 200 }}>
+                                <Button component={Link} to='/asigHorario' >
+                                    <img src={espacio4} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
+                                    <div style={{ position: 'absolute', fontSize: '15px', color: 'white' }}>ASIGNACION DE HRS</div>
+                                </Button>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={8} sm={4}>
+                            <Button component={Link} to='/controlCargos' style={{ marginBottom: '1rem' }} classes={{ root: classes.root3, label: classes.label }}>CARGOS</Button>
+                            <Paper style={{ width: 300, height: 200 }}>
+                                <Button component={Link} to='/controlPermisos' >
+                                    <img src={espacio5} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
+                                    <div style={{ position: 'absolute', fontSize: '15px', color: 'white' }}>PERMISOS</div>
+                                </Button>
+                            </Paper>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={8} sm={4}>
-                        <Button component={Link} to='/controlEmp' classes={{ root: classes.root2, label: classes.label }}>EMPLEADOS</Button>
-                    </Grid>
-                    <Grid item xs={8} sm={4}>
-                        <Button classes={{ root: classes.root3, label: classes.label }}>OTROS</Button>
-                    </Grid>
-                </Grid>
-            </Container>
-            {/* <Button variant='contained' color='primary'>
+                </Container>
+                {/* <Button variant='contained' color='primary'>
             <input type='file'  onChange={(e)=>hadle(e)}></input>
             </Button> */}
-            <Typography align='center' style={{ marginBottom: '2rem' }} variant='h5'>Subir Informacion a la base de datos</Typography>
-            <Container style={{ width: 200 }} align='center' >
-                <span id='contenido'></span>
-                <ReactFileReader handleFiles={hadle} fileTypes={'.dat'} elementId='archivo' >
-                    <Button style={{ marginBottom: '1rem' }} type='button' variant='contained' color='primary'>Cargar archivo</Button>
-                </ReactFileReader>
-                <Button onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
+                <Typography align='center' style={{ marginBottom: '2rem' }} variant='h5'>Subir Informacion a la base de datos</Typography>
+                <Container style={{ width: 200 }} align='center' >
+                    <span id='contenido'></span>
+                    <ReactFileReader handleFiles={hadle} fileTypes={'.dat'} elementId='archivo' >
+                        <Button style={{ marginBottom: '1rem' }} type='button' variant='contained' color='primary'>Cargar archivo</Button>
+                    </ReactFileReader>
+                    <Button onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
+                </Container>
             </Container>
-        </Container>
-        
-        {/* <Button type='button' onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }}>Aceptar</Button>
+
+            {/* <Button type='button' onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }}>Aceptar</Button>
 
         <Dialog
             maxWidth='sm'
@@ -141,7 +163,7 @@ const HomeAdmin = () => {
             <Button onClick={openCloseDialogUpdate}  variant='contained' style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', marginLeft: '1rem' }}>Cancelar</Button>
             </div>
         </Dialog> */}
-    </>
+        </>
     )
 }
 

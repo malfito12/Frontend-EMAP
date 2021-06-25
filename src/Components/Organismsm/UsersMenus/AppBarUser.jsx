@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 const useStyles=makeStyles((theme)=>({
     diseño:{
-        background:'#00796b'
+        background:'#424242'
     }
 }))
 const AppBarUser = (props) => {
@@ -13,7 +13,7 @@ const AppBarUser = (props) => {
     return (
         <div>
         <CssBaseline/>
-        <AppBar position='static' className={classes.diseño}>
+        <AppBar position='fixed' className={classes.diseño}>
             <Toolbar>
                 <IconButton
                     color='inherit'

@@ -6,6 +6,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { withRouter } from 'react-router-dom'
+import logoemap from '../../../images/logoemap.png'
 
 const drawerWidth=240;
 const useStyles=makeStyles((theme)=>({
@@ -50,18 +51,18 @@ const DrawerMenuAdmin = (props) => {
     }
     const {history}=props
     const ItemList=[
-        {
-            text: 'Home Admin',
-            icon: <SendIcon color='primary' />,
-            oncl: ()=>history.push('/homeadmin')
-        },
+        // {
+        //     text: 'Home Admin',
+        //     icon: <SendIcon color='primary' />,
+        //     oncl: ()=>history.push('/homeadmin')
+        // },
         {
             text: 'Usuarios',
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controluser')
         },
         {
-            text: 'Enpleados',
+            text: 'Personal',
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controlEmp')
         },
@@ -74,14 +75,24 @@ const DrawerMenuAdmin = (props) => {
     ]
     const ItemList2=[
         {
-            text: 'Asistencia',
+            text: 'Horarios',
             icon: <InboxIcon color='primary' />,
-            // oncl: ()=>history.push('/controlEmp')
+            oncl: ()=>history.push('/controlHorarios')
+        },
+        {
+            text: 'Asignar Horario',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/asigHorario')
         },
         {
             text: 'Permisos',
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controlPermisos')
+        },
+        {
+            text: 'Feriados',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/controlFeriados')
         },
     ]
     return (
@@ -93,8 +104,10 @@ const DrawerMenuAdmin = (props) => {
             classes={{
                 paper: classes.drawerPaper
             }}
-        >
+        >   
             <div className={classes.drawerHeader}>
+            <img src={logoemap} style={{ width: 100, height:35, marginRight:'2rem' }}/>
+            {/* <div style={{flexGrow:1}}></div> */}
                 <IconButton onClick={props.CloseDrawer}>
                     <ChevronLeftIcon className={classes.diseño} />
                 </IconButton>
