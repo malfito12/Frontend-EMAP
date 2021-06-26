@@ -38,7 +38,7 @@ const InfoEmp = (props) => {
                     console.log(err)
                 })
         })()
-    })
+    },[])
 
     console.log(asistencia)
 
