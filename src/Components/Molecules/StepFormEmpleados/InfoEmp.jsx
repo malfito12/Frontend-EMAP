@@ -17,7 +17,7 @@ const InfoEmp = (props) => {
     const a = props.location.pathname
     var b = a.split('/')
     // var c=b[2]
-    // console.log(c)
+    console.log(b)
 
     const params = useParams()
     useEffect(() => {
