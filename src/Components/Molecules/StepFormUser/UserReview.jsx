@@ -1,4 +1,4 @@
-import { Accordion, Box, AccordionDetails, AccordionSummary, Button, Container, Dialog, IconButton, ListItemIcon, ListItemText, Paper, Typography } from '@material-ui/core'
+import { Accordion, Box, AccordionDetails, AccordionSummary, Button, Container, Dialog, IconButton, ListItemText, Paper, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import EditIcon from '@material-ui/icons/Edit'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'

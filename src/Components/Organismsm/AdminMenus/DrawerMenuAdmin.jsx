@@ -106,7 +106,7 @@ const DrawerMenuAdmin = (props) => {
             }}
         >   
             <div className={classes.drawerHeader}>
-            <img src={logoemap} style={{ width: 100, height:35, marginRight:'2rem' }}/>
+            <img src={logoemap} style={{ width: 100, height:35, marginRight:'2rem' }} alt='#'/>
             {/* <div style={{flexGrow:1}}></div> */}
                 <IconButton onClick={props.CloseDrawer}>
                     <ChevronLeftIcon className={classes.diseño} />

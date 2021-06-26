@@ -1,7 +1,7 @@
 import { Button,Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Paper, Radio, Select, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +49,6 @@ const RegisterEmp = () => {
         estadoEmp:'activo',
     })
 
-    const fileInputRef = useRef();
 
     const postEmpleado = async () => {
         const formData= new FormData()
@@ -220,10 +219,8 @@ const RegisterEmp = () => {
                                 variant='outlined'
                                 label='N° Celular'
                                 type='number'
-                                style={{minWidth:300}}
-                                onChange={handleChange}
-                                style={{background:'white',borderRadius:5}}
-                                
+                                style={{minWidth:300,background:'white', borderRadius:5}}
+                                onChange={handleChange}                                
                             />
                         </div>
                         <div style={{ marginBottom: '1.5rem' }}>
@@ -242,7 +239,7 @@ const RegisterEmp = () => {
                     <Grid item xs={12} sm={6}>
                         <div align='center' style={{ marginBottom: '1.5rem' }}>
                         <Paper component={Box} p={1} style={{background:'#bdbdbd', width:'290px',height:'277px'}}>
-                            <img src={preview} style={{width:'100%', height:'100%'}} />
+                            <img src={preview} style={{width:'100%', height:'100%'}} alt='#'/>
                         </Paper>
                         <input 
                             name='image'

@@ -1,7 +1,7 @@
 import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton } from '@material-ui/core'
 import axios from 'axios'
 import MaterialTable from 'material-table'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { PORT_URL, PORT_URL_IMAGE } from '../../../PortURL'
 import AlertDelete from '../../Atoms/Alerts/AlertDelete'
@@ -185,7 +185,6 @@ const ControlEmpleado = (props) => {
         setOpenAlertEdit(!openAlertEdit)
     }
     //--------------------------------------------------------------------
-    const fileInputRef = useRef();
 
     // console.log(new Date(fecha).toLocaleDateString().split('/').reverse().join('/'));
 
@@ -197,7 +196,7 @@ const ControlEmpleado = (props) => {
         { title: 'Email', field: 'emailEmp' },
         { title: 'Sexo', field: 'sexoEmp' },
         {
-            title: 'Estado', field: 'estadoEmp', render: (row) => row.estadoEmp == 'activo'
+            title: 'Estado', field: 'estadoEmp', render: (row) => row.estadoEmp === 'activo'
                 ? <div style={{ color: 'green' }}>{row.estadoEmp}</div>
                 : <div style={{ color: 'red' }}>{row.estadoEmp}</div>
         },
@@ -256,8 +255,8 @@ const ControlEmpleado = (props) => {
                                         <Paper component={Box} p={1} style={{ width: '80%', height: '200px', background: '#bdbdbd' }}>
                                             {
                                                 e.path
-                                                    ? <img src={`${PORT_URL_IMAGE}` + e.path} style={{ width: '100%', height: '100% ' }} />
-                                                    : <img src={preview} style={{ width: '100%', height: '100%' }} />
+                                                    ? <img src={`${PORT_URL_IMAGE}` + e.path} style={{ width: '100%', height: '100% ' }} alt="#"/>
+                                                    : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#"/>
                                             }
 
                                         </Paper>
@@ -426,9 +425,9 @@ const ControlEmpleado = (props) => {
                             <div align='center'>
                                 <Paper component={Box} p={1} style={{ background: '#bdbdbd', width: '270px', height: '270px' }}>
                                     {/* {changeData.path ? <img src={'http://192.168.100.6:8000/' + changeData.path} style={{ width: '100%', height: '100% ' }} /> */}
-                                    {changeData.path ? <img src={`${PORT_URL_IMAGE}` + changeData.path} style={{ width: '100%', height: '100% ' }} />
+                                    {changeData.path ? <img src={`${PORT_URL_IMAGE}` + changeData.path} style={{ width: '100%', height: '100% ' }} alt="#"/>
                                         // : <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} style={{ width: '100%', height: '100%' }} />}
-                                        : <img src={preview} style={{ width: '100%', height: '100%' }} />}
+                                        : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#"/>}
                                 </Paper>
                                 <input
                                     name='image'

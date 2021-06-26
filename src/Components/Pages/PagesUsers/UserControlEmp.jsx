@@ -54,7 +54,7 @@ const UserControlEmp = (props) => {
                                             <TableCell>{e.firstNameEmp}</TableCell>
                                             <TableCell>{e.lastNameEmpP}</TableCell>
                                             <TableCell>{e.lastNameEmpM}</TableCell>
-                                            {e.estadoEmp == 'activo'
+                                            {e.estadoEmp === 'activo'
                                                 ? (<TableCell style={{ color: 'green' }}>{e.estadoEmp}</TableCell>)
                                                 : (<TableCell style={{ color: 'red' }}>{e.estadoEmp}</TableCell>)
                                             }

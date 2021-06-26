@@ -1,6 +1,6 @@
 import { Button, Box, Container, Dialog, Grid, IconButton, InputAdornment, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Tooltip, Typography } from '@material-ui/core'
 import axios from 'axios'
-import MaterialTable from 'material-table'
+// import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -159,12 +159,12 @@ const ControlCargos = () => {
         })
     }
     console.log(changeData)
-    const columnas = [
-        { title: "Nombre", field: 'firstNameEmp' },
-        { title: "Apellido P", field: 'lastNameEmpP' },
-        { title: "Apellido M", field: 'lastNameEmpM' },
-        { title: "Cargo", field: 'cargoEmp' },
-    ]
+    // const columnas = [
+    //     { title: "Nombre", field: 'firstNameEmp' },
+    //     { title: "Apellido P", field: 'lastNameEmpP' },
+    //     { title: "Apellido M", field: 'lastNameEmpM' },
+    //     { title: "Cargo", field: 'cargoEmp' },
+    // ]
 
     const columms = [
         { id: 'id_bio', label: 'ID Biometrico' },

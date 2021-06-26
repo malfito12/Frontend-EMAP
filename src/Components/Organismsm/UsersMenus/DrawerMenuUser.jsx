@@ -2,7 +2,6 @@ import { Collapse, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, Li
 import React, { useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SendIcon from '@material-ui/icons/Send';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { withRouter } from 'react-router-dom'

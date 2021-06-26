@@ -34,6 +34,7 @@ const RegisterUser = () => {
             return <UserReview {...props} />
         case 'submit':
             return <UserSubmit {...props} />
+        default:
     }
     return (
         <div>

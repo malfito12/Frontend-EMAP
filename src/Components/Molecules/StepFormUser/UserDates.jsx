@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Box, Container, Paper, TextField, Typography, MenuItem } from '@material-ui/core'
 
 const UserDates = (props) => {

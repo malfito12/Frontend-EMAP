@@ -83,15 +83,17 @@ const HomeAdmin = () => {
     }
     const postAsistencia = async (e) => {
         e.preventDefault()
-        for (var i = 0; i < data.length; i++) {
+        const nuevo = data.length
+        for (var i = 0; i < nuevo; i++) {
             await axios.post(`${PORT_URL}asistencia`, data[i])
                 .then(resp => {
                     console.log(resp.data)
-                    if (i >= data.length - 1) {
-                        alert('informacion subida al servidor')
-                    }
+
                 })
                 .catch(err => console.log(err))
+            if (i >= nuevo - 1) {
+                return alert('informacion subida al servidor')
+            }
             console.log(data[i])
         }
     }
