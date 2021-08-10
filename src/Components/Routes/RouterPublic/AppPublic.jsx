@@ -10,7 +10,7 @@ import PublicHome from '../../Pages/PagesPublic/PublicHome'
 const AppPublic = () => {
     return (
         <Switch>
-            <Public path='/login' component={props=><Login {...props} />} />
+            {/* <Public path='/login' component={props=><Login {...props} />} /> */}
             <Public  path='/homepublic' component={props=><PublicHome {...props}/>}/>
             {/* <Public path='/' component={props=><Home {...props} />} /> */}
             <Protected path='/homeadmin' exact component={props=><HomeAdmin {...props} />} />
