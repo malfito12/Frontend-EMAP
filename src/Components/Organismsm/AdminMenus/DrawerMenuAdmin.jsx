@@ -1,4 +1,4 @@
-import { Collapse, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
+import { Collapse, Divider, Drawer, IconButton, Link, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SendIcon from '@material-ui/icons/Send';
@@ -37,12 +37,16 @@ const DrawerMenuAdmin = (props) => {
     const classes=useStyles()
     const [abrir,setAbrir]=useState(false)
     const [abrir2,setAbrir2]=useState(false)
+    const [abrir3,setAbrir3]=useState(false)
 
     const handleClick=()=>{
         setAbrir(!abrir)
     }
     const handleClick2=()=>{
         setAbrir2(!abrir2)
+    }
+    const handleClick3=()=>{
+        setAbrir3(!abrir3)
     }
     const removeToken=()=>{
         localStorage.removeItem('token')
@@ -71,6 +75,16 @@ const DrawerMenuAdmin = (props) => {
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controlCargos')
         },
+        {
+            text: 'Registrar Cargos',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/registerCargo')
+        },
+        {
+            text: 'Configuracion General',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/generalConfig')
+        },
         
     ]
     const ItemList2=[
@@ -94,6 +108,19 @@ const DrawerMenuAdmin = (props) => {
             icon: <InboxIcon color='primary' />,
             oncl: ()=>history.push('/controlFeriados')
         },
+        {
+            text: 'Ver Kardex',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/kardexPreRevision')
+        },
+    ]
+    const ItemList3=[
+        {
+            text: 'Sueldos',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/planillaSueldos')
+        },
+        
     ]
     return (
         <Drawer
@@ -162,6 +189,78 @@ const DrawerMenuAdmin = (props) => {
                     }
                 </List>
                 </Collapse>
+                <ListItem button onClick={handleClick3} className={classes.diseño} >
+                    <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon>
+                    <ListItemText primary='Planillas' />
+                    {abrir3 ? <ExpandLess /> : <ExpandMore /> }
+                </ListItem>
+                <Collapse in={abrir3} timeout='auto' unmountOnExit>
+                <List component='div' disablePadding onClick={props.CloseDrawer}>
+                    {ItemList3.map((item)=>{
+                        const {text, icon, oncl}=item
+                        return(
+                            <div key={text}>
+                                <ListItem button className={classes.nested} onClick={oncl}>
+                                    {icon&&<ListItemIcon>{icon}</ListItemIcon>}
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            </div>
+                        )
+                    })
+
+                    }
+                </List>
+                </Collapse>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/controluser")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Usuarios' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/controlEmp")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Personal' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/kardexPreRevision")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Asistencia' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/controlPermisos")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Justificaciones' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/sueldosPreRevision")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Planillas' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/generalConfig")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Configuracion' />
+                </ListItem>
+                </div>
                 <div onClick={props.CloseDrawer} />
                 <ListItem button onClick={()=>removeToken()} className={classes.diseño}>
                    <ListItemIcon>

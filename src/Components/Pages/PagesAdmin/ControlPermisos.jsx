@@ -1,11 +1,14 @@
-import { Container, Box, Grid, Paper, TextField, Typography, makeStyles, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, InputAdornment, Dialog } from '@material-ui/core'
+import { Container, Box, Grid, Paper, TextField, Typography, makeStyles, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, InputAdornment, Dialog, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
 import DeleteIcon from '@material-ui/icons/Delete';
 import SettingsIcon from '@material-ui/icons/Settings';
 import SearchIcon from '@material-ui/icons/Search';
-import { AlertDelete, AlertEdit, AlertRegister,AlertErrorRegisterPermiso } from '../../Atoms/Alerts/AlertReEdDe'
+import { AlertDelete, AlertEdit, AlertRegister, AlertErrorRegisterPermiso } from '../../Atoms/Alerts/AlertReEdDe'
+import PlayListAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
@@ -17,11 +20,11 @@ const ControlPermisos = () => {
     const [permiso, setPermiso] = useState([])
     const [perm, setPerm] = useState("")
     const [openEditPermiso, setOpenEditPermiso] = useState(false)
-    const [openDeletePermiso,setOpenDeletePermiso]=useState(false)
-    const [openAlertRegisterPermiso,setOpenAlertRegisterPermiso]=useState(false)
-    const [openAlertEditPermiso,setOpenAlertEditPermiso]=useState(false)
-    const [openAlertDeletePermiso,setOpenAlertDeletePermiso]=useState(false)
-    const [openErrorAlertRegisterPermiso,setOpenErrorAlertRegisterPermiso]=useState(false)
+    const [openDeletePermiso, setOpenDeletePermiso] = useState(false)
+    const [openAlertRegisterPermiso, setOpenAlertRegisterPermiso] = useState(false)
+    const [openAlertEditPermiso, setOpenAlertEditPermiso] = useState(false)
+    const [openAlertDeletePermiso, setOpenAlertDeletePermiso] = useState(false)
+    const [openErrorAlertRegisterPermiso, setOpenErrorAlertRegisterPermiso] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
         namePermiso: '',
@@ -56,10 +59,12 @@ const ControlPermisos = () => {
         await axios.post(`${PORT_URL}permiso`, changeData)
             .then(resp => {
                 openCloseAlertRegisterPermiso()
-                console.log(resp.data) })
+                console.log(resp.data)
+            })
             .catch(err => {
                 openCloseErrorAlertRegisterPermiso()
-                console.log(err) })
+                console.log(err)
+            })
         setChangeData({
             id_bio: '',
             namePermiso: '',
@@ -83,27 +88,29 @@ const ControlPermisos = () => {
         await axios.put(`${PORT_URL}permiso/${id}`, changeDataEdit)
             .then(resp => {
                 openCloseAlertEditPermiso()
-                console.log(resp.data) })
+                console.log(resp.data)
+            })
             .catch(err => { console.log(err) })
         closeModalEditPermiso()
         getPermiso()
     }
     //----------------DELETE PERMISOS-------------------------------------------
-    const openModalDeletePermiso=(e)=>{
+    const openModalDeletePermiso = (e) => {
         setChangeDataEdit(e)
         setOpenDeletePermiso(true)
     }
-    const closeModalDeletePermiso=()=>{
+    const closeModalDeletePermiso = () => {
         setOpenDeletePermiso(false)
     }
-    const sendDeletePermiso=async(e)=>{
+    const sendDeletePermiso = async (e) => {
         e.preventDefault()
-        const id=changeDataEdit._id
+        const id = changeDataEdit._id
         await axios.delete(`${PORT_URL}permiso/${id}`)
-        .then(resp=>{
-            openCloseAlertDeletePermiso()
-            console.log(resp.data)})
-        .catch(err=>{console.log(err)})
+            .then(resp => {
+                openCloseAlertDeletePermiso()
+                console.log(resp.data)
+            })
+            .catch(err => { console.log(err) })
         closeModalDeletePermiso()
         getPermiso()
     }
@@ -119,16 +126,16 @@ const ControlPermisos = () => {
         }
     }
     //----------------ALERTAS-------------------------------------------
-    const openCloseAlertRegisterPermiso=()=>{
+    const openCloseAlertRegisterPermiso = () => {
         setOpenAlertRegisterPermiso(!openAlertRegisterPermiso)
     }
-    const openCloseErrorAlertRegisterPermiso=()=>{
+    const openCloseErrorAlertRegisterPermiso = () => {
         setOpenErrorAlertRegisterPermiso(!openErrorAlertRegisterPermiso)
     }
-    const openCloseAlertEditPermiso=()=>{
+    const openCloseAlertEditPermiso = () => {
         setOpenAlertEditPermiso(!openAlertEditPermiso)
     }
-    const openCloseAlertDeletePermiso=()=>{
+    const openCloseAlertDeletePermiso = () => {
         setOpenAlertDeletePermiso(!openAlertDeletePermiso)
     }
     //----------------POST PERMISOS-------------------------------------------
@@ -146,12 +153,35 @@ const ControlPermisos = () => {
         })
     }
 
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(0)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }
+    //-----------------------------------------------------------------
+
     // console.log(changeData)
     // console.log(changeDataEdit)
     return (
         <>
-            <Container maxWidth={false}>
-                <Typography align='center' variant='h4' style={{ paddingTop: '5rem', marginBottom: '2rem' }}>Control de Permisos</Typography>
+            <Container maxWidth={false} style={{paddingTop: '5rem'}}>
+                <Container maxWidth='lg' >
+                    <Grid item xs={12} sm={5}>
+                        <Paper className={classes.spacingBott}>
+                            <Tabs
+                                value={scroll}
+                                onChange={scrollChange}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                style={{ height: 60 }}
+                            >
+                                <Tab label="Registro Permisos" style={{ fontSize: 'x-small' }}  icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label="Registro Feriados" style={{ fontSize: 'x-small' }} component={Link} to='/controlFeriados' icon={<CheckBoxIcon style={{ fontSize: 'large' }} />} />
+                            </Tabs>
+                        </Paper>
+                    </Grid>
+                </Container>
+                <Typography align='center' variant='h4' style={{ marginBottom: '2rem' }}>Control de Permisos</Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                         <Paper component={Box} p={2} style={{ marginTop: '4rem' }}>
@@ -274,12 +304,12 @@ const ControlPermisos = () => {
                                                     <TableCell>{p.fechaPermisoFin}</TableCell>
                                                     <TableCell>
                                                         <Tooltip title='editar'>
-                                                            <IconButton size='small' onClick={()=>openModalEditPermiso(p)}>
+                                                            <IconButton size='small' onClick={() => openModalEditPermiso(p)}>
                                                                 <SettingsIcon />
                                                             </IconButton>
                                                         </Tooltip>
                                                         <Tooltip title='eliminar'>
-                                                            <IconButton size='small' onClick={()=>openModalDeletePermiso(p)}>
+                                                            <IconButton size='small' onClick={() => openModalDeletePermiso(p)}>
                                                                 <DeleteIcon />
                                                             </IconButton>
                                                         </Tooltip>
@@ -369,7 +399,7 @@ const ControlPermisos = () => {
                         </Grid>
                     </Grid>
                     <div align='center'>
-                        <Button onClick={sendEditPermiso} variant='contained' color='primary' size='small'style={{marginRight:'1rem'}}>Editar</Button>
+                        <Button onClick={sendEditPermiso} variant='contained' color='primary' size='small' style={{ marginRight: '1rem' }}>Editar</Button>
                         <Button onClick={closeModalEditPermiso} variant='contained' color='secondary' size='small'>Cancelar</Button>
                     </div>
                 </Container>
@@ -380,9 +410,9 @@ const ControlPermisos = () => {
                 maxWidth='md'
             >
                 <Container maxWidth='lg' component={Box} p={2}>
-                    <Typography variant='h6'className={classes.spacingBott}>Estas seguro de eliminar el permiso "{changeDataEdit.namePermiso}"</Typography>
+                    <Typography variant='h6' className={classes.spacingBott}>Estas seguro de eliminar el permiso "{changeDataEdit.namePermiso}"</Typography>
                     <div align='center'>
-                        <Button onClick={sendDeletePermiso} variant='contained' color='primary' style={{marginRight:'1rem'}}>aceptar</Button>
+                        <Button onClick={sendDeletePermiso} variant='contained' color='primary' style={{ marginRight: '1rem' }}>aceptar</Button>
                         <Button onClick={closeModalDeletePermiso} variant='contained' color='secondary'>cancelar</Button>
                     </div>
                 </Container>
@@ -390,7 +420,7 @@ const ControlPermisos = () => {
             <AlertRegister open={openAlertRegisterPermiso} onClose={openCloseAlertRegisterPermiso} />
             <AlertEdit name={changeDataEdit.firstNameEmp} open={openAlertEditPermiso} onClose={openCloseAlertEditPermiso} />
             <AlertDelete name={changeDataEdit.namePermiso} open={openAlertDeletePermiso} onClose={openCloseAlertDeletePermiso} />
-            <AlertErrorRegisterPermiso open={openErrorAlertRegisterPermiso} onClose={openCloseErrorAlertRegisterPermiso}/>
+            <AlertErrorRegisterPermiso open={openErrorAlertRegisterPermiso} onClose={openCloseErrorAlertRegisterPermiso} />
         </>
     )
 }

@@ -97,7 +97,7 @@ const HomeAdmin = () => {
             console.log(data[i])
         }
     }
-    const nuevo = (e) => {
+    const confirmar = (e) => {
         const a = window.confirm('¿deseas subir los datos?')
         if (a === true) {
             postAsistencia(e)
@@ -148,7 +148,7 @@ const HomeAdmin = () => {
                     <ReactFileReader handleFiles={hadle} fileTypes={'.dat'} elementId='archivo' >
                         <Button style={{ marginBottom: '1rem' }} type='button' variant='contained' color='primary'>Cargar archivo</Button>
                     </ReactFileReader>
-                    <Button onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
+                    <Button onClick={confirmar} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
                 </Container>
             </Container>
 

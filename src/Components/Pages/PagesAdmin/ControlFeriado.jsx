@@ -1,9 +1,12 @@
-import { Container, Typography, Paper, Box, TextField, Grid, makeStyles, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Button, Dialog, IconButton, Tooltip } from '@material-ui/core'
+import { Container, Typography, Paper, Box, TextField, Grid, makeStyles, TableContainer, Table, TableBody, TableHead, TableRow, TableCell, Button, Dialog, IconButton, Tooltip, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
 import DeleteIcon from '@material-ui/icons/Delete';
+import PlayListAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles(() => ({
     spacingBott: {
@@ -78,11 +81,33 @@ const ControlFeriado = () => {
             [e.target.name]: e.target.value
         })
     }
-    console.log(changeData)
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(1)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }
+    //-----------------------------------------------------------------
+    // console.log(changeData)
     return (
         <>
-            <Container maxWidth={false}>
-                <Typography variant='h4' align='center' style={{ paddingTop: '5rem' }} className={classes.spacingBott}>Feriados</Typography>
+            <Container maxWidth={false} style={{ paddingTop: '5rem' }}>
+                <Container maxWidth='lg' >
+                    <Grid item xs={12} sm={5}>
+                        <Paper className={classes.spacingBott}>
+                            <Tabs
+                                value={scroll}
+                                onChange={scrollChange}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                style={{ height: 60 }}
+                            >
+                                <Tab label="Registro Permisos" style={{ fontSize: 'x-small' }} component={Link} to='/controlPermisos' icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label="Registro Feriados" style={{ fontSize: 'x-small' }} icon={<CheckBoxIcon style={{ fontSize: 'large' }} />} />
+                            </Tabs>
+                        </Paper>
+                    </Grid>
+                </Container>
+                <Typography variant='h4' align='center' className={classes.spacingBott}>Feriados</Typography>
                 <Container maxWidth='lg'>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
@@ -174,7 +199,7 @@ const ControlFeriado = () => {
                                                         <TableCell>{f.fechaFeriadoFin}</TableCell>
                                                         <TableCell>
                                                             <Tooltip title='eliminar'>
-                                                                <IconButton size='small' style={{color:'red'}} onClick={()=>openModalDeleteFeriado(f)}>
+                                                                <IconButton size='small' style={{ color: 'red' }} onClick={() => openModalDeleteFeriado(f)}>
                                                                     <DeleteIcon />
                                                                 </IconButton>
                                                             </Tooltip>
@@ -199,7 +224,7 @@ const ControlFeriado = () => {
                     <Container maxWidth='sm'>
                         <Typography variant='subtitle1' className={classes.spacingBott}>Estas seguro de Eliminar "{changeDataDelete.nameFeriado}"</Typography>
                         <div align='center'>
-                            <Button onClick={deleteFeriado} size='small' variant='outlined' color='primary' style={{marginRight:'1rem'}}>aceptar</Button>
+                            <Button onClick={deleteFeriado} size='small' variant='outlined' color='primary' style={{ marginRight: '1rem' }}>aceptar</Button>
                             <Button size='small' onClick={closeModalDeleteFeriado} variant='outlined' color='secondary'>cancelar</Button>
                         </div>
                     </Container>

@@ -1,4 +1,4 @@
-import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton } from '@material-ui/core'
+import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
 import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
@@ -9,6 +9,12 @@ import AlertEdit from '../../Atoms/Alerts/AlertEdit'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import TimerIcon from '@material-ui/icons/Timer';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 
 const useStyles = makeStyles((theme) => ({
     TyphoAlineation: {
@@ -36,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
     margin: {
         margin: theme.spacing(1),
     },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
 
 }))
 
@@ -48,6 +59,9 @@ const ControlEmpleado = (props) => {
     const [openAlertEdit, setOpenAlertEdit] = useState(false)
     const [image, setImage] = useState(null)
     const [preview, setPreview] = useState(null)
+    const [departament, setDepartament] = useState([])
+    const [cargo, setCargo] = useState([])
+    const [horario, setHorario] = useState([])
     const [changeData, setChangeData] = useState({
         itemEmp: '',
         id_bio: '',
@@ -55,6 +69,19 @@ const ControlEmpleado = (props) => {
         lastNameEmpP: '',
         lastNameEmpM: '',
         CIEmp: '',
+
+        cargoEmp: '',
+        departamentEmp: '',
+        typeContrato: '',
+        clasificacionLab: '',
+        typeHorario: '',
+        typeAntiguedad: '',
+        AFP: '',
+        cotizante: '',
+        afilSindicato: '',
+        fechaini: '',
+        fechafin: '',
+
         emailEmp: '',
         sexoEmp: '',//
         numCelEmp: '',//
@@ -65,14 +92,17 @@ const ControlEmpleado = (props) => {
         professionEmp: '',//
         institutionDegreeEmp: '',//
         ObserEmp: '',//
+        fechaNacEmp: Date(),
         estadoEmp: '',
-        image: '',
-        fechaNacEmp: Date()
     })
 
     useEffect(() => {
         getEmpleado()
+        getCargos()
+        getDepartament()
+        getHorario()
     }, [])
+
     const getEmpleado = async () => {
         await axios.get(`${PORT_URL}empleado`)
             .then(resp => {
@@ -110,6 +140,18 @@ const ControlEmpleado = (props) => {
         formData.append('ObserEmp', changeData.ObserEmp)
         formData.append('fechaNacEmp', changeData.fechaNacEmp)
         formData.append('estadoEmp', changeData.estadoEmp)
+
+        formData.append('cargoEmp', changeData.cargoEmp)
+        formData.append('departamentEmp', changeData.departamentEmp)
+        formData.append('typeContrato', changeData.typeContrato)
+        formData.append('clasificacionLab', changeData.clasificacionLab)
+        formData.append('typeHorario', changeData.typeHorario)
+        formData.append('typeAntiguedad', changeData.typeAntiguedad)
+        formData.append('AFP', changeData.AFP)
+        formData.append('cotizante', changeData.cotizante)
+        formData.append('afilSindicato', changeData.afilSindicato)
+        formData.append('fechaini', changeData.fechaini)
+        formData.append('fechafin', changeData.fechafin)
         await axios.put(`${PORT_URL}empleado/${id}`, formData)
             .then(resp => console.log(resp.data))
         setPreview(null)
@@ -141,10 +183,10 @@ const ControlEmpleado = (props) => {
     }
     //--------------------------------------------------------------
     //INFORMACION
-    const infoEmpleado=(e)=>{
-        const id=e._id
-        const id_bio=e.id_bio
-        history.push('/infoEmp/'+id+"/"+id_bio)
+    const infoEmpleado = (e) => {
+        const id = e._id
+        const id_bio = e.id_bio
+        history.push('/infoEmp/' + id + "/" + id_bio)
 
     }
     //--------------------------------------------------------------
@@ -162,6 +204,9 @@ const ControlEmpleado = (props) => {
             }
             else { console.log('no funciona') }
         }
+        // if(e.target.name==='departamentEmp'){
+        //     getCargos(e.target.value)
+        // }
         setChangeData({
             ...changeData,
             [e.target.name]: e.target.value
@@ -184,8 +229,25 @@ const ControlEmpleado = (props) => {
     const openCloseAlertEdit = () => {
         setOpenAlertEdit(!openAlertEdit)
     }
-    //--------------------------------------------------------------------
-
+    //------------------------GET DEPARTAMENTO------------------------------
+    const getDepartament = async () => {
+        await axios.get(`${PORT_URL}departament`)
+            .then(resp => setDepartament(resp.data))
+            .catch(err => console.log(err))
+    }
+    //-----------------------GET CARGOS--------------------------------
+    const getCargos = async (e) => {
+        await axios.get(`${PORT_URL}cargo`)
+            .then(resp => setCargo(resp.data))
+            .catch(err => console.log(err))
+    }
+    //-----------------------GET HORARIO    --------------------------------
+    const getHorario = async () => {
+        await axios.get(`${PORT_URL}horario`)
+            .then(resp => setHorario(resp.data))
+            .catch(err => console.log(err))
+    }
+    //----------------------------------------------------------------
     // console.log(new Date(fecha).toLocaleDateString().split('/').reverse().join('/'));
 
 
@@ -201,12 +263,35 @@ const ControlEmpleado = (props) => {
                 : <div style={{ color: 'red' }}>{row.estadoEmp}</div>
         },
     ]
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(0)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }
+    //-----------------------------------------------------------------
 
     // console.log(empleado)
-    // console.log(changeData)
+    console.log(changeData)
     return (
         <>
-            <Container style={{ paddingTop: '5rem' }} maxWidth='lg'>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid item xs={12} sm={5}>
+                    <Paper  >
+                        <Tabs
+                            value={scroll}
+                            onChange={scrollChange}
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            style={{ height: 60 }}
+                        >
+                            <Tab label="Pesonal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{height: 20}} />} />
+                            <Tab label="Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/registerCargo' icon={<DeviceHubIcon style={{height: 20}} />} />
+                            <Tab label="Horarios" style={{ fontSize: 'x-small' }} component={Link} to='/controlHorarios' icon={<TimerIcon style={{height: 20}} />} />
+                        </Tabs>
+                    </Paper>
+
+                </Grid>
+
                 <Typography variant='h4' align='center' className={classes.TyphoAlineation}>Lista de Empleados</Typography>
                 <Button component={Link} to='/registerEmp' style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
                 <Container maxWidth='md'>
@@ -255,8 +340,8 @@ const ControlEmpleado = (props) => {
                                         <Paper component={Box} p={1} style={{ width: '80%', height: '200px', background: '#bdbdbd' }}>
                                             {
                                                 e.avatar
-                                                    ? <img src={e.avatar} style={{ width: '100%', height: '100% ' }} alt="#"/>
-                                                    : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#"/>
+                                                    ? <img src={e.avatar} style={{ width: '100%', height: '100% ' }} alt="#" />
+                                                    : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#" />
                                             }
 
                                         </Paper>
@@ -264,7 +349,7 @@ const ControlEmpleado = (props) => {
                                     <div align='center'>
                                         <Typography variant='subtitle1'>ID Biometrico : {e.id_bio}</Typography>
                                         <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography>
-                                        <Typography variant='subtitle1'>{e.emailEmp}</Typography>
+                                        <Typography variant='subtitle1'>C.I.: {e.CIEmp}</Typography>
                                     </div>
                                     <Grid container justify='space-evenly'>
                                         <Tooltip title='edit'>
@@ -301,22 +386,22 @@ const ControlEmpleado = (props) => {
                         <Grid item xs={12} sm={6}>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField
-                                    name='itemEmp'
-                                    variant='outlined'
-                                    label='N° de Item'
-                                    type='number'
-                                    onChange={handleChange}
-                                    defaultValue={changeData.itemEmp}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <TextField
                                     name='id_bio'
                                     variant='outlined'
                                     label='ID Biometrico'
                                     type='number'
                                     onChange={handleChange}
                                     defaultValue={changeData.id_bio}
+                                />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='itemEmp'
+                                    variant='outlined'
+                                    label='N° de Item'
+                                    type='number'
+                                    onChange={handleChange}
+                                    defaultValue={changeData.itemEmp}
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -365,6 +450,179 @@ const ControlEmpleado = (props) => {
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField
+                                    name='departamentEmp'
+                                    variant='outlined'
+                                    label='Departamento'
+                                    select
+                                    onChange={handleChange}
+                                    style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    value={changeData.departamentEmp}
+                                    required
+                                >
+                                    {departament && departament.map(d => (
+                                        <MenuItem key={d._id} value={d.nameDepartament}>{d.nameDepartament}</MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='cargoEmp'
+                                    variant='outlined'
+                                    label='Cargo'
+                                    select
+                                    onChange={handleChange}
+                                    style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    value={changeData.cargoEmp}
+                                    // defaultValue={}
+                                    required
+                                >
+                                    {cargo && cargo.map(c => (
+                                        <MenuItem key={c._id} value={c.nameCargo}>{c.nameCargo}</MenuItem>
+                                    ))}
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='typeContrato'
+                                    variant='outlined'
+                                    label='Contrato'
+                                    select
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.typeContrato}
+                                    style={{ background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='permanente'>Permanente</MenuItem>
+                                    <MenuItem value='eventual'>Eventual</MenuItem>
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='clasificacionLab'
+                                    variant='outlined'
+                                    label='Clasificacion Laboral'
+                                    select
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.clasificacionLab}
+                                    style={{ background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='operativo'>Operativo</MenuItem>
+                                    <MenuItem value='administrativo'>Administrativo</MenuItem>
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='typeHorario'
+                                    variant='outlined'
+                                    label='Horario'
+                                    select
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.typeHorario}
+                                    style={{ background: 'white', borderRadius: 5 }}
+                                >
+                                    {horario && horario.map(h => (
+                                        <MenuItem key={h._id} value={h.descripcion}>{h.descripcion}</MenuItem>
+                                    ))
+                                    }
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='typeAntiguedad'
+                                    variant='outlined'
+                                    label='Antiguedad'
+                                    select
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.typeAntiguedad}
+                                    style={{ background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='0'>Sin Antiguedad</MenuItem>
+                                    <MenuItem value='1'>Antiguedad de 2 a 4 años</MenuItem>
+                                    <MenuItem value='2'>Antiguedad de 5 a 7 años</MenuItem>
+                                    <MenuItem value='3'>Antiguedad de 8 a 10 años</MenuItem>
+                                    <MenuItem value='4'>Antiguedad de 11 a 14 años</MenuItem>
+                                    <MenuItem value='5'>Antiguedad de 15 a 19 años</MenuItem>
+                                    <MenuItem value='6'>Antiguedad de 20 a 24 años</MenuItem>
+                                    <MenuItem value='7'>Antiguedad de 25 a 90 años</MenuItem>
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='AFP'
+                                    variant='outlined'
+                                    label='AFP'
+                                    select
+                                    // fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.AFP}
+                                    style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='prevision'>Prevision</MenuItem>
+                                    <MenuItem value='re-prevision'>re Prevision</MenuItem>
+                                </TextField>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='nacionalityEmp'
+                                    variant='outlined'
+                                    label='Nacionalidad'
+                                    type='text'
+                                    fullWidth={true}
+                                    onChange={handleChange}
+                                    defaultValue={changeData.nacionalityEmp}
+                                    style={{ background: 'white', borderRadius: 5 }}
+                                />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem', marginTop: '2.3rem' }}>
+                                <TextField
+                                    name='professionEmp'
+                                    variant='outlined'
+                                    label='Profesión'
+                                    type='text'
+                                    style={{ minWidth: 300 }}
+                                    onChange={handleChange}
+                                    defaultValue={changeData.professionEmp}
+
+                                />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='ObserEmp'
+                                    variant='outlined'
+                                    label='Observaciones'
+                                    type='text'
+                                    fullWidth={true}
+                                    onChange={handleChange}
+                                    defaultValue={changeData.ObserEmp}
+
+                                />
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <div align='center'>
+                                <Paper component={Box} p={1} style={{ background: '#bdbdbd', width: '270px', height: '270px' }}>
+                                    {/* {changeData.path ? <img src={'http://192.168.100.6:8000/' + changeData.path} style={{ width: '100%', height: '100% ' }} /> */}
+                                    {changeData.avatar ? <img src={changeData.avatar} style={{ width: '100%', height: '100% ' }} alt="#" />
+                                        // : <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} style={{ width: '100%', height: '100%' }} />}
+                                        : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#" />}
+                                </Paper>
+                                <input
+                                    name='image'
+                                    type='file'
+                                    accept='image/*'
+                                    id='file-name'
+                                    style={{ display: 'none' }}
+                                    onChange={e => handleChange2(e)}
+                                />
+                                <label htmlFor="file-name">
+                                    <Button style={{ marginBottom: '1rem', marginTop: '1rem' }} variant='contained' color='primary' component='span' >cargar</Button>
+                                </label>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
                                     name='emailEmp'
                                     variant='outlined'
                                     label='Correo Electrónico'
@@ -410,36 +668,33 @@ const ControlEmpleado = (props) => {
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField
-                                    name='ObserEmp'
+                                    name='afilSindicato'
                                     variant='outlined'
-                                    label='Observaciones'
-                                    type='text'
-                                    fullWidth={true}
+                                    label='Afiliado al Sindicado'
+                                    select
+                                    // fullWidth
                                     onChange={handleChange}
-                                    defaultValue={changeData.ObserEmp}
-
-                                />
+                                    value={changeData.afilSindicato}
+                                    style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='si'>Si</MenuItem>
+                                    <MenuItem value='no'>No</MenuItem>
+                                </TextField>
                             </div>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <div align='center'>
-                                <Paper component={Box} p={1} style={{ background: '#bdbdbd', width: '270px', height: '270px' }}>
-                                    {/* {changeData.path ? <img src={'http://192.168.100.6:8000/' + changeData.path} style={{ width: '100%', height: '100% ' }} /> */}
-                                    {changeData.avatar ? <img src={changeData.avatar} style={{ width: '100%', height: '100% ' }} alt="#"/>
-                                        // : <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} style={{ width: '100%', height: '100%' }} />}
-                                        : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#"/>}
-                                </Paper>
-                                <input
-                                    name='image'
-                                    type='file'
-                                    accept='image/*'
-                                    id='file-name'
-                                    style={{ display: 'none' }}
-                                    onChange={e => handleChange2(e)}
-                                />
-                                <label htmlFor="file-name">
-                                    <Button style={{ marginBottom: '1rem', marginTop: '1rem' }} variant='contained' color='primary' component='span' >cargar</Button>
-                                </label>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='cotizante'
+                                    variant='outlined'
+                                    label='N° de Cotizante'
+                                    select
+                                    // fullWidth
+                                    onChange={handleChange}
+                                    value={changeData.cotizante}
+                                    style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                >
+                                    <MenuItem value='1'>1</MenuItem>
+                                    <MenuItem value='8'>8</MenuItem>
+                                </TextField>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <FormControl>
@@ -516,7 +771,7 @@ const ControlEmpleado = (props) => {
 
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
-                                <form style={{ display: 'flex', flexWrap: 'wrap' }} noValidate>
+                                <div style={{ display: 'flex', flexWrap: 'wrap' }} noValidate>
                                     <Typography variant='h6' style={{ marginTop: '1rem', marginRight: '1rem' }}>Fecha de Nacimiento</Typography>
 
                                     <TextField
@@ -530,21 +785,45 @@ const ControlEmpleado = (props) => {
                                         defaultValue={changeData.fechaNacEmp}
 
                                     />
-
-
-                                </form>
+                                </div>
                             </div>
-                            <div style={{ marginBottom: '1.5rem', marginTop: '2.3rem' }}>
-                                <TextField
-                                    name='professionEmp'
-                                    variant='outlined'
-                                    label='Profesión'
-                                    type='text'
-                                    style={{ minWidth: 300 }}
-                                    onChange={handleChange}
-                                    defaultValue={changeData.professionEmp}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', flexWrap: 'wrap' }} noValidate>
+                                    <Typography variant='h6' style={{ marginTop: '1rem' }}>Fecha de Ingreso</Typography>
+                                    <TextField
+                                        name='fechaini'
+                                        label='fecha de Ingreso'
+                                        type='date'
+                                        // defaultValue='yyyy-MM-dd'
+                                        className={classes.textField}
+                                        InputLabelProps={{ shrink: true }}
+                                        onChange={handleChange}
+                                        defaultValue={changeData.fechaini}
 
-                                />
+                                    // name='fechaNacEmp'
+                                    // label='fecha de Nacimiento'
+                                    // type='date'
+                                    // className={classes.textField}
+                                    // InputLabelProps={{ shrink: true }}
+                                    // onChange={handleChange}
+                                    // defaultValue={changeData.fechaini}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <div style={{ display: 'flex', flexWrap: 'wrap' }} noValidate>
+                                    <Typography variant='h6' style={{ marginTop: '1rem' }}>Fecha Fin</Typography>
+                                    <TextField
+                                        name='fechafin'
+                                        label='fecha Fin'
+                                        type='date'
+                                        // defaultValue='yyyy-MM-dd'
+                                        className={classes.textField}
+                                        InputLabelProps={{ shrink: true }}
+                                        onChange={handleChange}
+                                        defaultValue={changeData.fechafin}
+                                    />
+                                </div>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField

@@ -123,6 +123,7 @@ const AsigHorario = () => {
         <>
             <Container maxWidth={false}>
                 <Typography variant='h4' style={{ paddingTop: '5rem' }} className={classes.spacingBott} align='center'>Asignación de Hoarios</Typography>
+                <Typography variant='h4' style={{ color:'red' }} className={classes.spacingBott} align='center'>EN OBSERVACION </Typography>
                 <Container maxWidth='md'>
                     <Button onClick={openModalAddAsigHrs} variant='contained' style={{ background: 'green', color: 'white' }} className={classes.spacingBott}>asignar horario</Button>
                 </Container>

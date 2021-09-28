@@ -57,16 +57,16 @@ const ControlCargos = () => {
     }
     //------------------------------------------------------------------------
     //BUSCADOR
-    const searchingTerm = (term) => {
-        return function (x) {
-            return x.firstNameEmp.toLowerCase().includes(term) ||
-                x.lastNameEmpP.toLowerCase().includes(term) ||
-                x.lastNameEmpM.toLowerCase().includes(term) ||
-                x.nameCargo.toLowerCase().includes(term) ||
-                x.id_bio.includes(term) ||
-                !term
-        }
-    }
+    // const searchingTerm = (term) => {
+    //     return function (x) {
+    //         return x.firstNameEmp.toLowerCase().includes(term) ||
+    //             x.lastNameEmpP.toLowerCase().includes(term) ||
+    //             x.lastNameEmpM.toLowerCase().includes(term) ||
+    //             x.nameCargo.toLowerCase().includes(term) ||
+    //             x.id_bio.includes(term) ||
+    //             !term
+    //     }
+    // }
 
     //------------------CREAR CARGO--------------------------------------
     const openCloseAddCargo = () => {
@@ -179,7 +179,9 @@ const ControlCargos = () => {
         <>
             <Container maxWidth='lg'>
                 <Typography className={classes.spacingBott} align='center' variant='h4' style={{ paddingTop: '5rem' }}>Tabla de Cargos Asignados</Typography>
+                <Typography className={classes.spacingBott} align='center' variant='h4' style={{ color:'red' }}>EN OBSERVACION (aún en desarrollo)</Typography>
                 <Container maxWidth='md'>
+                    <Button onClick={openCloseAddCargo} className={classes.spacingBott} variant='contained' color='primary'>Asignar Cargo</Button>
                     <Button onClick={openCloseAddCargo} className={classes.spacingBott} variant='contained' color='primary'>Asignar Cargo</Button>
                     {/* <MaterialTable
                     title='Lista de Cargos'
@@ -226,7 +228,7 @@ const ControlCargos = () => {
                                                     )
                                                 }}
                                                 size='small'
-                                                onChange={e => setTerm(e.target.value)}
+                                                // onChange={e => setTerm(e.target.value)}
                                             />
                                         )}
                                     </Grid>
@@ -248,7 +250,8 @@ const ControlCargos = () => {
                                 </TableHead>
                                 <TableBody>
                                     {empleado &&
-                                        empleado.filter(searchingTerm(term)).map(e => (
+                                        // empleado.filter(searchingTerm(term)).map(e => (
+                                            empleado.map(e=>(
                                             <TableRow key={e.id} style={{ maxHeight: 1 }}>
                                                 <TableCell align='center'>{e.id_bio}</TableCell>
                                                 <TableCell align='center'>{e.firstNameEmp}</TableCell>
