@@ -116,6 +116,14 @@ const DrawerMenuUser = (props) => {
                     }
                 </List>
                 </Collapse>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/userControlEmp")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Personal' />
+                </ListItem>
+                </div>
                 <div onClick={props.CloseDrawer} />
                 <ListItem button onClick={()=>removeToken()} className={classes.diseño}>
                    <ListItemIcon>
