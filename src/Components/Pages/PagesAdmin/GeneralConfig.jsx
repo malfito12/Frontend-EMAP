@@ -1,5 +1,4 @@
 import { Button, Box, Container, Grid, Paper, TextField, Typography, makeStyles, MobileStepper, Dialog, MenuItem,Tab,Tabs } from '@material-ui/core'
-import { getConfig } from '@testing-library/react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import React, { useState } from 'react'
@@ -152,7 +151,7 @@ const GeneralConfig = () => {
                     </Grid>
                 </Container>
                 <Typography className={classes.spacingBot} align='center' variant='h4'>DATOS GENERALES</Typography>
-                {/* <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button> */}
+                <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button>
                 <Container maxWidth='md'>
                     <Paper component={Box} p={2}>
                         {config.length > 0 ? (
@@ -285,7 +284,7 @@ const GeneralConfig = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid container justify='space-evenly'>
-                                        <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button>
+                                        {/* <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button> */}
                                         <Button size='small' variant='contained' color='primary' onClick={() => openModalEditConfig(config[activeStep])} >actualizar</Button>
                                         <Button size='small' variant='contained' color='secondary' onClick={() => openModalDeleteConfig(config[activeStep])} >eliminar</Button>
                                     </Grid>

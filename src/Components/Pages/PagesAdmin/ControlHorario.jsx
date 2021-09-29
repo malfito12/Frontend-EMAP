@@ -51,6 +51,8 @@ const ControlHorario = () => {
             .catch(err => console.log(err))
     }
     var array = []
+    // console.log(horario.length)
+    // console.log(horario)
     for (var i = 0; i < horario.length; i++) {
         var lunes, martes, miercoles, jueves, viernes, sabado, domingo, aux, data;
         var codigo = horario[i].cod
