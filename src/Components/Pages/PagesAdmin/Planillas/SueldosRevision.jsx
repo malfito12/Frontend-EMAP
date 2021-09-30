@@ -34,7 +34,8 @@ const SueldosRevision = () => {
     })
     const [changeDataEdit,setChangeDataEdit]=useState({
         _id:'',
-        interinato:''
+        interinato:'',
+        bajaMedica:'',
     })
 
 
@@ -221,7 +222,7 @@ const SueldosRevision = () => {
                                                     <TableCell align='center' className={classes.tablebody}>{p.interinato}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.numDominical}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.domingosFeriados}</TableCell>
-                                                    <TableCell align='center' className={classes.tablebody}>{p.totalGanado}</TableCell>
+                                                    <TableCell align='center' className={classes.tablebody}>{p.auxTotalGanado}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.atrasos}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.faltas}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.sancionFaltasAtrasos}</TableCell>
@@ -229,8 +230,8 @@ const SueldosRevision = () => {
                                                     <TableCell align='center' className={classes.tablebody}>{p.AFP}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.RC_IVA}</TableCell>
                                                     <TableCell align='center' className={classes.tablebody}>{p.sind}</TableCell>
-                                                    <TableCell align='center' className={classes.tablebody}>{p.totalDescuento}</TableCell>
-                                                    <TableCell align='center' className={classes.tablebody}>{p.liquidoPagable}</TableCell>
+                                                    <TableCell align='center' className={classes.tablebody}>{p.auxTotalDescuento}</TableCell>
+                                                    <TableCell align='center' className={classes.tablebody}>{p.auxLiquidoPagable}</TableCell>
                                                     <TableCell>
                                                         <Tooltip title='edit'>
                                                             <IconButton size='small' onClick={() => openModalEDitPlanilla(p)}>
@@ -260,7 +261,7 @@ const SueldosRevision = () => {
                 <Paper component={Box} p={2}>
                     <Typography className={classes.spacingBot} align='center' variant='subtitle1'>EDITAR PLANILLA</Typography>
                     <form onSubmit={editPlanilla}>
-                        <Grid container>
+                        <Grid container direction='column'>
                             <TextField
                                 name='interinato'
                                 label='Interinato'
@@ -269,6 +270,19 @@ const SueldosRevision = () => {
                                 type='number'
                                 inputProps={{ step: 'any' }}
                                 required
+                                defaultValue={changeDataEdit.interinato}
+                                className={classes.spacingBot}
+                                onChange={handleChangeEdit}
+                            />
+                            <TextField
+                                name='bajaMedica'
+                                label='Baja Medica S.S.U.'
+                                variant='outlined'
+                                size='small'
+                                type='number'
+                                inputProps={{ step: 'any' }}
+                                required
+                                defaultValue={changeDataEdit.bajaMedica}
                                 className={classes.spacingBot}
                                 onChange={handleChangeEdit}
                             />
