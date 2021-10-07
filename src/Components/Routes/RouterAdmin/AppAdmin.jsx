@@ -20,6 +20,8 @@ import KardexRevision from '../../Pages/PagesAdmin/KardexAsistencia/KardexRevisi
 import AntiguedadEmp from '../../Pages/PagesAdmin/AntiguedadEmp'
 import SueldosPreRevision from '../../Pages/PagesAdmin/Planillas/SueldosPreRevision'
 import SuledosRevision from '../../Pages/PagesAdmin/Planillas/SueldosRevision'
+import RefrigerioPreRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioPreRevision'
+import RefrigerioRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioRevision'
 
 const AppAdmin = () => {
     return (
@@ -57,6 +59,9 @@ const AppAdmin = () => {
                 {/*---------------------------PLANILLAS--------------------*/}
                 <Protected path='/sueldosPreRevision' component={props=><SueldosPreRevision {...props} />} />
                 <Protected path='/sueldosRevision' component={props=><SuledosRevision {...props} />} />
+
+                <Protected path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
+                <Protected path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />
                 
             </Switch>
         </Router>

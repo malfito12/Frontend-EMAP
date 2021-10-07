@@ -73,7 +73,7 @@ const SueldosPreRevision = () => {
     }
     //-----------------------------------------------------------------
     // console.log(changeData)
-    console.log(planilla)
+    // console.log(planilla)
     return (
         <>
             <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>

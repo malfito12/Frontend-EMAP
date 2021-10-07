@@ -118,7 +118,12 @@ const DrawerMenuAdmin = (props) => {
         {
             text: 'Sueldos',
             icon: <InboxIcon color='primary' />,
-            oncl: ()=>history.push('/planillaSueldos')
+            oncl: ()=>history.push('/sueldosPreRevision')
+        },
+        {
+            text: 'Refrigerio',
+            icon: <InboxIcon color='primary' />,
+            oncl: ()=>history.push('/refrigerioPreRevision')
         },
         
     ]

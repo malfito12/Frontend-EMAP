@@ -38,7 +38,7 @@ const ControlHorario = () => {
     })
     useEffect(() => {
         getHorario()
-        getHorarioContinuo()
+        // getHorarioContinuo()
     }, [])
     //-----------------GET---------------------------------
     const getHorario = async () => {
@@ -177,62 +177,45 @@ const ControlHorario = () => {
             [e.target.name]: e.target.checked
         })
     }
-    // var data = [
-    //     { cod: '1111100', observacion: 'Lunes a Viernes' },
-    //     { cod: '1111110', observacion: 'Lunes a Sabado' },
-    //     { cod: '1111111', observacion: 'Lunes a Domingo' },
-    //     { cod: '0000011', observacion: 'Sabado y Domingo' },
-    // ]
-    // const aux = horario.length
-    // for (var i = 0; i < aux; i++) {
-    //     if (horario[i].cod === '1111100') {
-    //         horario[i].cod = horario[i].cod + "/" + horario[i].observaciones
-    //     } else if (horario[i].cod === '1111110') {
-    //         horario[i].cod = horario[i].cod + "/" + horario[i].observaciones
-    //     } else if (horario[i].cod === '1111111') {
-    //         horario[i].cod = horario[i].cod + "/" + horario[i].observaciones
-    //     } else if (horario[i].cod === '0000011') {
-    //         horario[i].cod = horario[i].cod + "/" + horario[i].observaciones
-    //     }
-    // }
+
     //-------------------------HORARIO CONTINUO----------------------------------
-    const [prueba, setPrueba] = useState({
-        type: ''
-    })
-    const openModalCambio = (e) => {
-        setPrueba(e)
-        // console.log(e)
-        setOpenCambio(true)
-    }
-    const closeModalCambio = () => {
-        setOpenCambio(false)
-    }
-    const getHorarioContinuo = async () => {
-        await axios.get(`${PORT_URL}horarioContinuo`)
-            .then(resp => setHrsContinuo(resp.data))
-            .catch(err => console.log(err))
-    }
+    // const [prueba, setPrueba] = useState({
+    //     type: ''
+    // })
+    // const openModalCambio = (e) => {
+    //     setPrueba(e)
+    //     // console.log(e)
+    //     setOpenCambio(true)
+    // }
+    // const closeModalCambio = () => {
+    //     setOpenCambio(false)
+    // }
+    // const getHorarioContinuo = async () => {
+    //     await axios.get(`${PORT_URL}horarioContinuo`)
+    //         .then(resp => setHrsContinuo(resp.data))
+    //         .catch(err => console.log(err))
+    // }
 
-    const editHorarioContinuo = async (e) => {
-        e.preventDefault()
-        // console.log(prueba)
-        const id = prueba._id
-        await axios.put(`${PORT_URL}horarioContinuo/${id}`, prueba)
-            .then(resp => {
-                closeModalCambio()
-                console.log(resp.data)
-            })
-            .catch(err => console.log(err))
-        getHorarioContinuo()
+    // const editHorarioContinuo = async (e) => {
+    //     e.preventDefault()
+    //     // console.log(prueba)
+    //     const id = prueba._id
+    //     await axios.put(`${PORT_URL}horarioContinuo/${id}`, prueba)
+    //         .then(resp => {
+    //             closeModalCambio()
+    //             console.log(resp.data)
+    //         })
+    //         .catch(err => console.log(err))
+    //     getHorarioContinuo()
 
-    }
-    const toggleChecked = (e) => {
-        // console.log(e.target.checked)
-        setPrueba({
-            ...prueba,
-            [e.target.name]: e.target.checked
-        })
-    }
+    // }
+    // const toggleChecked = (e) => {
+    //     // console.log(e.target.checked)
+    //     setPrueba({
+    //         ...prueba,
+    //         [e.target.name]: e.target.checked
+    //     })
+    // }
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(2)
     const scrollChange = (e, newScroll) => {
@@ -267,7 +250,7 @@ const ControlHorario = () => {
                 <Container maxWidth='md'>
                     <Button onClick={openModalAddHrs} variant='contained' style={{ background: 'green', color: 'white', marginBottom: '2rem' }}  >Regitrar Horario</Button>
                     {/*---------------HORARIO CONTINUO MODAL-----------------------*/}
-                    <Button variant='contained' color='primary' onClick={() => openModalCambio(hrsContinuo[0])} style={{ marginBottom: '2rem' }}>Cambio horario</Button>
+                    {/* <Button variant='contained' color='primary' onClick={() => openModalCambio(hrsContinuo[0])} style={{ marginBottom: '2rem' }}>Cambio horario</Button>
                     <Dialog
                         open={openCambio}
                         onClose={closeModalCambio}
@@ -285,44 +268,37 @@ const ControlHorario = () => {
                                 <Button size='small' variant='contained' color='secondary' onClick={closeModalCambio}>cancelar</Button>
                             </Grid>
                         </Paper>
-                    </Dialog>
+                    </Dialog> */}
 
                 </Container>
                 {/*-------------BOTTON DE RESGISTRO DE HORARIOS----------------*/}
                 <Container maxWidth='lg'>
-                    <Grid container spacing={3} justify='center'>
-                        {array && array.map(h => (
-                            <div style={{ paddingBottom: '1rem', paddingRight: '1rem' }} key={h._id}>
-                                <Paper component={Box} p={2} >
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={9}>
-                                            <div style={{ paddingRight: '5rem' }}>
-                                                <Typography variant='h6' align='center'>{h.descripcion}</Typography>
-                                                <Typography>Esdato: {h.est}</Typography>
-                                                <Typography>Orden : {h.orden}</Typography>
-                                                <Typography>Feriado : {h.feriado}</Typography>
-                                                {/* <Typography>Observaciones : {h.observaciones}</Typography> */}
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Lunes} />} label='Lunes' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Martes} />} label='Martes' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Miercoles} />} label='Miercoles' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Jueves} />} label='Jueves' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Viernes} />} label='Viernes' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Sabado} />} label='Sabado' />
-                                                <FormControlLabel control={<Checkbox color='primary' checked={h.Domingo} />} label='Domingo' />
-                                                <Typography>horario : {h.ingreso1} {h.salida1} {h.ingreso2} {h.salida2}</Typography>
-                                            </div>
-                                        </Grid>
-
-                                        <Grid container item xs={3} direction='column' justify='center'  >
-                                            <div  >
-                                                <Button onClick={() => openModalEditHrs(h)} size='small' variant='contained' color='primary' className={classes.spacingBott}>editar</Button>
-                                                <Button onClick={() => openModalDeleteHrs(h)} size='small' variant='contained' color='secondary'>eliminar</Button>
-                                            </div>
-                                        </Grid>
+                    <Grid container justify='space-evenly'>
+                        {array.length > 0 ? (
+                            array.map((h, index) => (
+                                <Paper component={Box} p={2} key={index} style={{ width: 500 }} className={classes.spacingBott}>
+                                    <Typography variant='h6' align='center'>{h.descripcion}</Typography>
+                                    <Typography>TIPO DE HORARIO: {h.est}</Typography>
+                                    <Typography>ORDEN : {h.orden}</Typography>
+                                    <Typography>OBSERVACIONES : {h.feriado}</Typography>
+                                    {/* <Typography>Observaciones : {h.observaciones}</Typography> */}
+                                    <Typography >HORARIO : {h.ingreso1} - {h.salida1} - {h.ingreso2} - {h.salida2}</Typography>
+                                    <div align='center' className={classes.spacingBott}>
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Lunes} />} label='Lunes' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Martes} />} label='Martes' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Miercoles} />} label='Miercoles' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Jueves} />} label='Jueves' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Viernes} />} label='Viernes' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Sabado} />} label='Sabado' />
+                                        <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Domingo} />} label='Domingo' />
+                                    </div>
+                                    <Grid container justify='space-evenly'>
+                                        <Button onClick={() => openModalEditHrs(h)} size='small' variant='contained' color='primary' >editar</Button>
+                                        <Button onClick={() => openModalDeleteHrs(h)} size='small' variant='contained' color='secondary'>eliminar</Button>
                                     </Grid>
                                 </Paper>
-                            </div>
-                        ))}
+                            ))
+                        ) : (<Paper component={Box} p={2}><Typography align='center' variant='subtitle1'>NO EXISTEN HORARIOS</Typography>  </Paper>)}
                     </Grid>
                 </Container>
             </Container>
@@ -416,7 +392,7 @@ const ControlHorario = () => {
                                         value={changeData.est}
                                         className={classes.spacingBott}
                                         onChange={handleChange}
-                                        required
+                                    // required
                                     >
                                         <MenuItem value='Diurno/1'>Diurno</MenuItem>
                                         <MenuItem value='Nocturno/2'>Nocturno</MenuItem>
@@ -557,6 +533,7 @@ const ControlHorario = () => {
                     </form>
                 </Paper>
             </Dialog>
+
             <Dialog
                 open={openEditHrs}
                 onClose={closeModalEditHrs}
@@ -649,7 +626,7 @@ const ControlHorario = () => {
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         defaultValue={changeData.orden}
-                                        required
+                                    // required
                                     />
                                 </Grid>
                             </Grid>
