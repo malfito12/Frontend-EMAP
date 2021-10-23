@@ -22,6 +22,7 @@ import SueldosPreRevision from '../../Pages/PagesAdmin/Planillas/SueldosPreRevis
 import SuledosRevision from '../../Pages/PagesAdmin/Planillas/SueldosRevision'
 import RefrigerioPreRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioPreRevision'
 import RefrigerioRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioRevision'
+import ControlVacaciones from '../../Pages/ControlVacaciones'
 
 const AppAdmin = () => {
     return (
@@ -38,6 +39,7 @@ const AppAdmin = () => {
                 <Protected path='/infoEmp/:id' component={props=><InfoEmp {...props} />} />
                 
                 <Protected path='/controlPermisos' component={props=><ControlPermisos {...props} />} />
+                <Protected path='/controlVacaciones' component={props=><ControlVacaciones {...props} />} />
                 
                 <Protected path='/controlCargos' component={props=><ControlCargos {...props} />} />
                 <Protected path='/registerCargo' component={props=><RegisterCargo {...props} />} />

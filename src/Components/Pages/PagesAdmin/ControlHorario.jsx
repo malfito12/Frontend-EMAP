@@ -381,7 +381,7 @@ const ControlHorario = () => {
                                         fullWidth
                                         className={classes.spacingBott}
                                         onChange={handleChange}
-                                        required
+                                        // required
                                     />
                                     <TextField
                                         name='est'

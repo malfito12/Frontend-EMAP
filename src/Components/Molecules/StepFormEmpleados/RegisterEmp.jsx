@@ -121,6 +121,7 @@ const RegisterEmp = () => {
     }
     //-----------------------GET CARGOS--------------------------------
     const getCargos = async (e) => {
+        console.log(e)
         await axios.get(`${PORT_URL}cargo/${e}`)
             .then(resp => setCargo(resp.data))
             .catch(err => console.log(err))
@@ -166,6 +167,7 @@ const RegisterEmp = () => {
             }
             else { console.log('no funciona') }
         }
+        // console.log(e.target.name)
         if (e.target.name === 'departamentEmp') {
             // setChangeData({cargoEmp:''})
             getCargos(e.target.value)
@@ -176,7 +178,7 @@ const RegisterEmp = () => {
         })
     }
     // console.log(props)
-    console.log(changeData)
+    // console.log(changeData)
     return (
         <>
             <Container style={{ paddingTop: '5rem' }} maxWidth='lg'>

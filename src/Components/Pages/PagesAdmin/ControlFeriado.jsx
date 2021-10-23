@@ -103,6 +103,7 @@ const ControlFeriado = () => {
                             >
                                 <Tab label="Registro Permisos" style={{ fontSize: 'x-small' }} component={Link} to='/controlPermisos' icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
                                 <Tab label="Registro Feriados" style={{ fontSize: 'x-small' }} icon={<CheckBoxIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label="Registro Vacaciones" style={{ fontSize: 'x-small' }} component={Link} to='/controlVacaciones' icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
                             </Tabs>
                         </Paper>
                     </Grid>

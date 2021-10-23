@@ -154,10 +154,10 @@ const GeneralConfig = () => {
                 <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button>
                 <Container maxWidth='md'>
                     <Paper component={Box} p={2}>
+                        <Typography align='center' variant='h6' className={classes.spacingBot} >PORCENTAGES - VALORES</Typography>
                         {config.length > 0 ? (
                             <>
                                 {/* <Typography align='center'>{config[activeStep].gestion}</Typography> */}
-                                <Typography align='center' variant='h6' className={classes.spacingBot} >PORCENTAGES - VALORES</Typography>
                                 <form /*onSubmit={postConfig}*/>
                                     <Grid container spacin={3}>
                                         <Grid item xs={8} sm={4}>

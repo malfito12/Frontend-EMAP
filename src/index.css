@@ -1,11 +1,12 @@
- /* body {
+ body {
     background: #A1FFCE; 
   background: -webkit-linear-gradient(to right, #FAFFD1, #A1FFCE);  
   background: linear-gradient(to right, #FAFFD1, #A1FFCE);
   
-  }  */
+  } 
+/* ----------------------------------------------------------------- */
 
-  #admin{
+  /* #admin{
     margin: 0;
     height: 100%;
     min-height: 100vh;
@@ -27,8 +28,8 @@
     background:linear-gradient(90deg, #212121,#263238);
     opacity: 0.3;
     z-index: -1;
-  }
-
+  } */
+/* ------------------------------------------------------------------------------------- */
   /* #user{
     margin: 0;
     min-height: 89vh;

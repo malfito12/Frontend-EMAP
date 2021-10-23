@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
         textTransform: 'capitalize',
     },
 }))
+var data;
 const HomeAdmin = () => {
     const classes = useStyles()
     // const [openDialog, setOpenDialog] = useState(false)
@@ -54,7 +55,6 @@ const HomeAdmin = () => {
     // const openCloseDialogUpdate = () => {
     //     setOpenDialog(!openDialog)
     // }
-    var data;
     const hadle = files => {
         const reader = new FileReader()
         var array = []
@@ -65,7 +65,7 @@ const HomeAdmin = () => {
             var texto = reader.result
             var lines = texto.split("\n")
             for (var i in lines) {
-                tmp = lines[i].trim().split("	")
+                tmp = lines[i].trim().split("\t")
                 tmp2 = tmp[1]
                 tmp3 = tmp2.split(" ")
                 array.push({
@@ -75,7 +75,7 @@ const HomeAdmin = () => {
                 })
             }
             data = array
-            console.log(data)
+            // console.log(data)
             var nombre = document.getElementById('archivo').files[0].name
             document.getElementById('contenido').innerHTML = "Archivo : " + nombre + " cargado"
         }
@@ -103,6 +103,45 @@ const HomeAdmin = () => {
             postAsistencia(e)
         }
     }
+    //---------------------------------------------
+    //-------OPSION 2-----------------
+    // const abrirArchivo = e => {
+    //     try {
+    //         var array = []
+    //         let archivo = e.target.files[0];
+    //         if (archivo) {
+    //             let reader = new FileReader();
+    //             reader.onload = e => {
+    //                 let contenido = e.target.result
+    //                 let uno = contenido.split("\n")
+    //                 let dos;
+    //                 let tres;
+    //                 const conta = uno.length
+    //                 for (var i = 0; i < conta; i++) {
+    //                     dos = uno[i].trim().split("\t")
+    //                     tres = dos[1].split(" ")
+    //                     array.push({
+    //                         id_bio: dos[0],
+    //                         fecha: tres[0],
+    //                         hora: tres[1],
+    //                     })
+    //                     // console.log(dos)
+    //                 }
+    //                 console.log(array)
+    //                 document.getElementById('contenido2').innerText = contenido;
+    //             }
+    //             reader.readAsText(archivo)
+    //         } else {
+    //             alert('no hay archivo')
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    // window.addEventListener('load', () => {
+    //     document.getElementById('archivoTexto').addEventListener('change', abrirArchivo);
+    // })
+    //--------------------------------------
     return (
         <>
             <Container fixed style={{ paddingTop: '5rem' }}>
@@ -150,6 +189,11 @@ const HomeAdmin = () => {
                     </ReactFileReader>
                     <Button onClick={confirmar} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
                 </Container>
+                
+                {/*----------------OPSION 2----------------------------*/}
+                {/* <input type='file' id="archivoTexto" />
+                <textarea id='contenido2' cols='30' rows='10'></textarea> */}
+
             </Container>
 
             {/* <Button type='button' onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }}>Aceptar</Button>

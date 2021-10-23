@@ -1,9 +1,9 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core';
 import ReactDOM from 'react-dom';
 import App from './App';
 
 
-const theme=createMuiTheme({
+const theme=createTheme({
   typography:{
     fontFamily:'Dubai Medium'
   }

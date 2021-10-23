@@ -6,6 +6,7 @@ import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import { Link } from 'react-router-dom'
+import {AlertAddAsistencia} from '../../../Atoms/Alerts/AlertReEdDe'
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -16,6 +17,8 @@ const KardexPreRevision = () => {
     const classes = useStyles()
     const [empleado, setEmpleado] = useState([])
     const [marcaciones, setMarcaciones] = useState([])
+    const [openConfirmDatos,setOpenConfirmDatos]=useState(false)
+    const [openAlertAdd,setOpenAlertAdd]=useState(false)
     const [openEdit, setOpenEdit] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
@@ -48,7 +51,8 @@ const KardexPreRevision = () => {
         e.preventDefault()
         await axios.post(`${PORT_URL}subirinfo`, marcaciones)
             .then(resp => {
-                alert('Informacion Guardada')
+                closeModalConfirmDatos()
+                openCloseAlertAdd()
                 console.log(resp.data)
             })
             .catch(err => console.log(err))
@@ -63,8 +67,24 @@ const KardexPreRevision = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //-----------------------------------------------------------------
-    //-----------------------------------------------------------------
+    //-------------------------CONFIRMAR DATOS----------------------------------
+    const existeDatos=()=>{
+        if(marcaciones.length>0){
+            openModalCofirmDatos()
+        }else{
+            alert('no existen datos')
+        }
+    }
+    const openModalCofirmDatos=()=>{
+        setOpenConfirmDatos(true)
+    }
+    const closeModalConfirmDatos=()=>{
+        setOpenConfirmDatos(false)
+    }
+    //---------------------ALERT REGISTER---------------------------------------
+    const openCloseAlertAdd = () => {
+        setOpenAlertAdd(!openAlertAdd)
+    }
     //-----------------------------------------------------------------
     const handleChange = (e) => {
         setChangeData({
@@ -247,7 +267,7 @@ const KardexPreRevision = () => {
                                 </Table>
                             </TableContainer>
                             <div align='center'>
-                                <Button variant='contained' size='small' color='primary' onClick={subirInfo}>subir informacion</Button>
+                                <Button variant='contained' size='small' color='primary' onClick={existeDatos}>subir informacion</Button>
                             </div>
                         </Paper>
                     </Grid>
@@ -268,6 +288,20 @@ const KardexPreRevision = () => {
                     <Button variant='contained' color='primary' onClick={editar} >editar</Button>
                 </Paper>
             </Dialog>
+            <Dialog
+                open={openConfirmDatos}
+                onClose={closeModalConfirmDatos}
+                maxWidth='xs'
+            >
+                <Paper component={Box} p={1}>
+                    <Typography variant='subtitle2' align='center' className={classes.spacingBot}>Estas seguro de guardar la informacion?</Typography>
+                    <Grid container justifyContent='space-evenly'>
+                        <Button size='small' variant='contained' color='primary' onClick={subirInfo} >aceptar</Button>
+                        <Button size='small' variant='contained' color='secondary' onClick={closeModalConfirmDatos} >cancelar</Button>
+                    </Grid>
+                </Paper>
+            </Dialog>
+            <AlertAddAsistencia name={changeData.id_bio} open={openAlertAdd} onClose={openCloseAlertAdd} />
         </>
     )
 }

@@ -1,0 +1,215 @@
+import { Container, Grid, makeStyles, Paper, Tab, Tabs, Box, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip, IconButton } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import PlayListAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import axios from 'axios';
+import { PORT_URL } from '../../PortURL';
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
+
+
+const useStyles = makeStyles(() => ({
+    spacingBott: {
+        marginBottom: '1rem'
+    }
+}))
+const ControlVacaciones = () => {
+    const classes = useStyles()
+    const [vacaciones, setVacaciones] = useState([])
+    const [changeData, setChangeData] = useState({
+        id_bio: '',
+        nameVacaciones: 'Vacaciones',
+        tipoVacacion: '',
+        fechaVacacionIni: '',
+        fechaVacacionFin: '',
+    })
+    useEffect(() => {
+        getVacaciones()
+    }, [])
+    //---------------------GET VACACIONES------------------------------
+    const getVacaciones = async () => {
+        await axios.get(`${PORT_URL}vacacion`)
+            .then(resp => {
+                setVacaciones(resp.data)
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
+    }
+    //---------------------POST VACACIONES------------------------------
+    const postVacaciones = async (e) => {
+        e.preventDefault()
+        await axios.post(`${PORT_URL}vacacion`, changeData)
+            .then(resp => {
+                getVacaciones()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
+            setChangeData({
+                id_bio: '',
+                nameVacaciones: 'Vacaciones',
+                tipoVacacion: '',
+                fechaVacacionIni: '',
+                fechaVacacionFin: '',
+            })
+
+    }
+    //---------------------HANDLE CHANGE------------------------------
+    const handleChange = (e) => {
+        setChangeData({
+            ...changeData,
+            [e.target.name]: e.target.value
+        })
+    }
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(2)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }
+    //-----------------------------------------------------------------}
+    // console.log(changeData)
+    return (
+        <>
+            <Container maxWidth={false} style={{ paddingTop: '5rem' }}>
+                <Container maxWidth='lg'>
+                    <Grid item xs={12} sm={5}>
+                        <Paper className={classes.spacingBott}>
+                            <Tabs
+                                value={scroll}
+                                onChange={scrollChange}
+                                variant='scrollable'
+                                scrollButtons='auto'
+                                style={{ height: 60 }}
+                            >
+                                <Tab label='Registro Permisos' style={{ fontSize: 'x-small' }} component={Link} to='/controlPermisos' icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label='Registro Feriados' style={{ fontSize: 'x-small' }} component={Link} to='/controlFeriados' icon={<CheckBoxIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label='Registro Vacaciones' style={{ fontSize: 'x-small' }} icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
+                            </Tabs>
+                        </Paper>
+                    </Grid>
+                </Container>
+                <Typography variant='h5' align='center' className={classes.spacingBott}>VACACIONES</Typography>
+                <Container maxWidth='lg'>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={5}>
+                            <Paper component={Box} p={2}>
+                                <Typography variant='subtitle1' align='center' className={classes.spacingBott}>Registrar Vacación</Typography>
+                                <form onSubmit={postVacaciones}>
+                                    <TextField
+                                        name='id_bio'
+                                        label='ID Biometrico'
+                                        variant='outlined'
+                                        size='small'
+                                        fullWidth
+                                        type='number'
+                                        className={classes.spacingBott}
+                                        onChange={handleChange}
+                                        // value={changeData.nameFeriado}
+                                        required
+
+                                    />
+                                    <TextField
+                                        name='tipoVacacion'
+                                        label='Tipo de Vacaciones'
+                                        variant='outlined'
+                                        size='small'
+                                        fullWidth
+                                        className={classes.spacingBott}
+                                        onChange={handleChange}
+                                        // value={changeData.nameFeriado}
+                                        required
+
+                                    />
+                                    <Grid container justifyContent='space-evenly'>
+                                        <TextField
+                                            name='fechaVacacionIni'
+                                            label='fecha Inicio'
+                                            variant='outlined'
+                                            size='small'
+                                            // fullWidth
+                                            type='date'
+                                            InputLabelProps={{ shrink: true }}
+                                            className={classes.spacingBott}
+                                            onChange={handleChange}
+                                            // value={changeData.nameFeriado}
+                                            required
+
+                                        />
+                                        <TextField
+                                            name='fechaVacacionFin'
+                                            label='Fecha Fin'
+                                            variant='outlined'
+                                            size='small'
+                                            // fullWidth
+                                            type='date'
+                                            InputLabelProps={{ shrink: true }}
+                                            className={classes.spacingBott}
+                                            onChange={handleChange}
+                                            // value={changeData.nameFeriado}
+                                            required
+
+                                        />
+                                    </Grid>
+                                    <div align='center'>
+                                        <Button size='small' type='submit' variant='outlined' color='primary'>registrar</Button>
+                                    </div>
+                                </form>
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} sm={7}>
+                            <Paper component={Box} p={1}>
+                                <TableContainer style={{ maxHeight: 440 }}>
+                                    <Table stickyHeader>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Nombre</TableCell>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Apellidos</TableCell>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Tipo</TableCell>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Fecha Inicio</TableCell>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Fecha Fin</TableCell>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>Acciones</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {vacaciones.length > 0 ? (
+                                                vacaciones.map(v => (
+                                                    <TableRow key={v._id}>
+                                                        <TableCell>{v.firstNameEmp}</TableCell>
+                                                        <TableCell>{v.lastNameEmpP} {v.lastNameEmpM}</TableCell>
+                                                        <TableCell>{v.tipoVacacion}</TableCell>
+                                                        <TableCell>{v.fechaVacacionIni}</TableCell>
+                                                        <TableCell>{v.fechaVacacionFin}</TableCell>
+                                                        <TableCell>
+                                                            <Grid container justifyContent='space-evenly'>
+                                                                <Tooltip title='edit'>
+                                                                    <IconButton>
+                                                                        <EditIcon />
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                                <Tooltip title='delete'>
+                                                                    <IconButton>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            </Grid>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))
+                                            ) : (
+                                                <TableRow>
+                                                    <TableCell align='center' colSpan='6'>no existe informacion</TableCell>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Container>
+        </>
+    )
+}
+
+export default ControlVacaciones

@@ -101,4 +101,14 @@ export const AlertDeleteCargo = (props) => {
 }
 
 //------------------ELIMINACION DE CARGOS--------------------------
+//------------------REGISTRO DE ASISTENCIAS--------------------------
 
+export const AlertAddAsistencia=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Asistencias guardadas
+            </Alert>
+        </Snackbar>
+    )
+}
