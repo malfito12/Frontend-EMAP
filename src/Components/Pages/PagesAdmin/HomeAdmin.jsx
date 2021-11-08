@@ -161,14 +161,14 @@ const HomeAdmin = () => {
                         <Grid item xs={8} sm={4}>
                             <Button component={Link} to='/controlEmp' style={{ marginBottom: '1rem' }} classes={{ root: classes.root2, label: classes.label }}>EMPLEADOS</Button>
                             <Paper style={{ width: 300, height: 200 }}>
-                                <Button component={Link} to='/asigHorario' >
+                                <Button component={Link} to='/kardexPreRevision' >
                                     <img src={espacio4} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
-                                    <div style={{ position: 'absolute', fontSize: '15px', color: 'white' }}>ASIGNACION DE HRS</div>
+                                    <div style={{ position: 'absolute', fontSize: '15px', color: 'white' }}>ASISTENCIAS</div>
                                 </Button>
                             </Paper>
                         </Grid>
                         <Grid item xs={8} sm={4}>
-                            <Button component={Link} to='/controlCargos' style={{ marginBottom: '1rem' }} classes={{ root: classes.root3, label: classes.label }}>CARGOS</Button>
+                            <Button component={Link} to='/registerCargo' style={{ marginBottom: '1rem' }} classes={{ root: classes.root3, label: classes.label }}>CARGOS</Button>
                             <Paper style={{ width: 300, height: 200 }}>
                                 <Button component={Link} to='/controlPermisos' >
                                     <img src={espacio5} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />

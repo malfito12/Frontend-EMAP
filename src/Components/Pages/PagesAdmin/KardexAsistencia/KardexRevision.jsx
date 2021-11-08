@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';
 import EditIcon from "@material-ui/icons/Edit"
+import jsPDF from 'jspdf';
+import PrintIcon from '@material-ui/icons/Print'
+import { AlertErrorAsistenciaPrint } from '../../../Atoms/Alerts/AlertReEdDe';
 
 
 
@@ -16,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 const KardexRevision = () => {
     const classes = useStyles()
-    const [navigation, setNavigation] = useState(1)
     const [marcaciones, setMarcaciones] = useState([])
+    const [empleado, setEmpleado] = useState([])
+    const [openAlertErrorPrint,setOpenAlertErrorPrint]=useState("")
     const [openEdit, setOpenEdit] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
@@ -25,7 +29,7 @@ const KardexRevision = () => {
         fechafin: ''
     })
     const [changeDataEdit, setChangeDataEdit] = useState({
-        _id:'',
+        _id: '',
         id_bio: '',
         fecha: '',
         dia: '',
@@ -46,6 +50,12 @@ const KardexRevision = () => {
         const id = changeData.id_bio
         const fechaini = changeData.fechaini
         const fechafin = changeData.fechafin
+        //busqueda de empleado
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setEmpleado(resp.data))
+            .catch(err => console.log(err))
+
+        //buscqueda de marcaciones
         await axios.get(`${PORT_URL}kardexAsistencia/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
             .then(resp => setMarcaciones(resp.data))
             .catch(err => console.log(err))
@@ -78,7 +88,29 @@ const KardexRevision = () => {
             [e.target.name]: e.target.value
         })
     }
-    //------------------------------------------------------------------------
+    //--------------------------PDF GENERATE--------------------------------------
+    const pdfGenerate = () => {
+        try {
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [14, 7] })
+            var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+            var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+            doc.setFontSize(12)
+            doc.text("KARDEX DE ASISTENCIA", pageWidth / 2, 0.5, 'center')
+            doc.setFontSize(8)
+            doc.text(`DESDE:    ${changeData.fechaini}        HASTA:    ${changeData.fechafin}`, pageWidth / 2, 0.7, 'center');
+            doc.setFontSize(8)
+            doc.text(`ID_BIO:   ${empleado[0].id_bio}`, 0.6, 1);
+            doc.text(`NOMBRE:   ${empleado[0].firstNameEmp} ${empleado[0].lastNameEmpP} ${empleado[0].lastNameEmpM} `, 2.2, 1);
+            doc.text(`CARGO:   ${empleado[0].cargoEmp} `, 0.6, 1.2);
+            doc.text(`DPTO:   ${empleado[0].departamentEmp} `, 2.2, 1.2);
+            doc.text(`HORARIO:   ${empleado[0].typeHorario} `, 4.5, 1.2);
+            doc.autoTable({ html: "#id-table", startY: 1.5, styles: { fontSize: 5, halign: 'center' } })
+            doc.output('dataurlnewwindow')
+        } catch (error) {
+            console.log(error)
+            openCloseAlertErrorPrint()
+        }
+    }
     //--------------------------HANDLE CHANGE-------------------------------
     const handleChange = (e) => {
         setChangeData({
@@ -86,45 +118,40 @@ const KardexRevision = () => {
             [e.target.name]: e.target.value
         })
     }
-    //---------------------------BOTTON DE NAVEGACION--------------------------------
-    const handleNavigation = (e, newValue) => {
-        setNavigation(newValue)
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(1)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }
+    //-----------------------ALERTAS-----------------------------------
+    const openCloseAlertErrorPrint=()=>{
+        setOpenAlertErrorPrint(!openAlertErrorPrint)
     }
     //-----------------------------------------------------------------
-     const [scroll, setScroll] = useState(1)
-     const scrollChange = (e, newScroll) => {
-         setScroll(newScroll)
-     }
-     //-----------------------------------------------------------------
     // console.log(changeData)
-    console.log(marcaciones)
+    // console.log(empleado)
+    // console.log(marcaciones)
     // console.log(changeDataEdit)
     return (
         <>
-            <Container maxWidth={false} style={{paddingTop:'4.5rem'}}>
+            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
                 <Container maxWidth='lg'>
-                <Grid item xs={12} sm={5}>
-                    <Paper className={classes.spacingBot}>
-                        <Tabs
-                            value={scroll}
-                            onChange={scrollChange}
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            style={{ height: 60 }}
-                        >
-                            <Tab label="Subir info." style={{ fontSize: 'x-small' }} component={Link} to='/kardexPreRevision' icon={<AcUnitIcon style={{ fontSize:'large' }} />} />
-                            <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize:'large' }} />} />
-                        </Tabs>
-                    </Paper>
-                </Grid>
+                    <Grid item xs={12} sm={5}>
+                        <Paper className={classes.spacingBot}>
+                            <Tabs
+                                value={scroll}
+                                onChange={scrollChange}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                style={{ height: 60 }}
+                            >
+                                <Tab label="Subir info." style={{ fontSize: 'x-small' }} component={Link} to='/kardexPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                            </Tabs>
+                        </Paper>
+                    </Grid>
                 </Container>
-                <Typography  className={classes.spacingBot} variant='h4' align='center' >Kaxdex de Asistencia</Typography>
-                {/* <div align='center' style={{ marginBottom: '3rem' }}>
-                    <BottomNavigation style={{ width: 500 }} value={navigation} showLabels onChange={(e, newValue) => handleNavigation(e, newValue)}>
-                        <BottomNavigationAction label='Subir Info.' component={Link} to='/kardexPreRevision' icon={<AcUnitIcon />} />
-                        <BottomNavigationAction label='Control Resumen' icon={<AccountBalanceIcon />} />
-                    </BottomNavigation>
-                </div> */}
+                <Typography className={classes.spacingBot} variant='h5' align='center' >CONTROL DE ASISTENCIAS</Typography>
                 <Grid container>
                     <Grid item xs={12} sm={5}>
                         <Container maxWidth='xs'>
@@ -175,9 +202,12 @@ const KardexRevision = () => {
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
+                        <div align='right'>
+                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
+                        </div>
                         <Paper component={Box} p={1}>
-                            <TableContainer style={{ maxHeight: 440 }}>
-                                <Table stickyHeader>
+                            <TableContainer style={{ maxHeight: 500 }}>
+                                <Table stickyHeader id='id-table'>
                                     <TableHead>
                                         <TableRow>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Fecha</TableCell>
@@ -214,7 +244,7 @@ const KardexRevision = () => {
                                                     <TableCell>{m.observaciones}</TableCell>
                                                     <TableCell align='center'>
                                                         <Tooltip title='edit' onClick={() => openModalEdit(m)}>
-                                                            <IconButton size='small'>
+                                                            <IconButton size='small' style={{ color: 'green' }}>
                                                                 <EditIcon />
                                                             </IconButton>
                                                         </Tooltip>
@@ -300,6 +330,8 @@ const KardexRevision = () => {
                     </Grid>
                 </Paper>
             </Dialog>
+            {/*------------------ALERTAS-------------------------*/}
+            <AlertErrorAsistenciaPrint open={openAlertErrorPrint} onClose={openCloseAlertErrorPrint} />
         </>
     )
 }

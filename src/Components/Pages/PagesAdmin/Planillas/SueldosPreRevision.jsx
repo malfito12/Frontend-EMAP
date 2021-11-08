@@ -1,10 +1,11 @@
-import { Box, Button, Container, FormControlLabel, FormLabel, RadioGroup, Radio, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Tabs, Tab } from '@material-ui/core'
+import { Box, Button, Container, FormControlLabel, FormLabel, RadioGroup, Radio, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Tabs, Tab, Dialog } from '@material-ui/core'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import React, { useState } from 'react'
 import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import { AlertAddPlanillaS, AlertErrorPlanillaS } from '../../../Atoms/Alerts/AlertReEdDe'
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
 const SueldosPreRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
+    const [openConfirmPlanilla,setOpenConfirmPlanilla]=useState(false)
+    const [openAlertPlanilla,setOpenAlertPlanilla]=useState(false)
+    const [openAlertErrorPlanilla,setOpenAlertErrorPlanilla]=useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
         typePlanilla: '',
@@ -50,13 +54,36 @@ const SueldosPreRevision = () => {
             .catch(err => console.log(err))
     }
     //--------------------POST PLANILLA DE SUELDOS------------------------------------
+    const openModalConfirmPlanilla=()=>{
+        setOpenConfirmPlanilla(true)
+    }
+    const closeModalConfirmPlanilla=()=>{
+        setOpenConfirmPlanilla(false)
+    }
     const postPlanilla=async(e)=>{
         e.preventDefault()
-        await axios.post(`${PORT_URL}planillaSueldo`,planilla)
-        .then(resp=>console.log(resp.data))
-        .catch(err=>console.log(err))
+        if(planilla.length>0){
+            await axios.post(`${PORT_URL}planillaSueldo`,planilla)
+            .then(resp=>{
+                closeModalConfirmPlanilla()
+                openCloseAlertPlanilla()
+            })
+            .catch(err=>{ 
+                console.log(err)
+            })
+        }else{
+            closeModalConfirmPlanilla()
+            openCloseAlertErrorPlanilla()
+        }
     }
-    //-----------------------------------------------------------------
+    //------------------------ALERTAS--------------------------------------
+    //-----------------------------ALERTAS---------------------------------
+    const openCloseAlertPlanilla=()=>{
+        setOpenAlertPlanilla(!openAlertPlanilla)
+    }
+    const openCloseAlertErrorPlanilla=()=>{
+        setOpenAlertErrorPlanilla(!openAlertErrorPlanilla)
+    }
     //-----------------------------------------------------------------
     //-----------------------------------------------------------------
     //-----------------------------------------------------------------
@@ -217,46 +244,30 @@ const SueldosPreRevision = () => {
                                 </Table>
                             </TableContainer>
                             <div align='center'>
-                                <Button onClick={postPlanilla} variant='contained' color='primary' size='small'>Subir informacion</Button>
+                                <Button onClick={openModalConfirmPlanilla} variant='contained' color='primary' size='small'>Subir informacion</Button>
                             </div>
                         </Paper>
                     </Grid>
                 </Grid>
             </Container>
-            {/* <div style={{ paddingTop: '5rem' }}>
-                <div align='center'>
-                    <h2 className={classes.spacingBot} >Panilla de Sueldos</h2>
-                    <div>
-                        <form onSubmit={getPlanilla}>
-                            <div className={classes.spacingBot}>
-                                <input
-                                    name='id_bio'
-                                    type='number'
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className={classes.spacingBot}>
-                                <input
-                                    name='fechaini'
-                                    type='date'
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className={classes.spacingBot}>
-                                <input
-                                    name='fechafin'
-                                    type='date'
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className={classes.spacingBot}>
-                                <button type='submit'>enviar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div> */}
+            {/*----------------MODAL DE CONFIRMACION--------------*/}
+            <Dialog
+                open={openConfirmPlanilla}
+                onClose={closeModalConfirmPlanilla}
+                maxWidth='xs'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography variant='subtitle1' align='center' >Los datos existentes se modificarán</Typography>
+                    <Typography variant='subtitle1' align='center' className={classes.spacingBot}>¿Estas seguro de realizar esta acción?</Typography>
+                    <Grid container justifyContent='space-evenly'>
+                        <Button size='small' variant='contained' color='primary' onClick={postPlanilla}>aceptar</Button>
+                        <Button size='small' variant='contained' color='secondary' onClick={closeModalConfirmPlanilla}>cancelar</Button>
+                    </Grid>
+                </Paper>
+            </Dialog>
+            {/*---------------------ALERTAS-----------------*/}
+            <AlertAddPlanillaS open={openAlertPlanilla} onClose={openCloseAlertPlanilla}/>
+            <AlertErrorPlanillaS open={openAlertErrorPlanilla} onClose={openCloseAlertErrorPlanilla}/>
         </>
     )
 }

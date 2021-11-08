@@ -1,4 +1,4 @@
-import { Container, Grid, Paper, Typography, Box, makeStyles, TextField, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, BottomNavigation, BottomNavigationAction, Tabs, Tab } from '@material-ui/core'
+import { Container, Grid, Paper, Typography, Box, makeStyles, TextField, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
@@ -6,7 +6,7 @@ import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import { Link } from 'react-router-dom'
-import {AlertAddAsistencia} from '../../../Atoms/Alerts/AlertReEdDe'
+import {AlertAddAsistencia, AlertErrorAsistencia} from '../../../Atoms/Alerts/AlertReEdDe'
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -19,7 +19,7 @@ const KardexPreRevision = () => {
     const [marcaciones, setMarcaciones] = useState([])
     const [openConfirmDatos,setOpenConfirmDatos]=useState(false)
     const [openAlertAdd,setOpenAlertAdd]=useState(false)
-    const [openEdit, setOpenEdit] = useState(false)
+    const [openAlertError,setOpenAlertError]=useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
         fechaini: '',
@@ -32,58 +32,50 @@ const KardexPreRevision = () => {
         const id = changeData.id_bio
         const fechaini = changeData.fechaini
         const fechafin = changeData.fechafin
-        await axios.get(`${PORT_URL}empleadobio/${id}`)
+        //busqueda de empleado
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
             .then(resp => setEmpleado(resp.data))
             .catch(err => console.log(err))
 
-        // await axios.get(`${PORT_URL}search/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
-        // await axios.get(`${PORT_URL}sueldo/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
+        //buscqueda de marcaciones
         await axios.get(`${PORT_URL}nuevoTodo/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
             .then(resp => { setMarcaciones(resp.data) })
             .catch(err => { alert('el empleado no existe'); console.log(err) })
-        // console.log(changeData)
 
-        // console.log(marcaciones)
-        // console.log(empleado)
     }
-    //-----------------------------------------------------------------
-    const subirInfo = async (e) => {
-        e.preventDefault()
-        await axios.post(`${PORT_URL}subirinfo`, marcaciones)
-            .then(resp => {
-                closeModalConfirmDatos()
-                openCloseAlertAdd()
-                console.log(resp.data)
-            })
-            .catch(err => console.log(err))
-    }
-    //---------------------------BOTTON DE NAVEGACION--------------------------------
-    const [navigation, setNavigation] = useState(0)
-    const handleNavigation = (e, newValue) => {
-        setNavigation(newValue)
-    }
-    //-----------------------------------------------------------------
-    const [scroll, setScroll] = useState(0)
-    const scrollChange = (e, newScroll) => {
-        setScroll(newScroll)
-    }
-    //-------------------------CONFIRMAR DATOS----------------------------------
-    const existeDatos=()=>{
-        if(marcaciones.length>0){
-            openModalCofirmDatos()
-        }else{
-            alert('no existen datos')
-        }
-    }
+    //---------------------------SUBIR DATOS ---------------------------------
     const openModalCofirmDatos=()=>{
         setOpenConfirmDatos(true)
     }
     const closeModalConfirmDatos=()=>{
         setOpenConfirmDatos(false)
     }
+    const subirInfo = async (e) => {
+        e.preventDefault()
+        if(marcaciones.length>0){
+            await axios.post(`${PORT_URL}subirinfo`, marcaciones)
+                .then(resp => {
+                    closeModalConfirmDatos()
+                    openCloseAlertAdd()
+                    // console.log(resp.data)
+                })
+                .catch(err => console.log(err))
+        }else{
+            closeModalConfirmDatos()
+            openCloseAlertError()
+        }
+    }
+    //-----------------------------------------------------------------
+    const [scroll, setScroll] = useState(0)
+    const scrollChange = (e, newScroll) => {
+        setScroll(newScroll)
+    }    
     //---------------------ALERT REGISTER---------------------------------------
     const openCloseAlertAdd = () => {
         setOpenAlertAdd(!openAlertAdd)
+    }
+    const openCloseAlertError=()=>{
+        setOpenAlertError(!openAlertError)
     }
     //-----------------------------------------------------------------
     const handleChange = (e) => {
@@ -93,43 +85,10 @@ const KardexPreRevision = () => {
         })
     }
     //-----------------------------------------------------------------
-    const [dos, setDos] = useState({
-        fecha: '',
-        ingreso1: '',
-        ingreso2: '',
-        salida1: '',
-        salida2: '',
-        dia: '',
-        atraso: '',
-        horasExtra: '',
-        diaTrabajado: '',
-        faltas: '',
-        observaciones: ''
-    })
-
-    const openModalEdit = (e) => {
-        setDos(e)
-        setOpenEdit(true)
-    }
-    const closeModalEdit = () => {
-        setOpenEdit(false)
-    }
-    const editar = (e) => {
-        e.preventDefault()
-        setDos({
-            ...dos,
-            ingreso1: dos.ingreso1
-        })
-        closeModalEdit()
-    }
-    const prueba = (e) => {
-        setDos({
-            ...dos,
-            [e.target.name]: e.target.value
-        })
-    }
-    console.log(dos)
+    
+    // console.log(dos)
     // console.log(changeData)
+    // console.log(empleado)
     return (
         <>
             <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
@@ -149,15 +108,7 @@ const KardexPreRevision = () => {
                         </Paper>
                     </Grid>
                 </Container>
-                <Typography className={classes.spacingBot} variant='h4' align='center'>Vista de Kardex</Typography>
-                {/* <div align='center' style={{marginBottom:'3rem'}}>
-            <Container maxWidth='sm'>
-            <BottomNavigation variant='scrollable' style={{maxWidth:'sm'}} value={navigation} showLabels onChange={(e,newValue)=>handleNavigation(e,newValue)}>
-                <BottomNavigationAction label='Subir Info.'  icon={<AcUnitIcon />} />
-                <BottomNavigationAction label='Control Resumen' component={Link} to='/kardexRevision' icon={<AccountBalanceIcon />}/>
-            </BottomNavigation>
-            </Container>
-            </div> */}
+                <Typography className={classes.spacingBot} variant='h5' align='center'>ASISTENCIAS DE PERSONAL</Typography>
                 <Grid container >
                     <Grid item xs={12} sm={5}>
                         <Container maxWidth='xs'>
@@ -214,7 +165,7 @@ const KardexPreRevision = () => {
                                     <Typography className={classes.spacingBot}>Nombre : {empleado[0].firstNameEmp} {empleado[0].lastNameEmpP} {empleado[0].lastNameEmpM}</Typography>
                                     <Typography className={classes.spacingBot}>C.I : {empleado[0].CIEmp}</Typography>
                                 </>
-                            ) : (<div></div>)}
+                            ) : (null)}
                             <TableContainer style={{ maxHeight: 440 }}>
                                 <Table stickyHeader>
                                     <TableHead>
@@ -230,8 +181,6 @@ const KardexPreRevision = () => {
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Horas Trabj.</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Dia Trab.</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Faltas</TableCell>
-                                            {/* <TableCell style={{ color: 'white', backgroundColor: "black" }}>Atraso1</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Atraso2</TableCell> */}
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Observaciones</TableCell>
                                         </TableRow>
                                     </TableHead>
@@ -250,12 +199,7 @@ const KardexPreRevision = () => {
                                                     <TableCell>{m.horasDeTrabajo}</TableCell>
                                                     <TableCell>{m.diaTrabajado}</TableCell>
                                                     <TableCell>{m.faltas}</TableCell>
-                                                    {/* <TableCell>{m.atraso1}</TableCell>
-                                                <TableCell>{m.atraso2}</TableCell> */}
                                                     <TableCell >{m.observaciones}</TableCell>
-                                                    {/* <TableCell>
-                                                    <Button variant='contained' size='small' color='primary' onClick={()=>openModalEdit(m)}>edit</Button>
-                                                </TableCell> */}
                                                 </TableRow>
                                             ))
                                         ) : (
@@ -267,34 +211,20 @@ const KardexPreRevision = () => {
                                 </Table>
                             </TableContainer>
                             <div align='center'>
-                                <Button variant='contained' size='small' color='primary' onClick={existeDatos}>subir informacion</Button>
+                                <Button variant='contained' size='small' color='primary' onClick={openModalCofirmDatos}>subir informacion</Button>
                             </div>
                         </Paper>
                     </Grid>
                 </Grid>
             </Container>
             <Dialog
-                open={openEdit}
-                onClose={closeModalEdit}
-                maxWidth='md'
-            >
-                <Paper component={Box} p={1}>
-                    <Typography variant='subtitle1' align='center'>editar</Typography>
-                    <TextField
-                        name='ingreso1'
-                        defaultValue={dos.ingreso1}
-                        onChange={prueba}
-                    />
-                    <Button variant='contained' color='primary' onClick={editar} >editar</Button>
-                </Paper>
-            </Dialog>
-            <Dialog
                 open={openConfirmDatos}
                 onClose={closeModalConfirmDatos}
                 maxWidth='xs'
             >
-                <Paper component={Box} p={1}>
-                    <Typography variant='subtitle2' align='center' className={classes.spacingBot}>Estas seguro de guardar la informacion?</Typography>
+                <Paper component={Box} p={2}>
+                    <Typography variant='subtitle1' align='center'>Los Datos Existentes de modificarán</Typography>
+                    <Typography variant='subtitle1' align='center' className={classes.spacingBot}>¿Estas seguro de realizar esta acción?</Typography>
                     <Grid container justifyContent='space-evenly'>
                         <Button size='small' variant='contained' color='primary' onClick={subirInfo} >aceptar</Button>
                         <Button size='small' variant='contained' color='secondary' onClick={closeModalConfirmDatos} >cancelar</Button>
@@ -302,6 +232,7 @@ const KardexPreRevision = () => {
                 </Paper>
             </Dialog>
             <AlertAddAsistencia name={changeData.id_bio} open={openAlertAdd} onClose={openCloseAlertAdd} />
+            <AlertErrorAsistencia open={openAlertError} onClose={openCloseAlertError} />
         </>
     )
 }

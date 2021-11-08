@@ -33,6 +33,16 @@ export const AlertEdit = (props) => {
         </Snackbar>
     )
 }
+//------------------ALERTAS DE EMPLEADOS--------------------------
+export const AlertEditEmpleado = (props) => {
+    return (
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Se Editó Correctamente a {props.name}
+            </Alert>
+        </Snackbar>
+    )
+}
 //------------------ALERTAS DE PERMISOS--------------------------
 export const AlertErrorRegisterPermiso=(props)=>{
     return(
@@ -112,3 +122,65 @@ export const AlertAddAsistencia=(props)=>{
         </Snackbar>
     )
 }
+export const AlertErrorAsistencia=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                Error No se puede Guardar la Informacion
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertErrorAsistenciaPrint=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                Error No existe informacion para Imprimir
+            </Alert>
+        </Snackbar>
+    )
+}
+//-----------------------REGISTRO DE PLANILLA REFRIGERIO-----------------------------
+export const AlertAddPlanillaR=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Planilla Refrigerio Guardada
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertErrorPlanillaR=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                Error Planilla No Guardada
+            </Alert>
+        </Snackbar>
+    )
+}
+//------------------REGSITRO DE PLANILLA SUELDOS---------------------------------------
+export const AlertAddPlanillaS=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='success'>
+                Planilla Sueldos Guardada
+            </Alert>
+        </Snackbar>
+    )
+}
+export const AlertErrorPlanillaS=(props)=>{
+    return(
+        <Snackbar open={props.open} autoHideDuration={3000} onClose={props.onClose}>
+            <Alert onClose={props.onClose} severity='error'>
+                Error Planilla No Guardada
+            </Alert>
+        </Snackbar>
+    )
+}
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------
+//------------------------------------------------------------------

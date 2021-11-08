@@ -8,7 +8,8 @@ const HeaderUser = () => {
         {
             localStorage.getItem('token')
             ? <DrawerMainUser />
-            : <PublicMainMenu />
+            // : <PublicMainMenu />
+            : null
         }
         </>
     )

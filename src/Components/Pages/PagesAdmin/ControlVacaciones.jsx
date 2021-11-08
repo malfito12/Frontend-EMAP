@@ -1,10 +1,10 @@
-import { Container, Grid, makeStyles, Paper, Tab, Tabs, Box, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip, IconButton } from '@material-ui/core'
+import { Container, Grid, makeStyles, Paper, Tab, Tabs, Box, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, Tooltip, IconButton, Dialog } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PlayListAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import axios from 'axios';
-import { PORT_URL } from '../../PortURL';
+import { PORT_URL } from '../../../PortURL';
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 
@@ -17,7 +17,10 @@ const useStyles = makeStyles(() => ({
 const ControlVacaciones = () => {
     const classes = useStyles()
     const [vacaciones, setVacaciones] = useState([])
+    const [openEditVacaciones, setOpenEditVacaciones] = useState(false)
+    const [openDeleteVacaciones, setOpenDeleteVacaciones] = useState(false)
     const [changeData, setChangeData] = useState({
+        _id:'',
         id_bio: '',
         nameVacaciones: 'Vacaciones',
         tipoVacacion: '',
@@ -45,14 +48,53 @@ const ControlVacaciones = () => {
                 console.log(resp.data)
             })
             .catch(err => console.log(err))
-            setChangeData({
-                id_bio: '',
-                nameVacaciones: 'Vacaciones',
-                tipoVacacion: '',
-                fechaVacacionIni: '',
-                fechaVacacionFin: '',
-            })
+        setChangeData({
+            id_bio: '',
+            nameVacaciones: 'Vacaciones',
+            tipoVacacion: '',
+            fechaVacacionIni: '',
+            fechaVacacionFin: '',
+        })
 
+    }
+    //---------------------EDIT VACACIONES------------------------------
+    const openModalEditVacaciones = (e) => {
+        setChangeData(e)
+        setOpenEditVacaciones(true)
+    }
+    const closeModalEditVacaciones = () => {
+        setOpenEditVacaciones(false)
+    }
+    const editVacaciones=async(e)=>{
+        e.preventDefault()
+        const id=changeData._id
+        await axios.put(`${PORT_URL}vacacion/${id}`, changeData)
+        .then(resp=>{
+            getVacaciones()
+            closeModalEditVacaciones()
+            console.log(resp.data)
+        })
+        .catch(err=>console.log(err))
+    }
+    //---------------------DELETE VACACIONES------------------------------
+    const openModalDeleteVacaciones = (e) => {
+        setChangeData(e)
+        setOpenDeleteVacaciones(true)
+    }
+    const closeModalDeleteVacaciones = () => {
+        setOpenDeleteVacaciones(false)
+    }
+
+    const deleteVacaciones=async(e)=>{
+        e.preventDefault()
+        const id=changeData._id
+        await axios.delete(`${PORT_URL}vacacion/${id}`)
+        .then(resp=>{
+            closeModalDeleteVacaciones()
+            getVacaciones()
+            console.log(resp.data)
+        })
+        .catch(err=>console.log(err))
     }
     //---------------------HANDLE CHANGE------------------------------
     const handleChange = (e) => {
@@ -104,7 +146,6 @@ const ControlVacaciones = () => {
                                         type='number'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
-                                        // value={changeData.nameFeriado}
                                         required
 
                                     />
@@ -116,7 +157,6 @@ const ControlVacaciones = () => {
                                         fullWidth
                                         className={classes.spacingBott}
                                         onChange={handleChange}
-                                        // value={changeData.nameFeriado}
                                         required
 
                                     />
@@ -126,12 +166,10 @@ const ControlVacaciones = () => {
                                             label='fecha Inicio'
                                             variant='outlined'
                                             size='small'
-                                            // fullWidth
                                             type='date'
                                             InputLabelProps={{ shrink: true }}
                                             className={classes.spacingBott}
                                             onChange={handleChange}
-                                            // value={changeData.nameFeriado}
                                             required
 
                                         />
@@ -140,14 +178,11 @@ const ControlVacaciones = () => {
                                             label='Fecha Fin'
                                             variant='outlined'
                                             size='small'
-                                            // fullWidth
                                             type='date'
                                             InputLabelProps={{ shrink: true }}
                                             className={classes.spacingBott}
                                             onChange={handleChange}
-                                            // value={changeData.nameFeriado}
                                             required
-
                                         />
                                     </Grid>
                                     <div align='center'>
@@ -182,12 +217,12 @@ const ControlVacaciones = () => {
                                                         <TableCell>
                                                             <Grid container justifyContent='space-evenly'>
                                                                 <Tooltip title='edit'>
-                                                                    <IconButton>
+                                                                    <IconButton size='small' onClick={()=>openModalEditVacaciones(v)}>
                                                                         <EditIcon />
                                                                     </IconButton>
                                                                 </Tooltip>
                                                                 <Tooltip title='delete'>
-                                                                    <IconButton>
+                                                                    <IconButton size='small' onClick={()=>openModalDeleteVacaciones(v)}>
                                                                         <DeleteIcon />
                                                                     </IconButton>
                                                                 </Tooltip>
@@ -208,6 +243,87 @@ const ControlVacaciones = () => {
                     </Grid>
                 </Container>
             </Container>
+            <Dialog
+                open={openEditVacaciones}
+                onClose={closeModalDeleteVacaciones}
+                maxWidth="sm"
+            >
+                <Paper component={Box} p={2}>
+                    <Typography align='center' variant='subtitle1' className={classes.spacingBott}>EDITAR VACACION</Typography>
+                    <form onSubmit={editVacaciones}>
+                        <TextField
+                            disabled
+                            name='id_bio'
+                            label='ID Biometrico'
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            type='number'
+                            className={classes.spacingBott}
+                            defaultValue={changeData.id_bio}
+                            onChange={handleChange}
+                            required
+
+                        />
+                        <TextField
+                            name='tipoVacacion'
+                            label='Tipo de Vacaciones'
+                            variant='outlined'
+                            size='small'
+                            fullWidth
+                            className={classes.spacingBott}
+                            defaultValue={changeData.tipoVacacion}
+                            onChange={handleChange}
+                            required
+
+                        />
+                        <Grid container justifyContent='space-evenly'>
+                            <TextField
+                                name='fechaVacacionIni'
+                                label='fecha Inicio'
+                                variant='outlined'
+                                size='small'
+                                type='date'
+                                InputLabelProps={{ shrink: true }}
+                                className={classes.spacingBott}
+                                defaultValue={changeData.fechaVacacionIni}
+                                onChange={handleChange}
+                                required
+
+                            />
+                            <TextField
+                                name='fechaVacacionFin'
+                                label='Fecha Fin'
+                                variant='outlined'
+                                size='small'
+                                type='date'
+                                InputLabelProps={{ shrink: true }}
+                                className={classes.spacingBott}
+                                defaultValue={changeData.fechaVacacionFin}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Grid>
+                        <Grid container justifyContent='space-evenly'>
+                            <Button size='small' type='submit' variant='outlined' color='primary'>editar</Button>
+                            <Button size='small' variant='outlined' color='secondary' onClick={closeModalEditVacaciones}>cancelar</Button>
+                        </Grid>
+                    </form>
+                </Paper>
+            </Dialog>
+            <Dialog
+                open={openDeleteVacaciones}
+                onClose={closeModalDeleteVacaciones}
+                maxWidth='xs'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography align='center' variant='subtitle1' className={classes.spacingBott}>¿Estas seguro de eliminar la vacacion de " {changeData.firstNameEmp} "?</Typography>
+                    <Grid container justifyContent='space-evenly'>
+                        <Button size='small' variant='outlined' color='primary' onClick={deleteVacaciones}>aceptar</Button>
+                        <Button size='small' variant='outlined' color='secondary' onClick={closeModalDeleteVacaciones}>cancelar</Button>
+                    </Grid>
+                </Paper>
+            </Dialog>
         </>
     )
 }

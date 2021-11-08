@@ -1,11 +1,15 @@
 import { Container, Grid, makeStyles, Typography, Paper, Tab, TextField, Box, Button, Tabs, FormLabel, RadioGroup, FormControlLabel, Radio, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Tooltip, IconButton, Dialog } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { PORT_URL } from '../../../../PortURL';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import EditIcon from "@material-ui/icons/Edit"
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+import PrintIcon from '@material-ui/icons/Print'
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -26,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 const RefrigerioRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
+    const [departamento, setDepartamento] = useState([])
     const [openEditPlanilla, setOpenEditPlanilla] = useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
@@ -34,13 +39,17 @@ const RefrigerioRevision = () => {
         fechafin: ''
     })
     const [changeDataEdit, setChangeDataEdit] = useState({
-        _id:'',
-        fullName:'',
-        RC_IVA_presentado:"",
-        otrosDescuentos:'',
-        diasTrabajado:"",
+        _id: '',
+        fullName: '',
+        RC_IVA_presentado: "",
+        otrosDescuentos: '',
+        diasTrabajado: "",
 
     })
+
+    useEffect(() => {
+        getDepartament()
+    }, [])
     //------------GET PLANILLA REFRIGERIO--------------------------------
     const getPlanilla = async (e) => {
         e.preventDefault()
@@ -50,7 +59,7 @@ const RefrigerioRevision = () => {
         await axios.get(`${PORT_URL}planillarefrigerio?typePlanilla=${typePlanilla}&fechaini=${fechaini}&fechafin=${fechafin}`)
             .then(resp => {
                 setPlanilla(resp.data)
-                console.log(resp.data)
+                // console.log(resp.data)
             })
             .catch(err => console.log(err))
     }
@@ -62,22 +71,22 @@ const RefrigerioRevision = () => {
     const closeModalEditPlanilla = () => {
         setOpenEditPlanilla(false)
     }
-    const editPlanilla=async(e)=>{
+    const editPlanilla = async (e) => {
         e.preventDefault()
-        const id=changeDataEdit._id
-        await axios.put(`${PORT_URL}planillarefrigerio/${id}`,changeDataEdit)
-        .then(resp=>{
-            closeModalEditPlanilla()
-            getPlanilla(e)
-            console.log(resp.data)
-        })
-        .catch(err=>console.log(err))
+        const id = changeDataEdit._id
+        await axios.put(`${PORT_URL}planillarefrigerio/${id}`, changeDataEdit)
+            .then(resp => {
+                closeModalEditPlanilla()
+                getPlanilla(e)
+                // console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
     //---------------HANDLE CHANGE EDIT--------------------------------------
-    const handleChangeEdit=(e)=>{
+    const handleChangeEdit = (e) => {
         setChangeDataEdit({
             ...changeDataEdit,
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
     }
     //---------------HANDLE CHANGE--------------------------------------
@@ -86,6 +95,62 @@ const RefrigerioRevision = () => {
             ...changeData,
             [e.target.name]: e.target.value
         })
+    }
+    //------------------------GET DEPATTAMENTO-------------------------------
+    const getDepartament = async () => {
+        await axios.get(`${PORT_URL}departament`)
+            .then(resp => {
+                setDepartamento(resp.data)
+                // console.log('departamentos')
+            })
+            .catch(err => console.log(err))
+    }
+    //------------------------OPERACIONES PARA NUEVA TABLA-------------------------------
+    const array1 = []
+    var a = 0;
+    const contDep = departamento.length
+    const contPlanilla = planilla.length
+    while (a < contDep) {
+        for (var i = 0; i < contPlanilla; i++) {
+            if (departamento[a].nameDepartament === planilla[i].departamentEmp) {
+                array1.push(departamento[a])
+                break;
+            }
+        }
+        a++;
+    }
+    // console.log(array1)
+    //--------------------PDF GENERATE------------------------------------
+    var numeroMes = moment(changeData.fechaini).get('month')
+    var numeroAnio = moment(changeData.fechaini).get('year')
+    var mes = ''
+    switch (numeroMes) {
+        case 0: mes = 'ENERO'; break;
+        case 1: mes = 'FEBRERO'; break;
+        case 2: mes = 'MARZO'; break;
+        case 3: mes = 'ABRIL'; break;
+        case 4: mes = 'MAYO'; break;
+        case 5: mes = 'JUNIO'; break;
+        case 6: mes = 'JULIO'; break;
+        case 7: mes = 'AGOSTO'; break;
+        case 8: mes = 'SEPTIEMBRE'; break;
+        case 0: mes = 'OCTUBRE'; break;
+        case 0: mes = 'NOVIEMBRE'; break;
+        case 0: mes = 'DICIEMBRE'; break;
+        default: mes = 'mes no valido'
+    }
+    const pdfGenerate = () => {
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+        doc.setFontSize(12)
+        doc.text("PLANILLA SERVICIO DE REFRIGERIO", pageWidth / 2, 0.5, 'center')
+        doc.setFontSize(11)
+        doc.text(`Correspondiente al mes de ${mes} de ${numeroAnio}`, pageWidth / 2, 0.7, 'center');
+        doc.setFontSize(12)
+        doc.text(`PERSONAL ${(changeData.typePlanilla).toUpperCase()} EN FUNCIONAMIENTO`, pageWidth / 2, 0.9, 'center');
+        doc.autoTable({ html: "#id-table", startY: 1, styles: { fontSize: 5, halign: 'center' } })
+        doc.output('dataurlnewwindow')
     }
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(1)
@@ -162,9 +227,12 @@ const RefrigerioRevision = () => {
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
+                        <div align='right'>
+                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
+                        </div>
                         <Paper component={Box} p={1}>
                             <TableContainer style={{ maxHeight: 440 }} className={classes.spacingBot}>
-                                <Table style={{ minWidth: 1000 }}>
+                                <Table style={{ minWidth: 1000 }} id='id-table'>
                                     <TableHead>
                                         <TableRow >
                                             <TableCell className={classes.tableHead} align='center'>Item</TableCell>
@@ -183,7 +251,50 @@ const RefrigerioRevision = () => {
                                             <TableCell className={classes.tableHead} align='center'></TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    {array1.length > 0 && planilla.length > 0 ? (
+                                        array1.map((d, index) => (
+                                            <TableBody key={index}>
+                                                <TableRow>
+                                                    <TableCell colSpan='4'>{d.nameDepartament}</TableCell>
+                                                </TableRow>
+                                                {planilla.map((p, index) => (
+                                                    <Fragment key={index}>
+                                                        {d.nameDepartament === p.departamentEmp ? (
+                                                            <TableRow>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.itemEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.CIEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.fullName}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.cargoEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.diasTrabajado}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.pagoPorDia}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.totalServicio}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.RC_IVA}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.RC_IVA_presentado}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.totalDescuento}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.totalGanado}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.otrosDescuentos}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.liquidoPagable}</TableCell>
+                                                                <TableCell>
+                                                                    <Tooltip title='edit'>
+                                                                        <IconButton size='small' onClick={() => openModalEditPlanilla(p)}>
+                                                                            <EditIcon />
+                                                                        </IconButton>
+                                                                    </Tooltip>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ) : (null)}
+                                                    </Fragment>
+                                                ))}
+                                            </TableBody>
+                                        ))
+                                    ) : (
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell align='center' colSpan='12'>no existe informacion</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    )}
+                                    {/* <TableBody>
                                         {planilla.length > 0 ? (
                                             planilla.map((p, index) => (
                                                 <TableRow key={index}>
@@ -214,7 +325,7 @@ const RefrigerioRevision = () => {
                                                 <TableCell align='center' colSpan='10'>no existe informacion</TableCell>
                                             </TableRow>
                                         )}
-                                    </TableBody>
+                                    </TableBody> */}
                                 </Table>
                             </TableContainer>
                         </Paper>
@@ -257,7 +368,7 @@ const RefrigerioRevision = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                            <TextField
+                                <TextField
                                     name='RC_IVA_presentado'
                                     label='RC IVA Presentado'
                                     variant='outlined'
@@ -285,7 +396,7 @@ const RefrigerioRevision = () => {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid container justify='space-evenly'>
+                        <Grid container justifyContent='space-evenly'>
                             <Button size='small' variant='contained' color='primary' type='submit' >aceptar</Button>
                             <Button size='small' variant='contained' color='secondary' onClick={closeModalEditPlanilla} >cancelar</Button>
                         </Grid>

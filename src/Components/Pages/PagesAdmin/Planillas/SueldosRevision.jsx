@@ -1,11 +1,15 @@
 import { Container, Box, Grid, makeStyles, Paper, Tab, Tabs, Typography, FormLabel, RadioGroup, FormControlLabel, Radio, TextField, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, Dialog } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';
 import EditIcon from '@material-ui/icons/Edit'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+import PrintIcon from '@material-ui/icons/Print'
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -25,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const SueldosRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
+    const [departamento, setDepartamento] = useState([])
     const [openEditPlanilla, setOpenEditPlanilla] = useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
@@ -32,12 +37,15 @@ const SueldosRevision = () => {
         fechaini: '',
         fechafin: ''
     })
-    const [changeDataEdit,setChangeDataEdit]=useState({
-        _id:'',
-        interinato:'',
-        bajaMedica:'',
+    const [changeDataEdit, setChangeDataEdit] = useState({
+        _id: '',
+        interinato: '',
+        bajaMedica: '',
     })
 
+    useEffect(() => {
+        getDepartament()
+    }, [])
 
     //------------------GET PLANILLA DE SUELDOS--------------------------------------
     const getPlanilla = async (e) => {
@@ -66,19 +74,20 @@ const SueldosRevision = () => {
         setOpenEditPlanilla(false)
     }
 
-    const editPlanilla=async(e)=>{
+    const editPlanilla = async (e) => {
         e.preventDefault()
-        const id=changeDataEdit._id
+        const id = changeDataEdit._id
         console.log(id)
-        await axios.put(`${PORT_URL}planillaSueldo/${id}`,changeDataEdit)
-        .then(resp=>{
-            closeModalEditPlanilla()
-            getPlanilla(e)
-            console.log(resp.data)})
-        .catch(err=>console.log(err))
+        await axios.put(`${PORT_URL}planillaSueldo/${id}`, changeDataEdit)
+            .then(resp => {
+                closeModalEditPlanilla()
+                getPlanilla(e)
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
     //-----------------------------------------------------------------
-    const handleChangeEdit=(e)=>{
+    const handleChangeEdit = (e) => {
         setChangeDataEdit({
             ...changeDataEdit,
             [e.target.name]: e.target.value
@@ -96,8 +105,66 @@ const SueldosRevision = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
+    //------------------------GET DEPATTAMENTO-------------------------------
+    const getDepartament = async () => {
+        await axios.get(`${PORT_URL}departament`)
+            .then(resp => {
+                setDepartamento(resp.data)
+                // console.log('departamentos')
+            })
+            .catch(err => console.log(err))
+    }
+    //------------------------OPERACIONES PARA NUEVA TABLA-------------------------------
+    const array1 = []
+    var a = 0;
+    const contDep = departamento.length
+    const contPlanilla = planilla.length
+    while (a < contDep) {
+        for (var i = 0; i < contPlanilla; i++) {
+            if (departamento[a].nameDepartament === planilla[i].departamentEmp) {
+                array1.push(departamento[a])
+                break;
+            }
+        }
+        a++;
+    }
+    // console.log(array1)
+    //---------------------------PDF GENERATE-------------------------------
+    var numeroMes = moment(changeData.fechaini).get('month')
+    var numeroAnio = moment(changeData.fechaini).get('year')
+    var mes = ''
+    switch (numeroMes) {
+        case 0: mes = 'ENERO'; break;
+        case 1: mes = 'FEBRERO'; break;
+        case 2: mes = 'MARZO'; break;
+        case 3: mes = 'ABRIL'; break;
+        case 4: mes = 'MAYO'; break;
+        case 5: mes = 'JUNIO'; break;
+        case 6: mes = 'JULIO'; break;
+        case 7: mes = 'AGOSTO'; break;
+        case 8: mes = 'SEPTIEMBRE'; break;
+        case 0: mes = 'OCTUBRE'; break;
+        case 0: mes = 'NOVIEMBRE'; break;
+        case 0: mes = 'DICIEMBRE'; break;
+        default: mes = 'mes no valido'
+    }
+    // console.log(numeroAnio)
+    const pdfGenerate = () => {
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+        doc.setFontSize(12)
+        doc.text("PLANILLA DE SUELDOS", pageWidth / 2, 0.5, 'center')
+        doc.text(`${(changeData.typePlanilla).toUpperCase()}`, pageWidth / 2, 0.7, 'center');
+        doc.setFontSize(10)
+        doc.text(`Correspondiente al mes de ${mes} del ${numeroAnio}`, pageWidth / 2, 0.9, 'center');
+        doc.text(`(En Bolivianos)`, pageWidth / 2, 1.1, 'center');
+        doc.autoTable({ html: "#id-table", startY: 1.5, styles: { fontSize: 5, halign: 'center' } })
+        doc.output('dataurlnewwindow')
+    }
     //-----------------------------------------------------------------
     // console.log(planilla)
+    // console.log(departamento)
     // console.log(changeData)
     return (
         <>
@@ -166,10 +233,13 @@ const SueldosRevision = () => {
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
+                        <div align='right'>
+                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
+                        </div>
                         <Paper component={Box} p={1}>
                             <TableContainer style={{ maxHeight: 440 }}>
-                                <Table style={{ minWidth: 2000 }}>
-                                    <TableHead>
+                                <Table style={{ minWidth: 2000 }} id='id-table'>
+                                    <TableHead id='id-head'>
                                         <TableRow size='small'>
                                             <TableCell rowSpan='2' className={classes.tableHead} align='center'>N° Item</TableCell>
                                             <TableCell rowSpan='2' className={classes.tableHead} align='center'>Carnet de Identidad</TableCell>
@@ -203,7 +273,62 @@ const SueldosRevision = () => {
                                             <TableCell className={classes.tableHead} align='center'>RC-IVA</TableCell>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
+                                    {array1.length > 0 && planilla.length > 0 ? (
+                                        array1.map((d, index) => (
+                                            <TableBody key={index}>
+                                                <TableRow >
+                                                    <TableCell colSpan='4'>{d.nameDepartament}</TableCell>
+                                                </TableRow>
+                                                {planilla.map((p, index) => (
+                                                    <Fragment key={index}>
+                                                        {d.nameDepartament === p.departamentEmp ? (
+                                                            <TableRow>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.numItem}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.CIEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.nameEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.nacionality}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.sexoEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.cargoEmp}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.fechaIng}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.haber_basico}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.diasTrabajados}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.sueldo}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.bonoDeAntiguedad}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.bonoRecargaNoc}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.interinato}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.numDominical}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.domingosFeriados}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.auxTotalGanado}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.atrasos}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.faltas}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.sancionFaltasAtrasos}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.bajaMedica}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.AFP}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.RC_IVA}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.sind}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.auxTotalDescuento}</TableCell>
+                                                                <TableCell align='center' className={classes.tablebody}>{p.auxLiquidoPagable}</TableCell>
+                                                                <TableCell>
+                                                                    <Tooltip title='edit'>
+                                                                        <IconButton size='small' onClick={() => openModalEDitPlanilla(p)}>
+                                                                            <EditIcon />
+                                                                        </IconButton>
+                                                                    </Tooltip>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ) : (null)}
+                                                    </Fragment>
+                                                ))}
+                                            </TableBody>
+                                        ))
+                                    ) : (
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell align='center' colSpan='8'>no existe informacion</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    )}
+                                    {/* <TableBody>
                                         {planilla.length > 0
                                             ? (planilla.map(p => (
                                                 <TableRow key={p._id}>
@@ -245,7 +370,7 @@ const SueldosRevision = () => {
                                                     <TableCell colSpan='9' align='center'>No existe informacion</TableCell>
                                                 </TableRow>
                                             )}
-                                    </TableBody>
+                                    </TableBody> */}
                                 </Table>
                             </TableContainer>
                         </Paper>
@@ -287,7 +412,7 @@ const SueldosRevision = () => {
                                 onChange={handleChangeEdit}
                             />
                         </Grid>
-                        <Grid container justify='space-evenly'>
+                        <Grid container justifyContent='space-evenly'>
                             <Button size='small' variant='contained' color='primary' type='submit'>aceptar</Button>
                             <Button size='small' variant='contained' color='secondary' onClick={closeModalEditPlanilla}>cancelar</Button>
                         </Grid>

@@ -1,18 +1,20 @@
 import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
-import MaterialTable from 'material-table'
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { PORT_URL } from '../../../PortURL'
 import AlertDelete from '../../Atoms/Alerts/AlertDelete'
 import AlertEdit from '../../Atoms/Alerts/AlertEdit'
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
+import PrintIcon from '@material-ui/icons/Print'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const useStyles = makeStyles((theme) => ({
     TyphoAlineation: {
@@ -111,6 +113,8 @@ const ControlEmpleado = (props) => {
     //EDITAR
     const openModalEdit = (ele) => {
         setChangeData(ele)
+        setPreview(ele.avatar)
+        // console.log(ele.avatar)
         setOpenEdit(true)
     }
     const closeModalEdit = () => {
@@ -245,22 +249,52 @@ const ControlEmpleado = (props) => {
             .then(resp => setHorario(resp.data))
             .catch(err => console.log(err))
     }
-    //----------------------------------------------------------------
-    // console.log(new Date(fecha).toLocaleDateString().split('/').reverse().join('/'));
+    //------------------------PDF GENERATE-------------------------------
+    const pdfGenerate = () => {
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
+        // const doc = new jsPDF()
+        // const doc = new jsPDF('l','pt','letter')
+        doc.setFontSize(20)
+        doc.addFont('Calibri', 'Calibri', 'normal');
+        doc.setFont('Calibri');
+        doc.text('Lista de Personal', 6, 0.5)
+        doc.setFontSize(11)
+        doc.autoTable({
+            head: [[
+                { content: 'N° Item' },
+                { content: 'ID Bio' },
+                { content: 'Nombre' },
+                { content: 'Apellido P' },
+                { content: 'Apellido M' },
+            ]],
+            body: empleado.map((d, index) => (
+                [
+                    [d.itemEmp],
+                    [d.id_bio],
+                    [d.firstNameEmp],
+                    [d.lastNameEmpP],
+                    [d.lastNameEmpM],
+                ]
+            )),
+            startY: 1,
+        })
+        doc.output('dataurlnewwindow')
+    }
+    //---------------------------------------------------------------------
 
 
     const { history } = props
-    const columnas = [
-        { title: 'ID BIO', field: 'id_bio' },
-        { title: 'Nombre', field: 'firstNameEmp' },
-        { title: 'Email', field: 'emailEmp' },
-        { title: 'Sexo', field: 'sexoEmp' },
-        {
-            title: 'Estado', field: 'estadoEmp', render: (row) => row.estadoEmp === 'activo'
-                ? <div style={{ color: 'green' }}>{row.estadoEmp}</div>
-                : <div style={{ color: 'red' }}>{row.estadoEmp}</div>
-        },
-    ]
+    // const columnas = [
+    //     { title: 'ID BIO', field: 'id_bio' },
+    //     { title: 'Nombre', field: 'firstNameEmp' },
+    //     { title: 'Email', field: 'emailEmp' },
+    //     { title: 'Sexo', field: 'sexoEmp' },
+    //     {
+    //         title: 'Estado', field: 'estadoEmp', render: (row) => row.estadoEmp === 'activo'
+    //             ? <div style={{ color: 'green' }}>{row.estadoEmp}</div>
+    //             : <div style={{ color: 'red' }}>{row.estadoEmp}</div>
+    //     },
+    // ]
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(0)
     const scrollChange = (e, newScroll) => {
@@ -269,7 +303,7 @@ const ControlEmpleado = (props) => {
     //-----------------------------------------------------------------
 
     // console.log(empleado)
-    console.log(changeData)
+    // console.log(changeData)
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
@@ -282,54 +316,21 @@ const ControlEmpleado = (props) => {
                             scrollButtons="auto"
                             style={{ height: 60 }}
                         >
-                            <Tab label="Pesonal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{height: 20}} />} />
-                            <Tab label="Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/registerCargo' icon={<DeviceHubIcon style={{height: 20}} />} />
-                            <Tab label="Horarios" style={{ fontSize: 'x-small' }} component={Link} to='/controlHorarios' icon={<TimerIcon style={{height: 20}} />} />
+                            <Tab label="Pesonal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{ height: 20 }} />} />
+                            <Tab label="Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/registerCargo' icon={<DeviceHubIcon style={{ height: 20 }} />} />
+                            <Tab label="Horarios" style={{ fontSize: 'x-small' }} component={Link} to='/controlHorarios' icon={<TimerIcon style={{ height: 20 }} />} />
                         </Tabs>
                     </Paper>
 
                 </Grid>
 
                 <Typography variant='h4' align='center' className={classes.TyphoAlineation}>Lista de Empleados</Typography>
-                <Button component={Link} to='/registerEmp' style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
-                <Container maxWidth='md'>
-                    <MaterialTable
-                        title='Lista de Empleados'
-                        columns={columnas}
-                        data={empleado}
-                        options={{
-                            headerStyle: {
-                                backgroundColor: '#689f38',
-                                color: 'white'
-                            },
-                            actionsColumnIndex: -1
-                        }}
-                        actions={[
-                            {
-                                icon: 'edit',
-                                tooltip: 'editar',
-                                onClick: (e, rowData) => openModalEdit(rowData)
-                            },
-                            {
-                                icon: 'delete',
-                                tooltip: 'eliminar',
-                                onClick: (e, rowData) => openModalDelete(rowData)
-                            },
-                            {
-                                icon: 'save',
-                                tooltip: 'informacion',
-                                // onClick:(e,rowData)=>console.log('se hiza '+rowData.firstNameEmp)
-                                onClick: (e, rowData) => history.push('/infoEmp/' + rowData._id + '/' + rowData.id_bio + '/' + rowData.firstNameEmp)
-                            }
-                        ]}
-
-                    >
-                    </MaterialTable>
-                </Container>
+                <Button component={Link} to={{pathname:'/registerEmp',data:'admin'}} style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
+                {/* <Button style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button> */}
             </Container>
             <Container maxWidth='lg'>
-                <Typography align='center' variant='h5' style={{ paddingTop: '1rem', paddingBottom: '1rem', color: 'white' }}>Nueva lista</Typography>
-                <Grid container spacing={3} justify='center'>
+                {/* <Typography align='center' variant='h5' style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>Nueva lista</Typography> */}
+                <Grid container spacing={3} justifyContent='center'>
                     {empleado &&
                         empleado.map(e => (
                             <Grid key={e._id} item xs={12} sm={3}>
@@ -349,7 +350,7 @@ const ControlEmpleado = (props) => {
                                         <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography>
                                         <Typography variant='subtitle1'>C.I.: {e.CIEmp}</Typography>
                                     </div>
-                                    <Grid container justify='space-evenly'>
+                                    <Grid container justifyContent='space-evenly'>
                                         <Tooltip title='edit'>
                                             <IconButton style={{ color: 'green' }} onClick={() => openModalEdit(e)}>
                                                 <EditIcon />
@@ -603,9 +604,10 @@ const ControlEmpleado = (props) => {
                             <div align='center'>
                                 <Paper component={Box} p={1} style={{ background: '#bdbdbd', width: '270px', height: '270px' }}>
                                     {/* {changeData.path ? <img src={'http://192.168.100.6:8000/' + changeData.path} style={{ width: '100%', height: '100% ' }} /> */}
-                                    {changeData.avatar ? <img src={changeData.avatar} style={{ width: '100%', height: '100% ' }} alt="#" />
+                                    {/* {changeData.avatar ? <img src={changeData.avatar} style={{ width: '100%', height: '100% ' }} alt="#" />
                                         // : <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} style={{ width: '100%', height: '100%' }} />}
-                                        : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#" />}
+                                        : <img src={preview} style={{ width: '100%', height: '100%' }} alt="#" />} */}
+                                    <img src={preview} style={{ width: '100%', height: '100%' }} alt="#" />
                                 </Paper>
                                 <input
                                     name='image'
@@ -835,7 +837,7 @@ const ControlEmpleado = (props) => {
 
                                 >
                                     <MenuItem value='activo'>Activo</MenuItem>
-                                    <MenuItem value='baja'>Dar de Baja</MenuItem>
+                                    <MenuItem value='baja'>Baja</MenuItem>
                                 </TextField>
                             </div>
                         </Grid>

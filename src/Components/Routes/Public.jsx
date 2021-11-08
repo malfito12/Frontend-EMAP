@@ -1,15 +1,20 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+// import { Route,Redirect } from 'react-router-dom'
+import {Route, Redirect } from 'react-router-dom'
 
-const Public = ({component: Component, ...rest}) => {
-    const userLogged=localStorage.getItem('token')
-    // const userLogged=false
+const Public = ({ component: Component, ...rest }) => {
+    const userLogged = localStorage.getItem('token')
     if(userLogged){
         return <Redirect to='/homeadmin' />
     }
-    return (
-        <Route {...rest} render={Component} />
-    )
+    // if (userLogged && rols==='admin') {
+    //     console.log('entra a admin')
+    //     return <Redirect to='/homeadmin' />
+    // }else if(userLogged && rols==='usuario'){
+    //     console.log('entra a user')
+    //     return <Redirect to='/homeuser' />
+    // }
+    return <Route {...rest} component={Component} />
 }
 
 export default Public

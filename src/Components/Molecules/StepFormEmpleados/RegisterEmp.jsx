@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
         width: 200,
     },
 }))
-const RegisterEmp = () => {
+const RegisterEmp = (props) => {
+    // console.log(props.location.data)
     const classes = useStyles()
     const [image, setImage] = useState(null)
     const [preview, setPreview] = useState(null)
@@ -612,7 +613,8 @@ const RegisterEmp = () => {
                         </Grid>
                     </Grid>
                     <div align='center'>
-                        <Button /*component={Link} to='/controlEmp'*/ onClick={addUserAndModal} style={{ marginBottom: '3rem' }} variant='contained' color='primary'>REGISTRAR</Button>
+                        <Button /*component={Link} to='/controlEmp'*/ onClick={addUserAndModal} style={{ marginBottom: '3rem',marginRight:'1rem' }} variant='contained' color='primary'>REGISTRAR</Button>
+                        <Button component={Link} to={props.location.data==='admin'? '/controlEmp':'/userControlEmp'}  style={{ marginBottom: '3rem' }} variant='contained' color='secondary'>cancelar</Button>
                     </div>
                 </Container>
             </Container>
@@ -622,9 +624,8 @@ const RegisterEmp = () => {
                 onClose={closeModalMessage}
             >
                 <Container maxWidth='sm' align='center'>
-
                     <Typography variant='h6' className={classes.TyphoAlineation}>Empleado Registrado</Typography>
-                    <Button style={{ marginBottom: '1rem' }} variant='contained' color='primary' component={Link} to='/controlEmp'>aceptar</Button>
+                    <Button style={{ marginBottom: '1rem' }} variant='contained' color='primary' component={Link} to={props.location.data==='admin'? '/controlEmp':'/userControlEmp'}>aceptar</Button>
                 </Container>
             </Dialog>
         </>

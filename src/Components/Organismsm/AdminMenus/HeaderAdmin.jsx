@@ -7,7 +7,8 @@ const HeaderAdmin = () => {
         <>
           {localStorage.getItem('token')
             ?<DrawerMainAdmin />
-            :<PublicMainMenu />
+            // :<PublicMainMenu />
+            :null
           }  
         </>
     )

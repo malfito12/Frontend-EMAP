@@ -1,10 +1,11 @@
-import { Button, Container, FormControlLabel, Box, FormLabel, Grid, makeStyles, Paper, Radio, RadioGroup, Tab, Tabs, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
+import { Button, Container, FormControlLabel, Box, FormLabel, Grid, makeStyles, Paper, Radio, RadioGroup, Tab, Tabs, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Dialog } from '@material-ui/core'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';
+import { AlertAddPlanillaR, AlertErrorPlanillaR } from '../../../Atoms/Alerts/AlertReEdDe';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
 const RefrigerioPreRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
+    const [openAlertPlanilla,setOpenAlertPlanilla]=useState(false)
+    const [openAlertErrorPlanilla,setOpenAlertErrorPlanilla]=useState(false)
+    const [openConfirmPlanilla,setOpenConfirmPlanilla]=useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
         typePlanilla: '',
@@ -47,16 +51,25 @@ const RefrigerioPreRevision = () => {
             .catch(err => console.log(err))
     }
     //---------------POST PLANILLA REFRIGERIO--------------------------------------
+    const openModalConfirmPlanilla=()=>{
+        setOpenConfirmPlanilla(true)
+    }
+    const closeModalConfirmPlanilla=()=>{
+        setOpenConfirmPlanilla(false)
+    }
     const postPlanilla=async(e)=>{
         e.preventDefault()
         if(planilla.length>0){
             await axios.post(`${PORT_URL}planillarefrigerio`,planilla)
             .then(resp=>{
-                alert('datos guardados')
-                console.log(resp.data)})
+                closeModalConfirmPlanilla()
+                openCloseAlertPlanilla()
+                // console.log(resp.data)
+            })
             .catch(err=>console.log(err))
         }else{
-            alert('no se puedo guardar informacion vacia')
+            closeModalConfirmPlanilla()
+            openCloseAlertErrorPlanilla()
         }
     }
     //---------------HANDLE CHANGE--------------------------------------
@@ -70,6 +83,13 @@ const RefrigerioPreRevision = () => {
     const [scroll, setScroll] = useState(0)
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
+    }
+    //-----------------------------ALERTAS---------------------------------
+    const openCloseAlertPlanilla=()=>{
+        setOpenAlertPlanilla(!openAlertPlanilla)
+    }
+    const openCloseAlertErrorPlanilla=()=>{
+        setOpenAlertErrorPlanilla(!openAlertErrorPlanilla)
     }
     //-----------------------------------------------------------------
     console.log(planilla)
@@ -99,7 +119,7 @@ const RefrigerioPreRevision = () => {
                             <Paper component={Box} p={2} className={classes.spacingBot}>
                                 <Typography variant='subtitle1' align='center' className={classes.spacingBot}>BUSCAR INFORMACION</Typography>
                                 <form onSubmit={getPlanilla}>
-                                    <div align='center'><FormLabel >Tipo de Planilla</FormLabel></div>
+                                    <div align='center'><FormLabel >Refrigerio Tipo de Planilla</FormLabel></div>
                                     <RadioGroup
                                         name='typePlanilla'
                                         defaultValue=""
@@ -189,12 +209,30 @@ const RefrigerioPreRevision = () => {
                                 </Table>
                             </TableContainer>
                             <div align='center'>
-                                <Button size='small' variant='contained' color='primary' onClick={postPlanilla}>guardar informacion</Button>
+                                <Button size='small' variant='contained' color='primary' onClick={openModalConfirmPlanilla}>guardar informacion</Button>
                             </div>
                         </Paper>
                     </Grid>
                 </Grid>
             </Container>
+            {/*----------------MODAL DE CONFIRMACION--------------*/}
+            <Dialog
+                open={openConfirmPlanilla}
+                onClose={closeModalConfirmPlanilla}
+                maxWidth='xs'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography variant='subtitle1' align='center' >Los datos existentes se modificarán</Typography>
+                    <Typography variant='subtitle1' align='center' className={classes.spacingBot}>¿Estas seguro de realizar esta acción?</Typography>
+                    <Grid container justifyContent='space-evenly'>
+                        <Button size='small' variant='contained' color='primary' onClick={postPlanilla}>aceptar</Button>
+                        <Button size='small' variant='contained' color='secondary' onClick={closeModalConfirmPlanilla}>cancelar</Button>
+                    </Grid>
+                </Paper>
+            </Dialog>
+            {/*---------------------ALERTAS-----------------*/}
+            <AlertAddPlanillaR open={openAlertPlanilla} onClose={openCloseAlertPlanilla} />
+            <AlertErrorPlanillaR open={openAlertErrorPlanilla} onClose={openCloseAlertErrorPlanilla} />
         </>
     )
 }

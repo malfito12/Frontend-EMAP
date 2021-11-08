@@ -1,7 +1,7 @@
 import { Button, Box, Container, Dialog, makeStyles, Paper, Typography, TextField, Grid, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, MenuItem, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { PORT_URL } from '../../../PortURL'
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -19,10 +19,13 @@ const RegisterCargo = () => {
     const classes = useStyles()
     const [openRegisterDepartament, setOpenRegisterDepartament] = useState(false)
     const [openDeleteDepartament, setOpenDeleteDepartament] = useState(false)
+    const [openEditDepartament,setOpenEditDepartament]=useState(false)
     const [departament, setDepartament] = useState([])
     const [openRegisterCargo, setOpenRegisterCargo] = useState(false)
+    const [openEditCargo, setOpenEditCargo] = useState(false)
     const [openDeleteCargo, setOpenDeleteCargo] = useState(false)
     const [cargo, setCargo] = useState([])
+    const [empleadoCargo, setEmpleadoCargo] = useState([])
     const [changeData, setChangeData] = useState({
         cod_cargo: '',
         nameCargo: '',
@@ -37,6 +40,7 @@ const RegisterCargo = () => {
     useEffect(() => {
         getCargo()
         getDepartament()
+        getEmpleadoCargo()
     }, [])
     //----------------POST CARGO-----------------------------
     const openModalRegisterCargo = () => {
@@ -58,7 +62,9 @@ const RegisterCargo = () => {
             haber_basico: changeData.haber_basico
         }
         await axios.post(`${PORT_URL}cargo`, data)
-            .then(resp => console.log(resp.data))
+            .then(resp =>{ 
+                console.log(resp.data)
+            })
             .catch(err => console.log(err))
         closeModalRegisterCargo()
         getCargo()
@@ -71,7 +77,45 @@ const RegisterCargo = () => {
 
     }
     // console.log(cargo)
-    //--------------------------------------------------------------
+    //-------------------UPDATE CARGO--------------------------------
+    const openModalEditCargo = (e) => {
+        setChangeData(e)
+        setOpenEditCargo(true)
+    }
+    const closeModalEditCargo = () => {
+        setOpenEditCargo(false)
+    }
+    const editCargo = async (e) => {
+        e.preventDefault()
+        const contDep = departament.length
+        var cod_dep;
+        try {
+            for (var i = 0; i < contDep; i++) {
+                if (changeData.nameDepartament === departament[i].nameDepartament) {
+                    cod_dep = departament[i].cod_dep
+                    break;
+                }
+            }
+            const data = {
+                _id:changeData._id,
+                cod_cargo: changeData.cod_cargo,
+                nameCargo: changeData.nameCargo,
+                cod_dep:cod_dep,
+                nameDepartament: changeData.nameDepartament,
+                haber_basico: changeData.haber_basico
+            }
+            const id=changeData._id
+            await axios.put(`${PORT_URL}cargo/${id}`,data)
+            .then(resp=>{
+                closeModalEditCargo()
+                getCargo()
+                console.log(resp.data)
+            })
+            .catch(err=>console.log(err))
+        } catch (error) {
+            console.log(error)
+        }
+    }
     //----------------------DELETE CARGO--------------------------------
     const openModalDeleteCargo = (e) => {
         setChangeData(e)
@@ -115,7 +159,27 @@ const RegisterCargo = () => {
             .catch(err => console.log(err))
 
     }
-    //-------------------------UPDATE DEPARTAMENT-----------------------
+    //----------------EDIT DEPARTAMENTO-------------------------------
+    const openModalEditDepartament=(e)=>{
+        // console.log(e)
+        setChangeData2(e)
+        setOpenEditDepartament(true)
+    }
+    const closeModalEditDepartament=()=>{
+        setOpenEditDepartament(false)
+    }
+    const editDepartament=async(e)=>{
+        e.preventDefault()
+        const id=changeData2._id
+        await axios.put(`${PORT_URL}departament/${id}`,changeData2)
+        .then(resp=>{
+            closeModalEditDepartament()
+            getDepartament()
+            getCargo()
+            console.log(resp.data)
+        })
+        .catch(err=>console.log(err))
+    }
     //--------------------------DELETE DEPARTAMENT----------------------
     const openModalDeteleDepartament = (e) => {
         setChangeData2(e)
@@ -146,20 +210,28 @@ const RegisterCargo = () => {
             [e.target.name]: e.target.value
         })
     }
+    //----------------------GET EMPLEADOS CARGO-------------------------------------
+    const getEmpleadoCargo = async () => {
+        await axios.get(`${PORT_URL}empleadoCargo`)
+            .then(resp => {
+                setEmpleadoCargo(resp.data)
+            })
+            .catch(err => console.log(err))
+    }
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(1)
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //-----------------------------------------------------------------
     //--------------------------------------------------------------
-    console.log(changeData)
+    // console.log(changeData)
     // console.log(changeData2)
+    // console.log(empleadoCargo)
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
                 <Grid item xs={12} sm={5}>
-                    <Paper  className={classes.spacingBot}>
+                    <Paper className={classes.spacingBot}>
                         <Tabs
                             value={scroll}
                             onChange={scrollChange}
@@ -173,20 +245,20 @@ const RegisterCargo = () => {
                         </Tabs>
                     </Paper>
                 </Grid>
-                <Typography className={classes.spacingBot} variant='h5' align='center'>Registro de Cargos</Typography>
-                <Container maxWidth='lg'>
-                    <Grid container spacing={3}>
+                <Typography className={classes.spacingBot} variant='h5' align='center'>CONTROL DE CARGOS</Typography>
+                <Container maxWidth='lg' style={{paddingBottom:'1rem'}}>
+                    <Grid container spacing={3} className={classes.spacingBot}>
                         {/*----------------------------TABLE DEPARTAMENT---------------------------*/}
                         <Grid item xs={12} sm={6}>
                             <Button onClick={openModalRegisterDepartament} className={classes.spacingBot} variant='contained' color='primary'>Registrar Departamento</Button>
                             <Paper>
-                                <TableContainer style={{ maxHeight: 440 }}>
-                                    <Table stickyHeader>
+                                <TableContainer style={{ maxHeight: 340 }}>
+                                    <Table stickyHeader style={{ minWidth: 600 }}>
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre Departamento</TableCell>
-                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}></TableCell>
+                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Acciones</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -195,9 +267,9 @@ const RegisterCargo = () => {
                                                     <TableCell>{d.cod_dep}</TableCell>
                                                     <TableCell>{d.nameDepartament}</TableCell>
                                                     <TableCell>
-                                                        <Grid container justify='space-evenly'>
+                                                        <Grid container justifyContent='space-evenly'>
                                                             <Tooltip title='editar'>
-                                                                <IconButton size='small' >
+                                                                <IconButton size='small' onClick={()=>openModalEditDepartament(d)}>
                                                                     <SettingsIcon />
                                                                 </IconButton>
                                                             </Tooltip>
@@ -224,15 +296,15 @@ const RegisterCargo = () => {
                         <Grid item xs={12} sm={6}>
                             <Button onClick={openModalRegisterCargo} className={classes.spacingBot} variant='contained' color='primary'>Registrar Cargo</Button>
                             <Paper>
-                                <TableContainer style={{ maxHeight: 440 }}>
-                                    <Table stickyHeader>
+                                <TableContainer style={{ maxHeight: 340 }}>
+                                    <Table stickyHeader style={{ minWidth: 700 }}>
                                         <TableHead>
                                             <TableRow>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre</TableCell>
-                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Depatamento</TableCell>
+                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Haber Basico</TableCell>
-                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}></TableCell>
+                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Acciones</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
@@ -243,9 +315,9 @@ const RegisterCargo = () => {
                                                     <TableCell>{c.nameDepartament}</TableCell>
                                                     <TableCell>{c.haber_basico}</TableCell>
                                                     <TableCell>
-                                                        <Grid container justify='space-evenly'>
+                                                        <Grid container justifyContent='space-evenly'>
                                                             <Tooltip title='editar'>
-                                                                <IconButton size='small' >
+                                                                <IconButton size='small' onClick={()=>openModalEditCargo(c)}>
                                                                     <SettingsIcon />
                                                                 </IconButton>
                                                             </Tooltip>
@@ -269,7 +341,41 @@ const RegisterCargo = () => {
                             </Paper>
                         </Grid>
                     </Grid>
-
+                    <Typography align='center' variant='h5' className={classes.spacingBot}>Lista Cargos del Personal</Typography>
+                    <Paper component={Box} p={1}>
+                        <TableContainer style={{ maxHeight: 340 }}>
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Id Biometrico</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombres</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido P</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido M</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Cargo</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {empleadoCargo.length > 0 ? (
+                                        empleadoCargo.map(e => (
+                                            <TableRow key={e._id}>
+                                                <TableCell>{e.id_bio}</TableCell>
+                                                <TableCell>{e.firstNameEmp}</TableCell>
+                                                <TableCell>{e.lastNameEmpP}</TableCell>
+                                                <TableCell>{e.lastNameEmpM}</TableCell>
+                                                <TableCell>{e.departamentEmp}</TableCell>
+                                                <TableCell>{e.cargoEmp}</TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell align='center' colSpan='6'>no existe informacion</TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
                 </Container>
             </Container>
             {/*-------------------------------DEPARTAMENT------------------------------*/}
@@ -306,6 +412,46 @@ const RegisterCargo = () => {
                         <Button onClick={postDepartament} variant='contained' color='primary' >registrar</Button>
                         <Button onClick={closeModalRegisterDepartament} variant='contained' color='secondary'>cancelar</Button>
                     </Grid>
+                </Paper>
+            </Dialog>
+            <Dialog
+                open={openEditDepartament}
+                onClose={closeModalEditDepartament}
+                maxWidth='sm'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography variant='subtitle1' align='center' className={classes.spacingBot}>EDITAR DEPARTAMENTO</Typography>
+                    <form onSubmit={editDepartament}>
+                        <Grid container >
+                            <TextField
+                                name='cod_dep'
+                                label='Codigo de Departamento'
+                                variant='outlined'
+                                fullWidth
+                                type='number'
+                                size='small'
+                                className={classes.spacingBot}
+                                onChange={handleChange2}
+                                defaultValue={changeData2.cod_dep}
+                                required
+                            />
+                            <TextField
+                                name='nameDepartament'
+                                label='Nombre Departamento'
+                                variant='outlined'
+                                fullWidth
+                                size='small'
+                                className={classes.spacingBot}
+                                onChange={handleChange2}
+                                defaultValue={changeData2.nameDepartament}
+                                required
+                            />
+                        </Grid>
+                        <Grid container justifyContent='space-evenly'>
+                            <Button size='small' type='submit' variant='contained' color='primary' >editar</Button>
+                            <Button size='small' onClick={closeModalEditDepartament} variant='contained' color='secondary'>cancelar</Button>
+                        </Grid>
+                    </form>
                 </Paper>
             </Dialog>
             {/*-------------------------------CARGO------------------------------*/}
@@ -369,6 +515,78 @@ const RegisterCargo = () => {
                     </Grid>
                 </Paper>
             </Dialog>
+
+            <Dialog
+                open={openEditCargo}
+                onClose={closeModalEditCargo}
+                maxWidth='sm'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography variant='subtitle1' align='center'>EDITAR CARGO</Typography>
+                    <form onSubmit={editCargo}>
+                        <Grid container>
+                            <TextField
+                                name='nameDepartament'
+                                label='Departamento'
+                                variant='outlined'
+                                align='center'
+                                select
+                                value={changeData.nameDepartament}
+                                size='small'
+                                fullWidth
+                                className={classes.spacingBot}
+                                onChange={handleChange}
+                                required
+                            >
+                                {departament.length > 0 ? departament.map(d => (
+                                    // <MenuItem key={d._id} value={`${d.nameDepartament}/${d.cod_dep}`}>{d.nameDepartament}</MenuItem>
+                                    <MenuItem key={d._id} value={d.nameDepartament}>{d.nameDepartament}</MenuItem>
+                                )) : (null)}
+                            </TextField>
+                            <TextField
+                                name='cod_cargo'
+                                label='Codigo de Cargo'
+                                variant='outlined'
+                                type='number'
+                                fullWidth
+                                size='small'
+                                className={classes.spacingBot}
+                                defaultValue={changeData.cod_cargo}
+                                onChange={handleChange}
+                                required
+                            />
+                            <TextField
+                                name='nameCargo'
+                                label='Nombre del Cargo'
+                                variant='outlined'
+                                fullWidth
+                                size='small'
+                                className={classes.spacingBot}
+                                defaultValue={changeData.nameCargo}
+                                onChange={handleChange}
+                                required
+                            />
+                            <TextField
+                                name='haber_basico'
+                                label='Haber Basico'
+                                variant='outlined'
+                                fullWidth
+                                type='number'
+                                inputProps={{ step: 'any' }}
+                                size='small'
+                                className={classes.spacingBot}
+                                defaultValue={changeData.haber_basico}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Grid>
+                        <Grid container justifyContent='space-evenly'>
+                            <Button size='small' type='submit' variant='contained' color='primary' >editar</Button>
+                            <Button size='small' onClick={closeModalEditCargo} variant='contained' color='secondary'>cancelar</Button>
+                        </Grid>
+                    </form>
+                </Paper>
+            </Dialog>
             {/* //--------------------MODAL DELETE DEPARTAMENT---------------------- */}
             <Dialog
                 open={openDeleteDepartament}
@@ -377,7 +595,7 @@ const RegisterCargo = () => {
             >
                 <Paper component={Box} p={2}>
                     <Typography className={classes.spacingBot} variant='subtitle1' align='center'>Estas seguro de eliminar el Departamento "{changeData2.nameDepartament}"</Typography>
-                    <Grid container justify='space-evenly'>
+                    <Grid container justifyContent='space-evenly'>
                         <Button onClick={deleteDepartament} size='small' variant='contained' color='primary'>aceptar</Button>
                         <Button onClick={closeModalDeleteDepartament} size='small' variant='contained' color='secondary'>cancelar</Button>
                     </Grid>
@@ -391,7 +609,7 @@ const RegisterCargo = () => {
             >
                 <Paper component={Box} p={2}>
                     <Typography className={classes.spacingBot} variant='subtitle1' align='center'>Estas seguro de eliminar el Cargo "{changeData.nameCargo}"</Typography>
-                    <Grid container justify='space-evenly'>
+                    <Grid container justifyContent='space-evenly'>
                         <Button onClick={deleteCargo} size='small' variant='contained' color='primary'>aceptar</Button>
                         <Button onClick={closeModaldeleteCargo} size='small' variant='contained' color='secondary'>cancelar</Button>
                     </Grid>

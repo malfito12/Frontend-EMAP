@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch,Route } from 'react-router-dom'
 import RegisterCargo from '../../Pages/PagesAdmin/RegisterCargo'
 import InfoEmp from '../../Molecules/StepFormEmpleados/InfoEmp'
 import RegisterEmp from '../../Molecules/StepFormEmpleados/RegisterEmp'
@@ -22,49 +22,62 @@ import SueldosPreRevision from '../../Pages/PagesAdmin/Planillas/SueldosPreRevis
 import SuledosRevision from '../../Pages/PagesAdmin/Planillas/SueldosRevision'
 import RefrigerioPreRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioPreRevision'
 import RefrigerioRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioRevision'
-import ControlVacaciones from '../../Pages/ControlVacaciones'
+import ControlVacaciones from '../../Pages/PagesAdmin/ControlVacaciones'
+import ReportePersonal from '../../Pages/PagesAdmin/Reportes/ReportePersonal'
+import ReporteMovimiento from '../../Pages/PagesAdmin/Reportes/ReporteMovimiento'
+import Memorandums from '../../Pages/PagesAdmin/Reportes/Memorandums'
+import ReporteAltasBajas from '../../Pages/PagesAdmin/Reportes/ReporteAltasBajas'
+import Page404 from '../Page404'
 
 const AppAdmin = () => {
     return (
         <Router>
             <HeaderAdmin />
             <Switch>
-                <Protected path='/homeadmin' exact component={props=><HomeAdmin {...props} />} />
-                <Protected path='/controluser' component={props=><ControlUsers {...props} />} />
-                <Protected path='/registeruser' component={props=><RegisterUser {...props} />} />
+                <Protected exact path='/homeadmin'  component={props=><HomeAdmin {...props} />} />
+                <Protected exact path='/controluser' component={props=><ControlUsers {...props} />} />
+                <Protected exact path='/registeruser' component={props=><RegisterUser {...props} />} />
                 
-                <Protected path='/controlEmp' component={props=><ControlEmpleado {...props} />} />
-                <Protected path='/registerEmp' component={props=><RegisterEmp {...props} />} />
+                <Protected exact path='/controlEmp' component={props=><ControlEmpleado {...props} />} />
+                <Protected exact path='/registerEmp' component={props=><RegisterEmp {...props} />} />
                 {/* <Protected path='/infoEmp' component={props=><InfoEmp {...props} />} /> */}
-                <Protected path='/infoEmp/:id' component={props=><InfoEmp {...props} />} />
+                <Protected exact path='/infoEmp/:id' component={props=><InfoEmp {...props} />} />
                 
-                <Protected path='/controlPermisos' component={props=><ControlPermisos {...props} />} />
-                <Protected path='/controlVacaciones' component={props=><ControlVacaciones {...props} />} />
+                <Protected exact path='/controlPermisos' component={props=><ControlPermisos {...props} />} />
+                <Protected exact path='/controlVacaciones' component={props=><ControlVacaciones {...props} />} />
                 
-                <Protected path='/controlCargos' component={props=><ControlCargos {...props} />} />
-                <Protected path='/registerCargo' component={props=><RegisterCargo {...props} />} />
+                <Protected exact path='/controlCargos' component={props=><ControlCargos {...props} />} />
+                <Protected exact path='/registerCargo' component={props=><RegisterCargo {...props} />} />
                 {/* <Protected path='/registerCargo/:id' component={props=><RegisterCargo {...props} />} /> */}
 
 
-                <Protected path='/controlHorarios' component={props=><ControlHorario {...props} />} />
+                <Protected exact path='/controlHorarios' component={props=><ControlHorario {...props} />} />
 
-                <Protected path='/asigHorario' component={props=><AsigHorario {...props} />} />
+                <Protected exact path='/asigHorario' component={props=><AsigHorario {...props} />} />
 
-                <Protected path='/controlFeriados' component={props=><ControlFeriado {...props} />} />
+                <Protected exact path='/controlFeriados' component={props=><ControlFeriado {...props} />} />
                 
-                <Protected path='/generalConfig' component={props=><GeneralConfig {...props} />} />
-                <Protected path='/antiguedadEmp' component={props=><AntiguedadEmp {...props} />} />
+                <Protected exact path='/generalConfig' component={props=><GeneralConfig {...props} />} />
+                <Protected exact path='/antiguedadEmp' component={props=><AntiguedadEmp {...props} />} />
 
-                <Protected path='/kardexPreRevision' component={props=><KardexPreRevision {...props} />} />
-                <Protected path='/kardexRevision' component={props=><KardexRevision {...props} />} />
+                <Protected exact path='/kardexPreRevision' component={props=><KardexPreRevision {...props} />} />
+                <Protected exact path='/kardexRevision' component={props=><KardexRevision {...props} />} />
+
+                {/*----------------------REPORTES--------------------*/}
+                <Protected exact path='/reportePersonal' component={props=><ReportePersonal {...props} />} />
+                <Protected exact path='/reporteMovimiento' component={props=><ReporteMovimiento {...props} />} />
+                <Protected exact path='/reporteAltasBajas' component={props=><ReporteAltasBajas {...props} />} />
+                <Protected exact path='/memorandums' component={props=><Memorandums {...props} />} />
+
 
                 {/*---------------------------PLANILLAS--------------------*/}
-                <Protected path='/sueldosPreRevision' component={props=><SueldosPreRevision {...props} />} />
-                <Protected path='/sueldosRevision' component={props=><SuledosRevision {...props} />} />
+                <Protected exact path='/sueldosPreRevision' component={props=><SueldosPreRevision {...props} />} />
+                <Protected exact path='/sueldosRevision' component={props=><SuledosRevision {...props} />} />
 
-                <Protected path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
-                <Protected path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />
+                <Protected exact path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
+                <Protected exact path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />
                 
+                <Route component={Page404}/>
             </Switch>
         </Router>
     )
