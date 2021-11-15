@@ -35,6 +35,14 @@ const ControlHorario = () => {
         orden: '',
         est: '',
         // observaciones2:''
+
+        Lunes: '',
+        Martes: '',
+        Miercoles: '',
+        Jueves: '',
+        Viernes: '',
+        Sabado: '',
+        Domingo: ''
     })
     useEffect(() => {
         getHorario()
@@ -99,13 +107,13 @@ const ControlHorario = () => {
             })
             .catch(err => { alert('el nombre del horario ya existe'); console.log(err) })
         // closeModalAddHrs()
-        getHorario()
+        // getHorario()
     }
 
     //-----------------PUT---------------------------------
-    const openModalEditHrs = (h) => {
-        setChangeData(h)
-        console.log(h)
+    const openModalEditHrs = (e) => {
+        setChangeData(e)
+        setChecked({ lunes: e.Lunes, martes: e.Martes, miercoles: e.Miercoles, jueves: e.Jueves, viernes: e.Viernes, sabado: e.Sabado, domingo: e.Domingo })
         setOpenEditHrs(true)
     }
     const closeModalEditHrs = () => {
@@ -114,28 +122,30 @@ const ControlHorario = () => {
     const editHorario = async (e) => {
         e.preventDefault()
         const id = changeData._id
-        var typeHorarioMod;
+        var lunes, martes, miercoles, jueves, viernes, sabado, domingo, typeHorarioMod, aux;
+        //---asignar tipo de horario------
         if (changeData.est === 'Diurno') {
             typeHorarioMod = 1
         } else typeHorarioMod = 2
-        var data = {
-            descripcion: changeData.descripcion,
-            cod: changeData.cod,
-            tolerancia: changeData.tolerancia,
-            ingreso1: changeData.ingreso1,
-            salida1: changeData.salida1,
-            ingreso2: changeData.ingreso2,
-            salida2: changeData.salida2,
-            feriado: changeData.feriado,
-            orden: changeData.orden,
-            est: changeData.est,
-            tipoHorario: typeHorarioMod
-        }
+
+        //convertir los dias se semana en cod
+        if (checked.lunes === true) { lunes = '1' } else { lunes = '0' }
+        if (checked.martes === true) { martes = '1' } else { martes = '0' }
+        if (checked.miercoles === true) { miercoles = '1' } else { miercoles = '0' }
+        if (checked.jueves === true) { jueves = '1' } else { jueves = '0' }
+        if (checked.viernes === true) { viernes = '1' } else { viernes = '0' }
+        if (checked.sabado === true) { sabado = '1' } else { sabado = '0' }
+        if (checked.domingo === true) { domingo = '1' } else { domingo = '0' }
+        const result = lunes + martes + miercoles + jueves + viernes + sabado + domingo
+        aux = { cod: result, tipoHorario: typeHorarioMod }
+        const data = { ...changeData, ...aux }
         await axios.put(`${PORT_URL}horario/${id}`, data)
-            .then(resp => { console.log(resp.data) })
+            .then(resp => {
+                // console.log(resp.data) 
+                closeModalEditHrs()
+                getHorario()
+            })
             .catch(err => { console.log(err) })
-        closeModalEditHrs()
-        getHorario()
     }
     //-----------------DELETE---------------------------------
     const openModalDeleteHrs = (h) => {
@@ -145,13 +155,16 @@ const ControlHorario = () => {
     const closeModalDeleteHrs = () => {
         setOpenDeleteHrs(false)
     }
-    const deleteHorario = async () => {
+    const deleteHorario = async (e) => {
+        e.preventDefault()
         const id = changeData._id
         await axios.delete(`${PORT_URL}horario/${id}`)
-            .then(resp => { console.log(resp.data) })
+            .then(resp => {
+                closeModalDeleteHrs()
+                getHorario()
+                console.log(resp.data)
+            })
             .catch(err => { console.log(err) })
-        closeModalDeleteHrs()
-        getHorario()
     }
     //-----------------CHANGE_DATA---------------------------------
     const handleChange = e => {
@@ -273,7 +286,7 @@ const ControlHorario = () => {
                 </Container>
                 {/*-------------BOTTON DE RESGISTRO DE HORARIOS----------------*/}
                 <Container maxWidth='lg'>
-                    <Grid container justify='space-evenly'>
+                    <Grid container justifyContent='space-evenly'>
                         {array.length > 0 ? (
                             array.map((h, index) => (
                                 <Paper component={Box} p={2} key={index} style={{ width: 500 }} className={classes.spacingBott}>
@@ -292,7 +305,7 @@ const ControlHorario = () => {
                                         <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Sabado} />} label='Sabado' />
                                         <FormControlLabel control={<Checkbox size='small' color='primary' checked={h.Domingo} />} label='Domingo' />
                                     </div>
-                                    <Grid container justify='space-evenly'>
+                                    <Grid container justifyContent='space-evenly'>
                                         <Button onClick={() => openModalEditHrs(h)} size='small' variant='contained' color='primary' >editar</Button>
                                         <Button onClick={() => openModalDeleteHrs(h)} size='small' variant='contained' color='secondary'>eliminar</Button>
                                     </Grid>
@@ -349,31 +362,6 @@ const ControlHorario = () => {
 
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    {/* <TextField
-                                        name='observaciones'
-                                        label='Observaciones'
-                                        variant='outlined'
-                                        fullWidth
-                                        select
-                                        className={classes.spacingBott}
-                                        onChange={handleChange}
-                                        value={changeData.observaciones}
-                                        required
-                                    >
-                                        {data.map((d, index) => (
-                                            <MenuItem key={index} value={`${d.cod}/${d.observacion}`} >{d.observacion}</MenuItem>
-                                        ))}
-                                    </TextField> */}
-                                    {/* <TextField
-                                        name='tipoHorario'
-                                        label='Tipo de Horario'
-                                        variant='outlined'
-                                        fullWidth
-                                        type='number'
-                                        className={classes.spacingBott}
-                                        onChange={handleChange}
-                                        required
-                                    /> */}
                                     <TextField
                                         name='orden'
                                         label='Orden'
@@ -381,7 +369,7 @@ const ControlHorario = () => {
                                         fullWidth
                                         className={classes.spacingBott}
                                         onChange={handleChange}
-                                        // required
+                                    // required
                                     />
                                     <TextField
                                         name='est'
@@ -399,7 +387,7 @@ const ControlHorario = () => {
                                     </TextField>
                                 </Grid>
                             </Grid>
-                            <Grid container item xs={12} sm={12} justify='space-evenly' className={classes.spacingBott}>
+                            <Grid container item xs={12} sm={12} justifyContent='space-evenly' className={classes.spacingBott}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -486,7 +474,7 @@ const ControlHorario = () => {
                                 />
                             </Grid>
                             {/* <Button variant='contained' color='primary' onClick={prueba}>prueba</Button> */}
-                            <Grid container item xs={12} sm={12} justify='space-evenly' className={classes.spacingBott} >
+                            <Grid container item xs={12} sm={12} justifyContent='space-evenly' className={classes.spacingBott} >
                                 <TextField
                                     name='ingreso1'
                                     label='ingreso1'
@@ -598,27 +586,6 @@ const ControlHorario = () => {
                                         <MenuItem value='Nocturno'>Nocturno</MenuItem>
                                     </TextField>
                                     <TextField
-                                        name='cod'
-                                        label='Observaciones'
-                                        variant='outlined'
-                                        fullWidth
-                                        className={classes.spacingBott}
-                                        onChange={handleChange}
-                                        defaultValue={changeData.cod}
-                                        required
-                                    />
-                                    {/* <TextField
-                                        name='tipoHorario'
-                                        label='Tipo de Horario'
-                                        variant='outlined'
-                                        fullWidth
-                                        type='number'
-                                        className={classes.spacingBott}
-                                        onChange={handleChange}
-                                        defaultValue={changeData.tipoHorario}
-                                        required
-                                    /> */}
-                                    <TextField
                                         name='orden'
                                         label='Orden'
                                         variant='outlined'
@@ -630,16 +597,16 @@ const ControlHorario = () => {
                                     />
                                 </Grid>
                             </Grid>
-                            {/* <Grid container item xs={12} sm={12} justify='space-evenly' className={classes.spacingBott}>
-                                <FormControlLabel control={<Checkbox name='lunes' color='primary' checked={changeData.Lunes} />} label='Lunes' />
-                                <FormControlLabel control={<Checkbox name='Martes' color='primary' checked={changeData.Martes} />} label='Martes' />
-                                <FormControlLabel control={<Checkbox name='Miercoles' color='primary' checked={changeData.Miercoles} />} label='Miercoles' />
-                                <FormControlLabel control={<Checkbox name='Jueves' color='primary' checked={changeData.Jueves} />} label='Jueves' />
-                                <FormControlLabel control={<Checkbox name='Viernes' color='primary' checked={changeData.Viernes} />} label='Viernes' />
-                                <FormControlLabel control={<Checkbox name='Sabado' color='primary' checked={changeData.Sabado} />} label='Sabado' />
-                                <FormControlLabel control={<Checkbox name='Domingo' color='primary' checked={changeData.Domingo} />} label='Domingo' />
-                            </Grid> */}
-                            <Grid container item xs={12} sm={12} justify='space-evenly' className={classes.spacingBott} >
+                            <Grid container item xs={12} sm={12} justifyContent='space-evenly' className={classes.spacingBott}>
+                                <FormControlLabel control={<Checkbox name='lunes' color='primary' checked={checked.lunes} onChange={hanldeChecked} />} label='Lunes' />
+                                <FormControlLabel control={<Checkbox name='martes' color='primary' checked={checked.martes} onChange={hanldeChecked} />} label='Martes' />
+                                <FormControlLabel control={<Checkbox name='miercoles' color='primary' checked={checked.miercoles} onChange={hanldeChecked} />} label='Miercoles' />
+                                <FormControlLabel control={<Checkbox name='jueves' color='primary' checked={checked.jueves} onChange={hanldeChecked} />} label='Jueves' />
+                                <FormControlLabel control={<Checkbox name='viernes' color='primary' checked={checked.viernes} onChange={hanldeChecked} />} label='Viernes' />
+                                <FormControlLabel control={<Checkbox name='sabado' color='primary' checked={checked.sabado} onChange={hanldeChecked} />} label='Sabado' />
+                                <FormControlLabel control={<Checkbox name='domingo' color='primary' checked={checked.domingo} onChange={hanldeChecked} />} label='Domingo' />
+                            </Grid>
+                            <Grid container item xs={12} sm={12} justifyContent='space-evenly' className={classes.spacingBott} >
                                 <TextField
                                     name='ingreso1'
                                     label='ingreso1'

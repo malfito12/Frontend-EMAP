@@ -10,6 +10,7 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import PrintIcon from '@material-ui/icons/Print'
 import moment from 'moment';
+import logo2emap from '../../../../images/logo2emap.png'
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -139,18 +140,21 @@ const RefrigerioRevision = () => {
         case 0: mes = 'DICIEMBRE'; break;
         default: mes = 'mes no valido'
     }
+    var image=logo2emap
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
+        doc.addImage(image, 0.5,0,1.5,1)
         doc.text("PLANILLA SERVICIO DE REFRIGERIO", pageWidth / 2, 0.5, 'center')
         doc.setFontSize(11)
         doc.text(`Correspondiente al mes de ${mes} de ${numeroAnio}`, pageWidth / 2, 0.7, 'center');
         doc.setFontSize(12)
         doc.text(`PERSONAL ${(changeData.typePlanilla).toUpperCase()} EN FUNCIONAMIENTO`, pageWidth / 2, 0.9, 'center');
         doc.autoTable({ html: "#id-table", startY: 1, styles: { fontSize: 5, halign: 'center' } })
-        doc.output('dataurlnewwindow')
+        // doc.output('dataurlnewwindow')
+        window.open(doc.output('bloburi'))
     }
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(1)

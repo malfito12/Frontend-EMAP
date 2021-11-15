@@ -15,7 +15,7 @@ const AppBarAdmin = (props) => {
         localStorage.removeItem('token')
         localStorage.removeItem('rols')
         localStorage.removeItem('username')
-        window.location='/login'
+        window.location='/'
     }
     return (
         <div>

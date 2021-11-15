@@ -6,7 +6,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { withRouter } from 'react-router-dom'
-import logoemap from '../../../images/logoemap.png'
+import logo2emap from '../../../images/logo2emap.png'
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -138,7 +138,7 @@ const DrawerMenuAdmin = (props) => {
             }}
         >
             <div className={classes.drawerHeader}>
-                <img src={logoemap} style={{ width: 100, height: 35, marginRight: '2rem' }} alt='#' />
+                <img src={logo2emap} style={{ width: 100, height: 50, marginRight: '2rem' }} alt='#' />
                 {/* <div style={{flexGrow:1}}></div> */}
                 <IconButton onClick={props.CloseDrawer}>
                     <ChevronLeftIcon className={classes.diseño} />

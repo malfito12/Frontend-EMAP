@@ -46,7 +46,7 @@ const DrawerMenuUser = (props) => {
         localStorage.removeItem('token')
         localStorage.removeItem('rols')
         localStorage.removeItem('username')
-        window.location='/login'
+        window.location='/'
     }
     const {history}=props
     const ItemList=[
@@ -93,7 +93,7 @@ const DrawerMenuUser = (props) => {
             </div>
             <Divider/>
             <List>
-                <ListItem button onClick={handleClick} className={classes.diseño} >
+                {/* <ListItem button onClick={handleClick} className={classes.diseño} >
                     <ListItemIcon>
                         <SendIcon color='secondary' />
                     </ListItemIcon>
@@ -116,13 +116,21 @@ const DrawerMenuUser = (props) => {
 
                     }
                 </List>
-                </Collapse>
+                </Collapse> */}
                 <div onClick={props.CloseDrawer} >
                 <ListItem button onClick={()=>history.push("/userControlEmp")} className={classes.diseño}>
                    <ListItemIcon>
                         <SendIcon color='primary' />
                     </ListItemIcon> 
                     <ListItemText primary='Personal' />
+                </ListItem>
+                </div>
+                <div onClick={props.CloseDrawer} >
+                <ListItem button onClick={()=>history.push("/userControlPermiso")} className={classes.diseño}>
+                   <ListItemIcon>
+                        <SendIcon color='primary' />
+                    </ListItemIcon> 
+                    <ListItemText primary='Justificaciones' />
                 </ListItem>
                 </div>
                 <div onClick={props.CloseDrawer} />

@@ -35,7 +35,7 @@ const ControlVacaciones = () => {
         await axios.get(`${PORT_URL}vacacion`)
             .then(resp => {
                 setVacaciones(resp.data)
-                console.log(resp.data)
+                // console.log(resp.data)
             })
             .catch(err => console.log(err))
     }

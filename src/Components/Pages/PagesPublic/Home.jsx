@@ -4,6 +4,12 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils'
+import emap1 from '../../../images/imagesEmap/emap1.jpg'
+import emap2 from '../../../images/imagesEmap/emap2.jpg'
+import emap3 from '../../../images/imagesEmap/emap3.jpg'
+import emap4 from '../../../images/imagesEmap/emap4.jpg'
+import emap5 from '../../../images/imagesEmap/emap5.jpg'
+import emap6 from '../../../images/imagesEmap/emap6.jpg'
 const useStyles = makeStyles((theme) => ({
     delanteDe: {
         position: 'relative',
@@ -28,24 +34,28 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const images = [
     {
         label: 'San Francisco – Oakland Bay Bridge, United States',
-        imgPath:
-            'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+        imgPath: emap2,
     },
     {
         label: 'Bird',
-        imgPath:
-            'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
+        imgPath:emap3,
     },
     {
         label: 'Bali, Indonesia',
-        imgPath:
-            'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
+        imgPath: emap4,
     },
     {
         label: 'Goč, Serbia',
-        imgPath:
-            'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+        imgPath:emap5,
     },
+    {
+        label: 'uno, otro',
+        imgPath:emap6,
+    },
+    // {
+    //     label: 'Goč, Serbia',
+    //     imgPath:emap1,
+    // },
 ];
 
 const Home = () => {

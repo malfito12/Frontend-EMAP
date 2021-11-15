@@ -1,14 +1,19 @@
-import { AppBar, Button, Box, Container, Dialog, IconButton, makeStyles, MenuItem, Paper, TextField, Toolbar, Typography, Grid} from '@material-ui/core'
+import { AppBar, Button, Box, Container, Dialog, Backdrop, CircularProgress, IconButton, makeStyles, MenuItem, Paper, TextField, Toolbar, Typography, Grid } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import loginimage from '../../../images/loginimage.png'
-import logoemap from '../../../images/logoemap.png'
+import logo2emap from '../../../images/logo2emap.png'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { PORT_URL } from '../../../PortURL';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
         marginBottom: '1rem'
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff'
     }
 }))
 
@@ -16,6 +21,7 @@ const PublicMainMenu = () => {
     const classes = useStyles()
     const [user, setUser] = useState()
     const [openAddUser, setOpenAddUser] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [openLogin, setOpenLogin] = useState(false)
     const [changeData, setChangeData] = useState({
         email: '',
@@ -23,7 +29,7 @@ const PublicMainMenu = () => {
         rols: 'usuario'
     })
     const [changeDataUser, setChangeDataUser] = useState({
-        rols:'admin',
+        rols: 'admin',
         username: '',
         password: '',
         repitPassword: '',
@@ -51,9 +57,10 @@ const PublicMainMenu = () => {
     //------------------------GET USARIOS------------------------------
     const getUser = async () => {
         await axios.get(`${PORT_URL}consultaUser`)
-            .then(resp =>{ 
+            .then(resp => {
                 // console.log(resp.data)
-                setUser(resp.data)})
+                setUser(resp.data)
+            })
             .catch(err => console.log(err))
     }
     // console.log(user)
@@ -69,15 +76,15 @@ const PublicMainMenu = () => {
         try {
             if (changeDataUser.password === changeDataUser.repitPassword) {
                 await axios.post(`${PORT_URL}user`, changeDataUser)
-                .then(resp=>{
-                    console.log(resp.data)
-                    closeModalAddUser()
-                    getUser()
-                })
-                .catch(err=>{
-                    console.log(err)
-                    alert('ocurrio algun error no se pudo registrar el usuario')
-                })
+                    .then(resp => {
+                        console.log(resp.data)
+                        closeModalAddUser()
+                        getUser()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        alert('ocurrio algun error no se pudo registrar el usuario')
+                    })
             } else {
                 alert('error verifique su contraseña')
             }
@@ -88,6 +95,7 @@ const PublicMainMenu = () => {
     //-----------------------------------------------------------
     const iniciarSesion = async (e) => {
         e.preventDefault()
+        openLoading()
         await axios.post(`${PORT_URL}login`, changeData)
             .then(resp => {
                 // console.log(resp)
@@ -103,6 +111,7 @@ const PublicMainMenu = () => {
                 }
             })
             .catch(err => {
+                closeLoading()
                 alert('no se pudo iniciar sesion')
                 console.log(err)
             })
@@ -115,12 +124,25 @@ const PublicMainMenu = () => {
             openModalAddUser()
         }
     }
+    //---------------LOADING------------
+    const openLoading = () => {
+        setLoading(true)
+    }
+    const closeLoading = () => {
+        setLoading(false)
+    }
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
+    //-----------------------------------------------------------
     return (
         <>
             <AppBar position='fixed' style={{ background: 'linear-gradient(45deg, #00897b 30%, #4db6ac 90%)' }}>
                 <Toolbar>
-                    <img src={logoemap} style={{ width: 110, height: 50 }} alt="#" />
-                    <div style={{ flexGrow: 1 }}></div>
+                    <img src={logo2emap} style={{ width: 110, height: 60 }} alt="#" />
+                    <div style={{ flexGrow: 1 }}>
+                        {/* <Button size='small' component={Link} to='/informacion'>informacion</Button> */}
+                        <Button size='small' component={Link} to='/consultas'>consultas</Button>
+                    </div>
                     <Typography style={{ color: 'black', marginRight: '0.5rem' }} >LOGIN</Typography>
                     <IconButton onClick={openCloseModalLogin}>
                         <AccountCircleIcon />
@@ -175,9 +197,12 @@ const PublicMainMenu = () => {
                                 <MenuItem value={'admin'}>Administrador</MenuItem>
                             </TextField>
                         </div>
-                        <div align='center' style={{ marginBottom: '2rem' }}>
-                            <Button type='submit' variant='contained' color='primary'>iniciar sesion</Button>
-                        </div>
+                        <Grid container direction='column' alignItems='center' style={{ marginBottom: '2rem' }}>
+                            <Backdrop className={classes.backdrop} open={loading} onClick={closeLoading}>
+                                <CircularProgress color='inherit' />
+                            </Backdrop>
+                            <Button type='submit' fullWidth variant='contained' color='primary'>iniciar sesion</Button>
+                        </Grid>
                     </form>
                 </Container>
             </Dialog>
@@ -264,6 +289,7 @@ const PublicMainMenu = () => {
                     </form>
                 </Paper>
             </Dialog>
+
         </>
     )
 }
