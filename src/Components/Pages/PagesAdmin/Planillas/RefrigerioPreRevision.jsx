@@ -26,9 +26,9 @@ const useStyles = makeStyles((theme) => ({
 const RefrigerioPreRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
-    const [openAlertPlanilla,setOpenAlertPlanilla]=useState(false)
-    const [openAlertErrorPlanilla,setOpenAlertErrorPlanilla]=useState(false)
-    const [openConfirmPlanilla,setOpenConfirmPlanilla]=useState(false)
+    const [openAlertPlanilla, setOpenAlertPlanilla] = useState(false)
+    const [openAlertErrorPlanilla, setOpenAlertErrorPlanilla] = useState(false)
+    const [openConfirmPlanilla, setOpenConfirmPlanilla] = useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
         typePlanilla: '',
@@ -51,23 +51,23 @@ const RefrigerioPreRevision = () => {
             .catch(err => console.log(err))
     }
     //---------------POST PLANILLA REFRIGERIO--------------------------------------
-    const openModalConfirmPlanilla=()=>{
+    const openModalConfirmPlanilla = () => {
         setOpenConfirmPlanilla(true)
     }
-    const closeModalConfirmPlanilla=()=>{
+    const closeModalConfirmPlanilla = () => {
         setOpenConfirmPlanilla(false)
     }
-    const postPlanilla=async(e)=>{
+    const postPlanilla = async (e) => {
         e.preventDefault()
-        if(planilla.length>0){
-            await axios.post(`${PORT_URL}planillarefrigerio`,planilla)
-            .then(resp=>{
-                closeModalConfirmPlanilla()
-                openCloseAlertPlanilla()
-                // console.log(resp.data)
-            })
-            .catch(err=>console.log(err))
-        }else{
+        if (planilla.length > 0) {
+            await axios.post(`${PORT_URL}planillarefrigerio`, planilla)
+                .then(resp => {
+                    closeModalConfirmPlanilla()
+                    openCloseAlertPlanilla()
+                    // console.log(resp.data)
+                })
+                .catch(err => console.log(err))
+        } else {
             closeModalConfirmPlanilla()
             openCloseAlertErrorPlanilla()
         }
@@ -85,33 +85,31 @@ const RefrigerioPreRevision = () => {
         setScroll(newScroll)
     }
     //-----------------------------ALERTAS---------------------------------
-    const openCloseAlertPlanilla=()=>{
+    const openCloseAlertPlanilla = () => {
         setOpenAlertPlanilla(!openAlertPlanilla)
     }
-    const openCloseAlertErrorPlanilla=()=>{
+    const openCloseAlertErrorPlanilla = () => {
         setOpenAlertErrorPlanilla(!openAlertErrorPlanilla)
     }
     //-----------------------------------------------------------------
     console.log(planilla)
     return (
         <>
-            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5}>
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} component={Link} to='/refrigerioRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control te-Refrigerio" style={{ fontSize: 'x-small' }} component={Link} to='/refrigerioRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth={false} >
                 <Typography align='center' variant='h5' className={classes.spacingBot}>SERVICIO DE REFRIGERIO</Typography>
                 <Grid container>
                     <Grid item xs={12} sm={5}>
@@ -173,8 +171,8 @@ const RefrigerioPreRevision = () => {
                                             <TableCell className={classes.tableHead} align='center'>Dias Trab.</TableCell>
                                             <TableCell className={classes.tableHead} align='center'>Serv. Refrigerio P/dia</TableCell>
                                             <TableCell className={classes.tableHead} align='center'>Total Serv. Refrigerio</TableCell>
-                                            <TableCell className={classes.tableHead} align='center' style={{width:'7%'}}>Trib. Fis. RC-IVA 13%</TableCell>
-                                            <TableCell className={classes.tableHead} align='center' style={{width:'7%'}}>Trib. Fis. RC-IVA 13% Presentado</TableCell>
+                                            <TableCell className={classes.tableHead} align='center' style={{ width: '7%' }}>Trib. Fis. RC-IVA 13%</TableCell>
+                                            <TableCell className={classes.tableHead} align='center' style={{ width: '7%' }}>Trib. Fis. RC-IVA 13% Presentado</TableCell>
                                             <TableCell className={classes.tableHead} align='center'>Total Descuento</TableCell>
                                             <TableCell className={classes.tableHead} align='center'>Total Ganado</TableCell>
                                             <TableCell className={classes.tableHead} align='center'>Otros Descuentos</TableCell>

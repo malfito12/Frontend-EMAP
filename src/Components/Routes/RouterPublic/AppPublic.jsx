@@ -4,7 +4,6 @@ import HomeAdmin from '../../Pages/PagesAdmin/HomeAdmin'
 import Protected from '../Protected'
 import Public from '../Public'
 import HomeUser from '../../Pages/PagesUsers/HomeUser'
-import PublicMainMenu from '../../Organismsm/PublicMenu/PublicMainMenu'
 import Home from '../../Pages/PagesPublic/Home'
 import InformacionEMAP from '../../Pages/PagesPublic/InformacionEMAP'
 import Consultas from '../../Pages/PagesPublic/Consultas'
@@ -12,7 +11,7 @@ import Consultas from '../../Pages/PagesPublic/Consultas'
 const AppPublic = () => {
     return (
         <Router>
-            <PublicMainMenu />
+            {/* <PublicMainMenu /> */}
             <Switch>
                 <Protected exact path='/homeadmin' component={props => <HomeAdmin {...props} />} />
                 <Protected exact path='/homeuser' component={props => <HomeUser {...props} />} />

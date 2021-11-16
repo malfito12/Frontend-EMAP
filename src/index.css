@@ -73,8 +73,8 @@
     background-attachment: fixed;
   } */
 /* -------------------------------------------------------------------------------------- */
-  #home{
-    min-height: 100vh;
+/* #home{
+  min-height: 100vh;
     min-width: 100vw;
     background-image: url(../src/images/fondo.jpg);
     background-repeat: no-repeat;
@@ -90,6 +90,33 @@
     background:linear-gradient(90deg, #a9cdcf,#949494);
     opacity: 0.5;
     z-index: 2;
+  } */
+  
+  /* -------------------------------------------------------------------------------------- */
+  #public{
+    width: 100%;
+    min-height: 100vh;
+    background: #1f4037;
+    background: -webkit-linear-gradient(to right, #99f2c8, #1f4037);
+    background: linear-gradient(to right, hsla(152, 78%, 77%, 0.61), hsla(164, 35%, 19%, 0.61)), url(../src/images/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    /* background-position:center center; */
+
+  }
+  nav{
+    text-align: right;
+    padding: 30px 50px 0 0;
+  }
+
+  nav>a{
+    color: #fff;
+    font-weight: 300;
+    text-decoration: none;
+    margin-right: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
   /* code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -1,6 +1,6 @@
 import { Box, Button, Container, FormControlLabel, FormLabel, RadioGroup, Radio, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Tabs, Tab, Dialog } from '@material-ui/core'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
 import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
 const SueldosPreRevision = () => {
     const classes = useStyles()
     const [planilla, setPlanilla] = useState([])
-    const [openConfirmPlanilla,setOpenConfirmPlanilla]=useState(false)
-    const [openAlertPlanilla,setOpenAlertPlanilla]=useState(false)
-    const [openAlertErrorPlanilla,setOpenAlertErrorPlanilla]=useState(false)
+    const [openConfirmPlanilla, setOpenConfirmPlanilla] = useState(false)
+    const [openAlertPlanilla, setOpenAlertPlanilla] = useState(false)
+    const [openAlertErrorPlanilla, setOpenAlertErrorPlanilla] = useState(false)
     const [changeData, setChangeData] = useState({
         // id_bio:'',
         typePlanilla: '',
@@ -54,34 +54,34 @@ const SueldosPreRevision = () => {
             .catch(err => console.log(err))
     }
     //--------------------POST PLANILLA DE SUELDOS------------------------------------
-    const openModalConfirmPlanilla=()=>{
+    const openModalConfirmPlanilla = () => {
         setOpenConfirmPlanilla(true)
     }
-    const closeModalConfirmPlanilla=()=>{
+    const closeModalConfirmPlanilla = () => {
         setOpenConfirmPlanilla(false)
     }
-    const postPlanilla=async(e)=>{
+    const postPlanilla = async (e) => {
         e.preventDefault()
-        if(planilla.length>0){
-            await axios.post(`${PORT_URL}planillaSueldo`,planilla)
-            .then(resp=>{
-                closeModalConfirmPlanilla()
-                openCloseAlertPlanilla()
-            })
-            .catch(err=>{ 
-                console.log(err)
-            })
-        }else{
+        if (planilla.length > 0) {
+            await axios.post(`${PORT_URL}planillaSueldo`, planilla)
+                .then(resp => {
+                    closeModalConfirmPlanilla()
+                    openCloseAlertPlanilla()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
             closeModalConfirmPlanilla()
             openCloseAlertErrorPlanilla()
         }
     }
     //------------------------ALERTAS--------------------------------------
     //-----------------------------ALERTAS---------------------------------
-    const openCloseAlertPlanilla=()=>{
+    const openCloseAlertPlanilla = () => {
         setOpenAlertPlanilla(!openAlertPlanilla)
     }
-    const openCloseAlertErrorPlanilla=()=>{
+    const openCloseAlertErrorPlanilla = () => {
         setOpenAlertErrorPlanilla(!openAlertErrorPlanilla)
     }
     //-----------------------------------------------------------------
@@ -103,24 +103,22 @@ const SueldosPreRevision = () => {
     // console.log(planilla)
     return (
         <>
-            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5} >
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} component={Link} to='/sueldosRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
-                <Typography variant='h5' align='center' className={classes.spacingBot}>PRE - PLANILLA DE SUELDOS</Typography>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control Sueldos" style={{ fontSize: 'x-small' }} component={Link} to='/sueldosRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth={false} >
+                <Typography variant='h5' align='center' className={classes.spacingBot}>BUSQUEDA DE INFORMACION SUELDOS</Typography>
                 <Grid container >
                     <Grid item xs={12} sm={5}>
                         <Container maxWidth='xs'>
@@ -266,8 +264,8 @@ const SueldosPreRevision = () => {
                 </Paper>
             </Dialog>
             {/*---------------------ALERTAS-----------------*/}
-            <AlertAddPlanillaS open={openAlertPlanilla} onClose={openCloseAlertPlanilla}/>
-            <AlertErrorPlanillaS open={openAlertErrorPlanilla} onClose={openCloseAlertErrorPlanilla}/>
+            <AlertAddPlanillaS open={openAlertPlanilla} onClose={openCloseAlertPlanilla} />
+            <AlertErrorPlanillaS open={openAlertErrorPlanilla} onClose={openCloseAlertErrorPlanilla} />
         </>
     )
 }

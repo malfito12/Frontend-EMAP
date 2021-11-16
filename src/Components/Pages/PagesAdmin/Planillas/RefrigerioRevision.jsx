@@ -140,13 +140,13 @@ const RefrigerioRevision = () => {
         case 0: mes = 'DICIEMBRE'; break;
         default: mes = 'mes no valido'
     }
-    var image=logo2emap
+    var image = logo2emap
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
-        doc.addImage(image, 0.5,0,1.5,1)
+        doc.addImage(image, 0.5, 0, 1.5, 1)
         doc.text("PLANILLA SERVICIO DE REFRIGERIO", pageWidth / 2, 0.5, 'center')
         doc.setFontSize(11)
         doc.text(`Correspondiente al mes de ${mes} de ${numeroAnio}`, pageWidth / 2, 0.7, 'center');
@@ -165,23 +165,21 @@ const RefrigerioRevision = () => {
     // console.log(changeDataEdit)
     return (
         <>
-            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5}>
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir Info." style={{ fontSize: 'x-small' }} component={Link} to='/refrigerioPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir Info." style={{ fontSize: 'x-small' }} component={Link} to='/refrigerioPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control Te-refrigerio" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth={false}>
                 <Typography align='center' variant='h5' className={classes.spacingBot}>SERVICIO DE REFRIGERIO</Typography>
                 <Grid container>
                     <Grid item xs={12} sm={5}>

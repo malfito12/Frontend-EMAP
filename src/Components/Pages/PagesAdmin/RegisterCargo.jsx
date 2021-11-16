@@ -19,13 +19,12 @@ const RegisterCargo = () => {
     const classes = useStyles()
     const [openRegisterDepartament, setOpenRegisterDepartament] = useState(false)
     const [openDeleteDepartament, setOpenDeleteDepartament] = useState(false)
-    const [openEditDepartament,setOpenEditDepartament]=useState(false)
+    const [openEditDepartament, setOpenEditDepartament] = useState(false)
     const [departament, setDepartament] = useState([])
     const [openRegisterCargo, setOpenRegisterCargo] = useState(false)
     const [openEditCargo, setOpenEditCargo] = useState(false)
     const [openDeleteCargo, setOpenDeleteCargo] = useState(false)
     const [cargo, setCargo] = useState([])
-    const [empleadoCargo, setEmpleadoCargo] = useState([])
     const [changeData, setChangeData] = useState({
         cod_cargo: '',
         nameCargo: '',
@@ -40,7 +39,6 @@ const RegisterCargo = () => {
     useEffect(() => {
         getCargo()
         getDepartament()
-        getEmpleadoCargo()
     }, [])
     //----------------POST CARGO-----------------------------
     const openModalRegisterCargo = () => {
@@ -62,7 +60,7 @@ const RegisterCargo = () => {
             haber_basico: changeData.haber_basico
         }
         await axios.post(`${PORT_URL}cargo`, data)
-            .then(resp =>{ 
+            .then(resp => {
                 console.log(resp.data)
             })
             .catch(err => console.log(err))
@@ -97,21 +95,21 @@ const RegisterCargo = () => {
                 }
             }
             const data = {
-                _id:changeData._id,
+                _id: changeData._id,
                 cod_cargo: changeData.cod_cargo,
                 nameCargo: changeData.nameCargo,
-                cod_dep:cod_dep,
+                cod_dep: cod_dep,
                 nameDepartament: changeData.nameDepartament,
                 haber_basico: changeData.haber_basico
             }
-            const id=changeData._id
-            await axios.put(`${PORT_URL}cargo/${id}`,data)
-            .then(resp=>{
-                closeModalEditCargo()
-                getCargo()
-                console.log(resp.data)
-            })
-            .catch(err=>console.log(err))
+            const id = changeData._id
+            await axios.put(`${PORT_URL}cargo/${id}`, data)
+                .then(resp => {
+                    closeModalEditCargo()
+                    getCargo()
+                    console.log(resp.data)
+                })
+                .catch(err => console.log(err))
         } catch (error) {
             console.log(error)
         }
@@ -160,25 +158,25 @@ const RegisterCargo = () => {
 
     }
     //----------------EDIT DEPARTAMENTO-------------------------------
-    const openModalEditDepartament=(e)=>{
+    const openModalEditDepartament = (e) => {
         // console.log(e)
         setChangeData2(e)
         setOpenEditDepartament(true)
     }
-    const closeModalEditDepartament=()=>{
+    const closeModalEditDepartament = () => {
         setOpenEditDepartament(false)
     }
-    const editDepartament=async(e)=>{
+    const editDepartament = async (e) => {
         e.preventDefault()
-        const id=changeData2._id
-        await axios.put(`${PORT_URL}departament/${id}`,changeData2)
-        .then(resp=>{
-            closeModalEditDepartament()
-            getDepartament()
-            getCargo()
-            console.log(resp.data)
-        })
-        .catch(err=>console.log(err))
+        const id = changeData2._id
+        await axios.put(`${PORT_URL}departament/${id}`, changeData2)
+            .then(resp => {
+                closeModalEditDepartament()
+                getDepartament()
+                getCargo()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
     //--------------------------DELETE DEPARTAMENT----------------------
     const openModalDeteleDepartament = (e) => {
@@ -210,14 +208,6 @@ const RegisterCargo = () => {
             [e.target.name]: e.target.value
         })
     }
-    //----------------------GET EMPLEADOS CARGO-------------------------------------
-    const getEmpleadoCargo = async () => {
-        await axios.get(`${PORT_URL}empleadoCargo`)
-            .then(resp => {
-                setEmpleadoCargo(resp.data)
-            })
-            .catch(err => console.log(err))
-    }
     //-----------------------------------------------------------------
     const [scroll, setScroll] = useState(1)
     const scrollChange = (e, newScroll) => {
@@ -246,13 +236,13 @@ const RegisterCargo = () => {
                     </Paper>
                 </Grid>
                 <Typography className={classes.spacingBot} variant='h5' align='center'>CONTROL DE CARGOS</Typography>
-                <Container maxWidth='lg' style={{paddingBottom:'1rem'}}>
+                <Container maxWidth='lg' style={{ paddingBottom: '1rem' }}>
                     <Grid container spacing={3} className={classes.spacingBot}>
                         {/*----------------------------TABLE DEPARTAMENT---------------------------*/}
                         <Grid item xs={12} sm={6}>
                             <Button onClick={openModalRegisterDepartament} className={classes.spacingBot} variant='contained' color='primary'>Registrar Departamento</Button>
                             <Paper>
-                                <TableContainer style={{ maxHeight: 340 }}>
+                                <TableContainer style={{ maxHeight: 440 }}>
                                     <Table stickyHeader style={{ minWidth: 600 }}>
                                         <TableHead>
                                             <TableRow>
@@ -269,7 +259,7 @@ const RegisterCargo = () => {
                                                     <TableCell>
                                                         <Grid container justifyContent='space-evenly'>
                                                             <Tooltip title='editar'>
-                                                                <IconButton size='small' onClick={()=>openModalEditDepartament(d)}>
+                                                                <IconButton size='small' onClick={() => openModalEditDepartament(d)}>
                                                                     <SettingsIcon />
                                                                 </IconButton>
                                                             </Tooltip>
@@ -296,7 +286,7 @@ const RegisterCargo = () => {
                         <Grid item xs={12} sm={6}>
                             <Button onClick={openModalRegisterCargo} className={classes.spacingBot} variant='contained' color='primary'>Registrar Cargo</Button>
                             <Paper>
-                                <TableContainer style={{ maxHeight: 340 }}>
+                                <TableContainer style={{ maxHeight: 440 }}>
                                     <Table stickyHeader style={{ minWidth: 700 }}>
                                         <TableHead>
                                             <TableRow>
@@ -317,7 +307,7 @@ const RegisterCargo = () => {
                                                     <TableCell>
                                                         <Grid container justifyContent='space-evenly'>
                                                             <Tooltip title='editar'>
-                                                                <IconButton size='small' onClick={()=>openModalEditCargo(c)}>
+                                                                <IconButton size='small' onClick={() => openModalEditCargo(c)}>
                                                                     <SettingsIcon />
                                                                 </IconButton>
                                                             </Tooltip>
@@ -341,41 +331,6 @@ const RegisterCargo = () => {
                             </Paper>
                         </Grid>
                     </Grid>
-                    <Typography align='center' variant='h5' className={classes.spacingBot}>Lista Cargos del Personal</Typography>
-                    <Paper component={Box} p={1}>
-                        <TableContainer style={{ maxHeight: 340 }}>
-                            <Table stickyHeader>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Id Biometrico</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombres</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido P</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido M</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
-                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Cargo</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {empleadoCargo.length > 0 ? (
-                                        empleadoCargo.map(e => (
-                                            <TableRow key={e._id}>
-                                                <TableCell>{e.id_bio}</TableCell>
-                                                <TableCell>{e.firstNameEmp}</TableCell>
-                                                <TableCell>{e.lastNameEmpP}</TableCell>
-                                                <TableCell>{e.lastNameEmpM}</TableCell>
-                                                <TableCell>{e.departamentEmp}</TableCell>
-                                                <TableCell>{e.cargoEmp}</TableCell>
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell align='center' colSpan='6'>no existe informacion</TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
                 </Container>
             </Container>
             {/*-------------------------------DEPARTAMENT------------------------------*/}

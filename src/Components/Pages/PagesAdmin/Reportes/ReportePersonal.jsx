@@ -83,29 +83,23 @@ const ReportePersonal = () => {
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
-                <Grid item xs={12} sm={5}>
-                    <Paper className={classes.spacingBot}>
-                        <Tabs
-                            value={scroll}
-                            onChange={scrollChange}
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            style={{ height: 60 }}
-                        >
-                            <Tab label="Reporte Personal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{ height: 20 }} />} />
-                            <Tab label="Reporte Movimiento Personal" style={{ fontSize: 'x-small' }} component={Link} to='/reporteMovimiento' icon={<DeviceHubIcon style={{ height: 20 }} />} />
-                            <Tab label="Reporte Altas y Bajas" style={{ fontSize: 'x-small' }} component={Link} to='/reporteAltasBajas' icon={<TimerIcon style={{ height: 20 }} />} />
-                        </Tabs>
-                    </Paper>
-
+                <Grid container item xs={12} sm={7} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Reporte Personal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Movimiento Personal" style={{ fontSize: 'x-small' }} component={Link} to='/reporteMovimiento' icon={<DeviceHubIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Altas y Bajas" style={{ fontSize: 'x-small' }} component={Link} to='/reporteAltasBajas' icon={<TimerIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/reporteCargos' icon={<AccountCircleIcon style={{ height: 20 }} />} />
+                    </Tabs>
                 </Grid>
-
-                {/* <Typography variant='h4' align='center' className={classes.TyphoAlineation}>Lista de Empleados</Typography> */}
-                {/* <Button component={Link} to='/registerEmp' style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button> */}
-                {/* <Button style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button> */}
             </Container>
             <Container maxWidth='lg'>
-                <Typography variant='h5' align='center' className={classes.spacingBot}>Lista de Personal</Typography>
+                <Typography variant='h5' align='center' className={classes.spacingBot}>REPORTE DE PERSONAL</Typography>
                 <div align='right'>
                     <Button style={{ backgroundColor: '#689f38', color: 'white' }} className={classes.spacingBot} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
                 </div>

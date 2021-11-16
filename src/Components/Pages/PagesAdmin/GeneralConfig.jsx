@@ -1,5 +1,5 @@
-import { Button, Box, Container, Grid, Paper, TextField, Typography, makeStyles, MobileStepper, Dialog, MenuItem,Tab,Tabs } from '@material-ui/core'
-import {Link} from 'react-router-dom'
+import { Button, Box, Container, Grid, Paper, TextField, Typography, makeStyles, MobileStepper, Dialog, MenuItem, Tab, Tabs } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
@@ -133,25 +133,23 @@ const GeneralConfig = () => {
     // console.log(config)
     return (
         <>
-            <Container style={{ paddingTop: '4.5rem' }} >
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5} >
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Datos Generales" style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Antiguedad de Empleado" style={{ fontSize: 'x-small' }} component={Link} to='/antiguedadEmp' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Datos Generales" style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Antiguedad de Empleado" style={{ fontSize: 'x-small' }} component={Link} to='/antiguedadEmp' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth='lg'>
                 <Typography className={classes.spacingBot} align='center' variant='h4'>DATOS GENERALES</Typography>
-                <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button>
+                <Button size='small' variant='contained'className={classes.spacingBot} style={{ background: 'green', color: 'white' }} onClick={openModalConfig}>nuevo</Button>
                 <Container maxWidth='md'>
                     <Paper component={Box} p={2}>
                         <Typography align='center' variant='h6' className={classes.spacingBot} >PORCENTAGES - VALORES</Typography>

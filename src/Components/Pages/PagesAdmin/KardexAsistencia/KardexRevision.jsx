@@ -21,7 +21,7 @@ const KardexRevision = () => {
     const classes = useStyles()
     const [marcaciones, setMarcaciones] = useState([])
     const [empleado, setEmpleado] = useState([])
-    const [openAlertErrorPrint,setOpenAlertErrorPrint]=useState("")
+    const [openAlertErrorPrint, setOpenAlertErrorPrint] = useState("")
     const [openEdit, setOpenEdit] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
@@ -124,7 +124,7 @@ const KardexRevision = () => {
         setScroll(newScroll)
     }
     //-----------------------ALERTAS-----------------------------------
-    const openCloseAlertErrorPrint=()=>{
+    const openCloseAlertErrorPrint = () => {
         setOpenAlertErrorPrint(!openAlertErrorPrint)
     }
     //-----------------------------------------------------------------
@@ -134,23 +134,21 @@ const KardexRevision = () => {
     // console.log(changeDataEdit)
     return (
         <>
-            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5}>
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir info." style={{ fontSize: 'x-small' }} component={Link} to='/kardexPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir info." style={{ fontSize: 'x-small' }} component={Link} to='/kardexPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth={false}>
                 <Typography className={classes.spacingBot} variant='h5' align='center' >CONTROL DE ASISTENCIAS</Typography>
                 <Grid container>
                     <Grid item xs={12} sm={5}>

@@ -145,13 +145,13 @@ const SueldosRevision = () => {
         default: mes = 'mes no valido'
     }
     // console.log(numeroAnio)
-    var image=logo2emap
+    var image = logo2emap
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
-        doc.addImage(image, 0.5,0,1.5,1)
+        doc.addImage(image, 0.5, 0, 1.5, 1)
         doc.text("PLANILLA DE SUELDOS", pageWidth / 2, 0.5, 'center')
         doc.text(`${(changeData.typePlanilla).toUpperCase()}`, pageWidth / 2, 0.7, 'center');
         doc.setFontSize(10)
@@ -167,25 +167,22 @@ const SueldosRevision = () => {
     // console.log(changeData)
     return (
         <>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir Info." style={{ fontSize: 'x-small' }} component={Link} to='/sueldosPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control Sueldos" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
             <Container maxWidth={false}>
-                <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
-                    {/* <img src={logo2emap}/> */}
-                    <Grid item xs={12} sm={5} >
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir Info." style={{ fontSize: 'x-small' }} component={Link} to='/sueldosPreRevision' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
-                <Typography variant='h5' align='center' className={classes.spacingBot}>PLANILLA DE SUELDOS</Typography>
+                <Typography variant='h5' align='center' className={classes.spacingBot}>CONTROL DE SUELDOS</Typography>
                 <Grid container>
                     <Grid item xs={12} sm={5}>
                         <Container maxWidth='xs'>

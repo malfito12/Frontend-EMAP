@@ -6,7 +6,7 @@ import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import { Link } from 'react-router-dom'
-import {AlertAddAsistencia, AlertErrorAsistencia} from '../../../Atoms/Alerts/AlertReEdDe'
+import { AlertAddAsistencia, AlertErrorAsistencia } from '../../../Atoms/Alerts/AlertReEdDe'
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -17,9 +17,9 @@ const KardexPreRevision = () => {
     const classes = useStyles()
     const [empleado, setEmpleado] = useState([])
     const [marcaciones, setMarcaciones] = useState([])
-    const [openConfirmDatos,setOpenConfirmDatos]=useState(false)
-    const [openAlertAdd,setOpenAlertAdd]=useState(false)
-    const [openAlertError,setOpenAlertError]=useState(false)
+    const [openConfirmDatos, setOpenConfirmDatos] = useState(false)
+    const [openAlertAdd, setOpenAlertAdd] = useState(false)
+    const [openAlertError, setOpenAlertError] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
         fechaini: '',
@@ -44,15 +44,15 @@ const KardexPreRevision = () => {
 
     }
     //---------------------------SUBIR DATOS ---------------------------------
-    const openModalCofirmDatos=()=>{
+    const openModalCofirmDatos = () => {
         setOpenConfirmDatos(true)
     }
-    const closeModalConfirmDatos=()=>{
+    const closeModalConfirmDatos = () => {
         setOpenConfirmDatos(false)
     }
     const subirInfo = async (e) => {
         e.preventDefault()
-        if(marcaciones.length>0){
+        if (marcaciones.length > 0) {
             await axios.post(`${PORT_URL}subirinfo`, marcaciones)
                 .then(resp => {
                     closeModalConfirmDatos()
@@ -60,7 +60,7 @@ const KardexPreRevision = () => {
                     // console.log(resp.data)
                 })
                 .catch(err => console.log(err))
-        }else{
+        } else {
             closeModalConfirmDatos()
             openCloseAlertError()
         }
@@ -69,12 +69,12 @@ const KardexPreRevision = () => {
     const [scroll, setScroll] = useState(0)
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
-    }    
+    }
     //---------------------ALERT REGISTER---------------------------------------
     const openCloseAlertAdd = () => {
         setOpenAlertAdd(!openAlertAdd)
     }
-    const openCloseAlertError=()=>{
+    const openCloseAlertError = () => {
         setOpenAlertError(!openAlertError)
     }
     //-----------------------------------------------------------------
@@ -85,29 +85,27 @@ const KardexPreRevision = () => {
         })
     }
     //-----------------------------------------------------------------
-    
+
     // console.log(dos)
     // console.log(changeData)
     // console.log(empleado)
     return (
         <>
-            <Container maxWidth={false} style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5} >
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{fontSize:'large'}} />}/>
-                                <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} component={Link} to='/kardexRevision' icon={<AccountBalanceIcon style={{ fontSize:'large' }}/>} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60,background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} component={Link} to='/kardexRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth={false} >
                 <Typography className={classes.spacingBot} variant='h5' align='center'>ASISTENCIAS DE PERSONAL</Typography>
                 <Grid container >
                     <Grid item xs={12} sm={5}>

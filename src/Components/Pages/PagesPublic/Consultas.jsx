@@ -1,7 +1,10 @@
-import { Box, Button, Container, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core'
+import { Box,useTheme, Button, Container,useMediaQuery, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@material-ui/core'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
+import { Link } from 'react-router-dom';
+import PublicMainMenu from '../../Organismsm/PublicMenu/PublicMainMenu';
+import DrawerMenuPublic from '../../Organismsm/PublicMenu/DrawerMenuPublic';
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -10,11 +13,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 const Consultas = () => {
     const classes = useStyles()
+    const theme=useTheme()
     const [consulta, setConsulta] = useState([])
     const [changeData, setChangeData] = useState({
         cedula: '',
     })
 
+    const isMatch = useMediaQuery(theme.breakpoints.down('sm'))
     //------------------------------------------------
     const buscarInfo = async (e) => {
         e.preventDefault()
@@ -173,8 +178,19 @@ const Consultas = () => {
     // console.log(array)
     //------------------------------------------------
     return (
-        <Container maxWidth={false} style={{ paddingTop: '5rem' }}>
-            <Container maxWidth='sm' >
+        <Container maxWidth={false} >
+            {isMatch
+                ? <div align='right'><DrawerMenuPublic /></div> 
+                : <div>
+                    <nav id='menu-public'>
+                        <Link to='/'>INICIO</Link>
+                        <Link to='/informacion'>INFORMACION</Link>
+                        <Link to="/consultas">CONSULTAS</Link>
+                        <PublicMainMenu />
+                    </nav>
+                </div>
+            }
+            <Container maxWidth='sm' style={{paddingTop:'2rem'}}>
                 <Typography align='center' variant='h5' className={classes.spacingBot}>Consultas</Typography>
                 <Paper component={Box} p={2} className={classes.spacingBot}>
                     <form onSubmit={buscarInfo}>

@@ -53,33 +53,33 @@ const ReporteMovimiento = () => {
     //-----------------------BUSCARDOR----------------------------------
     const buscarMovimiento = (buscador) => {
         return function (x) {
-            return x.firstNameEmp.includes(buscador)||
-            x.firstNameEmp.toLowerCase().includes(buscador) ||
-            x.lastNameEmpP.includes(buscador)||
-            x.lastNameEmpP.toLowerCase().includes(buscador) ||
-            x.lastNameEmpM.includes(buscador)||
-            x.lastNameEmpM.toLowerCase().includes(buscador) ||
-            x.departamentEmp.includes(buscador)||
-            x.departamentEmp.toLowerCase().includes(buscador) ||
-            x.cargoEmp.includes(buscador)||
-            x.cargoEmp.toLowerCase().includes(buscador) ||
-            x.fechaMovimiento.includes(buscador)||
-            x.fechaMovimiento.toLowerCase().includes(buscador) ||
-            x.id_bio.includes(buscador)||
-            x.id_bio.toLowerCase().includes(buscador) ||
-            x.itemEmp.includes(buscador)||
-            x.itemEmp.toLowerCase().includes(buscador) ||
-            !buscador
+            return x.firstNameEmp.includes(buscador) ||
+                x.firstNameEmp.toLowerCase().includes(buscador) ||
+                x.lastNameEmpP.includes(buscador) ||
+                x.lastNameEmpP.toLowerCase().includes(buscador) ||
+                x.lastNameEmpM.includes(buscador) ||
+                x.lastNameEmpM.toLowerCase().includes(buscador) ||
+                x.departamentEmp.includes(buscador) ||
+                x.departamentEmp.toLowerCase().includes(buscador) ||
+                x.cargoEmp.includes(buscador) ||
+                x.cargoEmp.toLowerCase().includes(buscador) ||
+                x.fechaMovimiento.includes(buscador) ||
+                x.fechaMovimiento.toLowerCase().includes(buscador) ||
+                x.id_bio.includes(buscador) ||
+                x.id_bio.toLowerCase().includes(buscador) ||
+                x.itemEmp.includes(buscador) ||
+                x.itemEmp.toLowerCase().includes(buscador) ||
+                !buscador
         }
     }
     //-----------------------PDF GENERATE--------------------------------
-    const pdfGenerate=()=>{
-        const doc=new jsPDF({orientation:'landscape', unit:'in',format:[14,7]})
+    const pdfGenerate = () => {
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.text("REPORTE MOVIMIENTO DE PERSONAL", pageWidth / 2, 0.5, 'center')
-        doc.autoTable({html:"#id-table",startY:1})
+        doc.autoTable({ html: "#id-table", startY: 1 })
         doc.output("dataurlnewwindow")
     }
     //-----------------------------------------------------------------
@@ -91,24 +91,23 @@ const ReporteMovimiento = () => {
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
-                <Grid item xs={12} sm={5}>
-                    <Paper className={classes.spacingBot}>
-                        <Tabs
-                            value={scroll}
-                            onChange={scrollChange}
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            style={{ height: 60 }}
-                        >
-                            <Tab label="Reporte Personal" style={{ fontSize: 'x-small' }} component={Link} to='/reportePersonal' icon={<AccountCircleIcon style={{ height: 20 }} />} />
-                            <Tab label="Reporte Movimiento Personal" style={{ fontSize: 'x-small' }} icon={<DeviceHubIcon style={{ height: 20 }} />} />
-                            <Tab label="Reporte Altas y Bajas" style={{ fontSize: 'x-small' }} component={Link} to='/reporteAltasBajas' icon={<TimerIcon style={{ height: 20 }} />} />
-                        </Tabs>
-                    </Paper>
+                <Grid container item xs={12} sm={7} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Reporte Personal" style={{ fontSize: 'x-small' }} component={Link} to='/reportePersonal' icon={<AccountCircleIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Movimiento Personal" style={{ fontSize: 'x-small' }} icon={<DeviceHubIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Altas y Bajas" style={{ fontSize: 'x-small' }} component={Link} to='/reporteAltasBajas' icon={<TimerIcon style={{ height: 20 }} />} />
+                        <Tab label="Reporte Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/reporteCargos' icon={<AccountCircleIcon style={{ height: 20 }} />} />
+                    </Tabs>
                 </Grid>
             </Container>
             <Container maxWidth='lg'>
-                <Typography variant='h5' align='center' className={classes.spacingBot}>Lista Movimieto de Personal</Typography>
+                <Typography variant='h5' align='center' className={classes.spacingBot}>REPORTE MOVIMIENTO DE PERSONAL</Typography>
                 <article className={classes.spacingBot} align='right'>
                     {movimiento && (
                         <TextField

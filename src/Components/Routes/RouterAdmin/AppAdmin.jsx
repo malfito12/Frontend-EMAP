@@ -19,7 +19,7 @@ import KardexPreRevision from '../../Pages/PagesAdmin/KardexAsistencia/KardexPre
 import KardexRevision from '../../Pages/PagesAdmin/KardexAsistencia/KardexRevision'
 import AntiguedadEmp from '../../Pages/PagesAdmin/AntiguedadEmp'
 import SueldosPreRevision from '../../Pages/PagesAdmin/Planillas/SueldosPreRevision'
-import SuledosRevision from '../../Pages/PagesAdmin/Planillas/SueldosRevision'
+import SueldosRevision from '../../Pages/PagesAdmin/Planillas/SueldosRevision'
 import RefrigerioPreRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioPreRevision'
 import RefrigerioRevision from '../../Pages/PagesAdmin/Planillas/RefrigerioRevision'
 import ControlVacaciones from '../../Pages/PagesAdmin/ControlVacaciones'
@@ -28,6 +28,7 @@ import ReporteMovimiento from '../../Pages/PagesAdmin/Reportes/ReporteMovimiento
 import Memorandums from '../../Pages/PagesAdmin/Reportes/Memorandums'
 import ReporteAltasBajas from '../../Pages/PagesAdmin/Reportes/ReporteAltasBajas'
 import Page404 from '../Page404'
+import ReporteCargos from '../../Pages/PagesAdmin/Reportes/ReporteCargos'
 
 const AppAdmin = () => {
     return (
@@ -67,12 +68,13 @@ const AppAdmin = () => {
                 <Protected exact path='/reportePersonal' component={props=><ReportePersonal {...props} />} />
                 <Protected exact path='/reporteMovimiento' component={props=><ReporteMovimiento {...props} />} />
                 <Protected exact path='/reporteAltasBajas' component={props=><ReporteAltasBajas {...props} />} />
+                <Protected exact path='/reporteCargos' component={props=><ReporteCargos {...props} />} />
                 <Protected exact path='/memorandums' component={props=><Memorandums {...props} />} />
 
 
                 {/*---------------------------PLANILLAS--------------------*/}
                 <Protected exact path='/sueldosPreRevision' component={props=><SueldosPreRevision {...props} />} />
-                <Protected exact path='/sueldosRevision' component={props=><SuledosRevision {...props} />} />
+                <Protected exact path='/sueldosRevision' component={props=><SueldosRevision {...props} />} />
 
                 <Protected exact path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
                 <Protected exact path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />

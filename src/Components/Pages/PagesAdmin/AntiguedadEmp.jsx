@@ -115,27 +115,25 @@ const AntiguedadEmp = () => {
 
     return (
         <>
-            <Container style={{ paddingTop: '4.5rem' }}>
-                <Container maxWidth='lg'>
-                    <Grid item xs={12} sm={5} >
-                        <Paper className={classes.spacingBot}>
-                            <Tabs
-                                value={scroll}
-                                onChange={scrollChange}
-                                variant="scrollable"
-                                scrollButtons="auto"
-                                style={{ height: 60 }}
-                            >
-                                <Tab label="Datos Generales" style={{ fontSize: 'x-small' }} component={Link} to='/generalConfig' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
-                                <Tab label="Antiguedad de Empleado" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
-                            </Tabs>
-                        </Paper>
-                    </Grid>
-                </Container>
+            <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
+                <Grid container item xs={12} sm={6} justifyContent='flex-start'>
+                    <Tabs
+                        value={scroll}
+                        onChange={scrollChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                    >
+                        <Tab label="Datos Generales" style={{ fontSize: 'x-small' }} component={Link} to='/generalConfig' icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
+                        <Tab label="Antiguedad de Empleado" style={{ fontSize: 'x-small' }} icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
+                    </Tabs>
+                </Grid>
+            </Container>
+            <Container maxWidth='lg'>
                 <Typography align='center' variant='h5' className={classes.spacingBot} >ANTIGUEDAD</Typography>
                 <Container maxWidth='sm'>
                     <div align='right' className={classes.spacingBot}>
-                        <Button variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalAddAntiguedad}>New</Button>
+                        <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalAddAntiguedad}>Nuevo</Button>
                     </div>
                     <Paper component={Box} p={1} /*maxWidth='600px'*/>
                         <TableContainer style={{ maxHeight: 340 }}>

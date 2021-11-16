@@ -5,7 +5,7 @@ import loginimage from '../../../images/loginimage.png'
 import logo2emap from '../../../images/logo2emap.png'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { PORT_URL } from '../../../PortURL';
-import { Link } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
@@ -136,11 +136,11 @@ const PublicMainMenu = () => {
     //-----------------------------------------------------------
     return (
         <>
-            <AppBar position='fixed' style={{ background: 'linear-gradient(45deg, #00897b 30%, #4db6ac 90%)' }}>
+            {/* <AppBar position='fixed' style={{ background: 'linear-gradient(45deg, #00897b 30%, #4db6ac 90%)' }}>
                 <Toolbar>
                     <img src={logo2emap} style={{ width: 110, height: 60 }} alt="#" />
                     <div style={{ flexGrow: 1 }}>
-                        {/* <Button size='small' component={Link} to='/informacion'>informacion</Button> */}
+                        <Button size='small' component={Link} to='/informacion'>informacion</Button>
                         <Button size='small' component={Link} to='/consultas'>consultas</Button>
                     </div>
                     <Typography style={{ color: 'black', marginRight: '0.5rem' }} >LOGIN</Typography>
@@ -148,7 +148,8 @@ const PublicMainMenu = () => {
                         <AccountCircleIcon />
                     </IconButton>
                 </Toolbar>
-            </AppBar>
+            </AppBar> */}
+            <Button style={{color:'white'}} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
             <Dialog
                 maxWidth='md'
                 open={openLogin}

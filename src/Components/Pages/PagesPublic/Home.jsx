@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, makeStyles, MobileStepper, Paper, TextField, Typography, useTheme } from '@material-ui/core'
+import { Box, Button, Container, Grid, makeStyles, MobileStepper, Paper, TextField, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import React, { useState } from 'react'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
@@ -10,22 +10,33 @@ import emap3 from '../../../images/imagesEmap/emap3.jpg'
 import emap4 from '../../../images/imagesEmap/emap4.jpg'
 import emap5 from '../../../images/imagesEmap/emap5.jpg'
 import emap6 from '../../../images/imagesEmap/emap6.jpg'
+import PublicMainMenu from '../../Organismsm/PublicMenu/PublicMainMenu';
+import DrawerMenuPublic from '../../Organismsm/PublicMenu/DrawerMenuPublic';
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
     delanteDe: {
         position: 'relative',
         zIndex: '2',
         paddingTop: '5rem'
     },
-    objetivo: {
-        marginTop: '20%',
-        [theme.breakpoints.down("sm")]: {
-            margin: 0
-        }
-    },
+    // objetivo: {
+    //     marginTop: '20%',
+    //     [theme.breakpoints.down("sm")]: {
+    //         // margin: 0,
+    //         position: 'center'
+    //     }
+    // },
     sizeImg: {
         marginTop: '15%',
         [theme.breakpoints.down("sm")]: {
-            margin: 0
+            marginTop: 10,
+            position: 'center'
+        }
+    },
+    imageResponsive:{
+        height:350,
+        [theme.breakpoints.down('xs')]:{
+            height:250
         }
     }
 }))
@@ -38,7 +49,7 @@ const images = [
     },
     {
         label: 'Bird',
-        imgPath:emap3,
+        imgPath: emap3,
     },
     {
         label: 'Bali, Indonesia',
@@ -46,11 +57,11 @@ const images = [
     },
     {
         label: 'Goč, Serbia',
-        imgPath:emap5,
+        imgPath: emap5,
     },
     {
         label: 'uno, otro',
-        imgPath:emap6,
+        imgPath: emap6,
     },
     // {
     //     label: 'Goč, Serbia',
@@ -64,6 +75,8 @@ const Home = () => {
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = images.length;
 
+    const isMatch = useMediaQuery(theme.breakpoints.down('sm'))
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -76,11 +89,24 @@ const Home = () => {
         setActiveStep(step);
     };
     return (
-        <Container maxWidth={false}  >
-            <section className={classes.delanteDe}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} >
-                        <div className={classes.objetivo}>
+        <Container maxWidth={false}>
+            {isMatch
+                ? <div align='right'><DrawerMenuPublic /></div> 
+                : <div>
+                    <nav id='menu-public'>
+                        {/* <a href="/informacion">INFORMACION</a>
+                        <a href="/consultas">CONSULTAS</a> */}
+                        <Link to='/'>INICIO</Link>
+                        <Link to='/informacion'>INFORMACION</Link>
+                        <Link to="/consultas">CONSULTAS</Link>
+                        <PublicMainMenu />
+                    </nav>
+                </div>
+            }
+            <section>
+                <Grid container spacing={3} >
+                    <Grid item xs={12} sm={6} container justifyContent='center' alignContent='center' >
+                        <div >
                             <Typography
                                 align='center' variant='h2'
                                 style={{ fontFamily: 'cursive', fontWeight: 'bold', fontStyle: 'italic' }}
@@ -93,8 +119,8 @@ const Home = () => {
                             </Typography>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={6} >
-                        <div align='center' className={classes.sizeImg}>
+                    <Grid item xs={12} sm={6} container justifyContent='center' alignContent='center' >
+                        <div  className={classes.sizeImg}>
                             <Box sx={{ maxWidth: 600, flexGrow: 1 }}>
                                 {/* <Paper
                                 square
@@ -122,12 +148,13 @@ const Home = () => {
                                                     style={{ borderRadius: 5 }}
                                                     component="img"
                                                     sx={{
-                                                        height: 350,
+                                                        // height: 350,
                                                         display: 'block',
-                                                        // maxWidth: 400,
+                                                        maxWidth: 600,
                                                         // overflow: 'hidden',
                                                         width: '100%',
                                                     }}
+                                                    className={classes.imageResponsive}
                                                     src={step.imgPath}
                                                     alt={step.label}
                                                 />
