@@ -157,14 +157,15 @@ const GeneralConfig = () => {
                             <>
                                 {/* <Typography align='center'>{config[activeStep].gestion}</Typography> */}
                                 <form /*onSubmit={postConfig}*/>
-                                    <Grid container spacin={3}>
-                                        <Grid item xs={8} sm={4}>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 name='recargaNocturna'
                                                 label='Recarga Nocturna'
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].recargaNocturna}
                                                 className={classes.spacingBot}
@@ -175,6 +176,7 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].interinato}
                                                 className={classes.spacingBot}
@@ -185,6 +187,7 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].AFP}
                                                 className={classes.spacingBot}
@@ -195,18 +198,20 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].RCIVA}
                                                 className={classes.spacingBot}
                                             />
                                         </Grid>
-                                        <Grid item xs={8} sm={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 name='IUE'
                                                 label='IUE'
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].IUE}
                                                 className={classes.spacingBot}
@@ -217,6 +222,7 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].IT}
                                                 className={classes.spacingBot}
@@ -227,6 +233,7 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].salarioMinimo}
                                                 className={classes.spacingBot}
@@ -237,18 +244,20 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].bonoTeRefrigerio}
                                                 className={classes.spacingBot}
                                             />
                                         </Grid>
-                                        <Grid item xs={8} sm={4}>
+                                        <Grid item xs={12} sm={4}>
                                             <TextField
                                                 name='valorAfiliacion'
                                                 label='Valor de Afiliacion'
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].valorAfiliacion}
                                                 className={classes.spacingBot}
@@ -258,6 +267,7 @@ const GeneralConfig = () => {
                                                 label='Gestion'
                                                 variant='outlined'
                                                 size='small'
+                                                fullWidth
                                                 value={config[activeStep].gestion}
                                                 className={classes.spacingBot}
                                             />
@@ -266,6 +276,7 @@ const GeneralConfig = () => {
                                                 label='Estado'
                                                 variant='outlined'
                                                 size='small'
+                                                fullWidth
                                                 value={config[activeStep].estado}
                                                 className={classes.spacingBot}
                                             />
@@ -275,6 +286,7 @@ const GeneralConfig = () => {
                                                 variant='outlined'
                                                 type='number'
                                                 size='small'
+                                                fullWidth
                                                 inputProps={{ step: 'any' }}
                                                 value={config[activeStep].teEventual}
                                                 className={classes.spacingBot}
@@ -328,14 +340,15 @@ const GeneralConfig = () => {
                 <Paper component={Box} p={2}>
                     <Typography align='center' variant='subtitle1' className={classes.spacingBot}>REGISTRAR</Typography>
                     <form onSubmit={postConfig}>
-                        <Grid container spacin={3}>
-                            <Grid item xs={8} sm={4}>
+                        <Grid container spacing={3} >
+                            <Grid item xs={12} sm={4} >
                                 <TextField
                                     name='recargaNocturna'
                                     label='Recarga Nocturna'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -346,6 +359,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -356,6 +370,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -366,18 +381,20 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                 />
                             </Grid>
-                            <Grid item xs={8} sm={4}>
+                            <Grid item xs={12} sm={4}>
                                 <TextField
                                     name='IUE'
                                     label='IUE'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -388,6 +405,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -398,6 +416,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -408,18 +427,20 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                 />
                             </Grid>
-                            <Grid item xs={8} sm={4}>
+                            <Grid item xs={12} sm={4}>
                                 <TextField
                                     name='valorAfiliacion'
                                     label='Valor de Afiliacion'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -429,6 +450,7 @@ const GeneralConfig = () => {
                                     label='Gestion'
                                     variant='outlined'
                                     size='small'
+                                    fullWidth
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                 />
@@ -438,7 +460,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     size='small'
                                     select
-                                    style={{ width: '195px' }}
+                                    fullWidth
                                     value={changeData.estado}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -453,6 +475,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -476,13 +499,14 @@ const GeneralConfig = () => {
                     <Typography align='center' variant='subtitle1' className={classes.spacingBot}>EDITAR</Typography>
                     <form onSubmit={editConfig}>
                         <Grid container spacing={3} >
-                            <Grid item xs={8} sm={4}>
+                            <Grid item xs={12} sm={4}>
                                 <TextField
                                     name='recargaNocturna'
                                     label='Recarga Nocturna'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.recargaNocturna}
                                     className={classes.spacingBot}
@@ -494,6 +518,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.interinato}
                                     className={classes.spacingBot}
@@ -505,6 +530,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.AFP}
                                     className={classes.spacingBot}
@@ -516,19 +542,21 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.RCIVA}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                 />
                             </Grid>
-                            <Grid item xs={8} sm={4}>
+                            <Grid item xs={12} sm={4}>
                                 <TextField
                                     name='IUE'
                                     label='IUE'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.IUE}
                                     className={classes.spacingBot}
@@ -540,6 +568,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.IT}
                                     className={classes.spacingBot}
@@ -551,6 +580,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.salarioMinimo}
                                     className={classes.spacingBot}
@@ -562,19 +592,21 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.bonoTeRefrigerio}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                 />
                             </Grid>
-                            <Grid item xs={8} sm={4}>
+                            <Grid item xs={12} sm={4}>
                                 <TextField
                                     name='valorAfiliacion'
                                     label='Valor de Afiliacion'
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.valorAfiliacion}
                                     className={classes.spacingBot}
@@ -585,6 +617,7 @@ const GeneralConfig = () => {
                                     label='Gestion'
                                     variant='outlined'
                                     size='small'
+                                    fullWidth
                                     defaultValue={changeData.gestion}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -595,7 +628,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     size='small'
                                     select
-                                    style={{ width: '196px' }}
+                                    fullWidth
                                     value={changeData.estado}
                                     className={classes.spacingBot}
                                     onChange={handleChange}
@@ -610,6 +643,7 @@ const GeneralConfig = () => {
                                     variant='outlined'
                                     type='number'
                                     size='small'
+                                    fullWidth
                                     inputProps={{ step: 'any' }}
                                     defaultValue={changeData.teEventual}
                                     className={classes.spacingBot}

@@ -1,5 +1,5 @@
 import { Box, Button, Container, Grid, makeStyles, MobileStepper, Paper, TextField, Typography, useMediaQuery, useTheme } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
             position: 'center'
         }
     },
-    imageResponsive:{
-        height:350,
-        [theme.breakpoints.down('xs')]:{
-            height:250
+    imageResponsive: {
+        height: 350,
+        [theme.breakpoints.down('xs')]: {
+            height: 250
         }
     }
 }))
@@ -68,12 +68,41 @@ const images = [
     //     imgPath:emap1,
     // },
 ];
-
+const date = new Date()
 const Home = () => {
     const classes = useStyles()
     const theme = useTheme();
-    const [activeStep, setActiveStep] = useState(0);
     const maxSteps = images.length;
+    const [activeStep, setActiveStep] = useState(0);
+    const [dateTime, setDateTime] = useState({
+        hours: date.getHours(),
+        minutes: date.getMinutes(),
+        seconds: date.getSeconds(),
+        diaSemana: date.getDay(),
+        dia: date.getDate(),
+        mes: date.getMonth(),
+        year: date.getFullYear(),
+    })
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const date = new Date()
+            setDateTime({
+                hours: date.getHours(),
+                minutes: date.getMinutes(),
+                seconds: date.getSeconds(),
+                diaSemana: date.getDay(),
+                dia: date.getDate(),
+                mes: date.getMonth(),
+                year: date.getFullYear(),
+            })
+        }, 1000)
+        return () => clearInterval(timer)
+    }, [])
+
+
+    //-----------------------------------------------------------------
+    //-----------------------------------------------------------------
 
     const isMatch = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -88,10 +117,17 @@ const Home = () => {
     const handleStepChange = (step) => {
         setActiveStep(step);
     };
+
+    //-------------------RELOG--------------------------------
+    var semana = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado']
+    var nameSemana = semana[dateTime.diaSemana]
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    var nameMes = meses[dateTime.mes]
+
     return (
         <Container maxWidth={false}>
             {isMatch
-                ? <div align='right'><DrawerMenuPublic /></div> 
+                ? <div align='right'><DrawerMenuPublic /></div>
                 : <div>
                     <nav id='menu-public'>
                         {/* <a href="/informacion">INFORMACION</a>
@@ -106,21 +142,30 @@ const Home = () => {
             <section>
                 <Grid container spacing={3} >
                     <Grid item xs={12} sm={6} container justifyContent='center' alignContent='center' >
-                        <div >
-                            <Typography
-                                align='center' variant='h2'
-                                style={{ fontFamily: 'cursive', fontWeight: 'bold', fontStyle: 'italic' }}
-                            >EMAP</Typography>
-                            <Typography
-                                align='center' variant='h5'
-                                style={{ fontFamily: 'cursive', fontWeight: 'bold', fontStyle: 'italic' }}
-                            >
-                                Empresa de prestación de servicio de aseo y recolección para la gestión integral de residuos sólidos reduciendo significativamente la contaminacion
-                            </Typography>
+                        {/* <Typography align='center' variant='h5' style={{fontFamily:'Arial, Helvetica, sans-serif',color:'white'}}>ENTIDAD MUNICIPAL DE ASEO POTOSI EMAP</Typography> */}
+                        <Typography align='center' variant='h5' style={{fontFamily:'sans-serif',color:'white'}}>ENTIDAD MUNICIPAL DE ASEO POTOSI EMAP</Typography>
+                        <div className='wrap'>
+                            <div className='widget'>
+                                <div className='fecha'>
+                                    <p className='diaSemana'>{nameSemana}</p>
+                                    <p className='dia'>{dateTime.dia}</p>
+                                    <p>de</p>
+                                    <p className='mes'>{nameMes}</p>
+                                    <p>del</p>
+                                    <p className='year'>{dateTime.year}</p>
+                                </div>
+                                <div className='reloj'>
+                                    <p className='horas'>{dateTime.hours < 10 ? "0" + dateTime.hours : dateTime.hours}</p>
+                                    <p>:</p>
+                                    <p className='minutos'>{dateTime.minutes < 10 ? "0" + dateTime.minutes : dateTime.minutes}</p>
+                                    <p>:</p>
+                                    <p className='segundos'>{dateTime.seconds < 10 ? "0" + dateTime.seconds : dateTime.seconds}</p>
+                                </div>
+                            </div>
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={6} container justifyContent='center' alignContent='center' >
-                        <div  className={classes.sizeImg}>
+                        <div className={classes.sizeImg}>
                             <Box sx={{ maxWidth: 600, flexGrow: 1 }}>
                                 {/* <Paper
                                 square
