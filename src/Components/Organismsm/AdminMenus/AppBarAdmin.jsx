@@ -44,7 +44,7 @@ const AppBarAdmin = (props) => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Button color='inherit' component={Link} to='/homeadmin'>Home</Button>
+                    <Button color='inherit' component={Link} to='/homeadmin'>Inicio</Button>
                     <Typography style={{ flexGrow: 1 }}></Typography>
                     <IconButton onClick={openMenuAvatar}>
                         <Avatar style={{width:32,height:32}}>{nameAvatar[0].toUpperCase()}</Avatar>

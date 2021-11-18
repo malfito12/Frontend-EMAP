@@ -1,4 +1,4 @@
-import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab } from '@material-ui/core'
+import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab, InputAdornment } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
@@ -8,11 +8,12 @@ import AlertEdit from '../../Atoms/Alerts/AlertEdit'
 import EditIcon from '@material-ui/icons/Edit';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SearchIcon from '@material-ui/icons/Search';
+import PrintICon from '@material-ui/icons/Print'
 
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-import PrintIcon from '@material-ui/icons/Print'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
@@ -47,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1),
         width: 200,
     },
+    searchSize: {
+        width: '40%',
+        [theme.breakpoints.down("xs")]: {
+            width: '100%'
+        }
+    },
+    spacingBot: {
+        marginBottom: '1rem'
+    }
 
 }))
 
@@ -62,6 +72,7 @@ const ControlEmpleado = (props) => {
     const [departament, setDepartament] = useState([])
     const [cargo, setCargo] = useState([])
     const [horario, setHorario] = useState([])
+    const [buscador, setBuscador] = useState("")
     const [changeData, setChangeData] = useState({
         itemEmp: '',
         id_bio: '',
@@ -155,12 +166,15 @@ const ControlEmpleado = (props) => {
         formData.append('fechaini', changeData.fechaini)
         formData.append('fechafin', changeData.fechafin)
         await axios.put(`${PORT_URL}empleado/${id}`, formData)
-            .then(resp => console.log(resp.data))
-        setPreview(null)
-        setImage(null)
-        setOpenEdit(false)
-        openCloseAlertEdit()
-        getEmpleado()
+            .then(resp => {
+                // setPreview(null)
+                // setImage(null)
+                closeModalEdit()
+                openCloseAlertEdit()
+                getEmpleado()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
 
     //--------------------------------------------------------------
@@ -249,35 +263,73 @@ const ControlEmpleado = (props) => {
             .then(resp => setHorario(resp.data))
             .catch(err => console.log(err))
     }
+    //------------------------NUEVO ARRAY-------------------------------
+    const array = []
+    var name
+    const contEmp = empleado.length
+    for (var i = 0; i < contEmp; i++) {
+        name = empleado[i].firstNameEmp + " " + empleado[i].lastNameEmpP + " " + empleado[i].lastNameEmpM
+        var uno = { allName: name }
+        var dos = { ...empleado[i], ...uno }
+        array.push(dos)
+    }
+
+    //------------------------BUSCADOR-------------------------------
+    const buscarEmpleado = (buscador) => {
+        return function (x) {
+            return x.allName.includes(buscador) ||
+                x.allName.toLowerCase().includes(buscador) ||
+                x.id_bio.includes(buscador) ||
+                !buscador
+        }
+    }
     //------------------------PDF GENERATE-------------------------------
-    const pdfGenerate = () => {
-        const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
-        // const doc = new jsPDF()
-        // const doc = new jsPDF('l','pt','letter')
-        doc.setFontSize(20)
-        doc.addFont('Calibri', 'Calibri', 'normal');
-        doc.setFont('Calibri');
-        doc.text('Lista de Personal', 6, 0.5)
+    const pdfGenerate = (e) => {
+        // console.log(e)
+        var data = e
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+        doc.setFontSize(12)
+        // doc.addFont('Calibri', 'Calibri', 'normal');
+        // doc.setFont('Calibri');
+        doc.text("FORMULARIO PERSONAL", pageWidth / 2, 0.5, 'center')
         doc.setFontSize(11)
-        doc.autoTable({
-            head: [[
-                { content: 'N° Item' },
-                { content: 'ID Bio' },
-                { content: 'Nombre' },
-                { content: 'Apellido P' },
-                { content: 'Apellido M' },
-            ]],
-            body: empleado.map((d, index) => (
-                [
-                    [d.itemEmp],
-                    [d.id_bio],
-                    [d.firstNameEmp],
-                    [d.lastNameEmpP],
-                    [d.lastNameEmpM],
-                ]
-            )),
-            startY: 1,
-        })
+        doc.text("I. DATOS PERSONALES", 1, 1)
+        doc.setFontSize(10)
+        doc.text(`Nombres y Apellidos:   ${e.allName}`, 1, 1.4)
+        doc.text(`CI:   ${e.CIEmp}`, 1, 1.7)
+        doc.text(`Domicilio:   ${e.dirEmp}`, 1, 2)
+        doc.text(`Estado Civil:   ${e.civilStatusEmp}`, 1, 2.3)
+        doc.text(`Nacionalidad:   ${e.nacionalityEmp}`, 1, 2.6)
+        doc.text(`Fono - Celular:   ${e.numCelEmp}`, 1, 2.9)
+        doc.text(`Profesion u Oficio:   `, 1, 3.2)
+        doc.text(`Correo Electronico:   ${e.emailEmp}`, 1, 3.5)
+        doc.addImage(e.avatar, 4.5, 1.1, 2, 2.2)
+        doc.text(`Fecha de Nacimiento:   ${e.fechaNacEmp}`, 3, 3.8)
+        doc.text(`Grado de Institucion:   ${e.institutionDegreeEmp}`, 3, 4.1)
+
+        doc.setFontSize(11)
+        doc.text("II. DATOS DE AFILIACION", 1, 5)
+        doc.setFontSize(10)
+        doc.text(`Nro. Item:   ${e.itemEmp}`, 1, 5.3)
+        doc.text(`Cargo Actual en la Entidad:   ${e.cargoEmp}`, 1, 5.6)
+        doc.text(`Fecha de Ingreso:   ${e.fechaini}`, 1, 5.9)
+
+        // doc.autoTable({
+        //     head: [[
+        //         { content: 'N° Item' },
+        //         { content: 'ID Bio' },
+        //         { content: 'Nombre' },
+        //         { content: 'Apellido P' },
+        //         { content: 'Apellido M' },
+        //     ]],
+        //     body: [[
+        //         {data.itemEmp},
+
+        //     ]],
+        //     startY: 1,
+        // })
         doc.output('dataurlnewwindow')
     }
     //---------------------------------------------------------------------
@@ -314,7 +366,7 @@ const ControlEmpleado = (props) => {
                             onChange={scrollChange}
                             variant="scrollable"
                             scrollButtons="auto"
-                            style={{ height: 60 }}
+                            style={{ height: 60, marginBottom: '2rem' }}
                         >
                             <Tab label="Pesonal" style={{ fontSize: 'x-small' }} icon={<AccountCircleIcon style={{ height: 20 }} />} />
                             <Tab label="Cargos" style={{ fontSize: 'x-small' }} component={Link} to='/registerCargo' icon={<DeviceHubIcon style={{ height: 20 }} />} />
@@ -323,16 +375,29 @@ const ControlEmpleado = (props) => {
                     </Paper>
 
                 </Grid>
-
-                <Typography variant='h4' align='center' className={classes.TyphoAlineation}>Lista de Empleados</Typography>
-                <Button component={Link} to={{pathname:'/registerEmp',data:'admin'}} style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
-                {/* <Button style={{ marginBottom: '2rem', backgroundColor: '#689f38', color: 'white' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button> */}
             </Container>
             <Container maxWidth='lg'>
-                {/* <Typography align='center' variant='h5' style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>Nueva lista</Typography> */}
+                <Button component={Link} to={{ pathname: '/registerEmp', data: 'admin' }} style={{ backgroundColor: '#689f38', color: 'white' }} variant='contained' >registrar empleado</Button>
+                <Typography variant='h4' align='center' className={classes.spacingBot}>Lista de Empleados</Typography>
+                <article className={classes.spacingBot} align='right'>
+                    {array && (
+                        <TextField
+                            className={classes.searchSize}
+                            style={{ background: 'white', borderRadius: 5 }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position='start'>
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                )
+                            }}
+                            onChange={e => setBuscador(e.target.value)}
+                        />
+                    )}
+                </article>
                 <Grid container spacing={3} justifyContent='center'>
-                    {empleado &&
-                        empleado.map(e => (
+                    {array &&
+                        array.filter(buscarEmpleado(buscador)).map(e => (
                             <Grid key={e._id} item xs={12} sm={3}>
                                 <Paper component={Box} p={2}>
                                     <div align='center'>
@@ -347,7 +412,8 @@ const ControlEmpleado = (props) => {
                                     </div>
                                     <div align='center'>
                                         <Typography variant='subtitle1'>ID Biometrico : {e.id_bio}</Typography>
-                                        <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography>
+                                        {/* <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography> */}
+                                        <Typography variant='subtitle1'>{e.allName}</Typography>
                                         <Typography variant='subtitle1'>C.I.: {e.CIEmp}</Typography>
                                     </div>
                                     <Grid container justifyContent='space-evenly'>
@@ -361,11 +427,16 @@ const ControlEmpleado = (props) => {
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>
-                                        <Tooltip title='info'>
+                                        <Tooltip title='imprimir'>
+                                            <IconButton style={{ color: 'black' }} onClick={() => pdfGenerate(e)}>
+                                                <PrintICon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        {/* <Tooltip title='info'>
                                             <IconButton style={{ color: 'black' }} onClick={() => infoEmpleado(e)}>
                                                 <InfoIcon />
                                             </IconButton>
-                                        </Tooltip>
+                                        </Tooltip> */}
                                     </Grid>
                                 </Paper>
                             </Grid>

@@ -1,4 +1,4 @@
-import { Button, Paper, Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Button, Paper, Container, Grid, makeStyles, Typography, CircularProgress, Backdrop } from '@material-ui/core'
 import axios from 'axios'
 // import React, { useState } from 'react'
 import ReactFileReader from 'react-file-reader'
@@ -7,6 +7,7 @@ import { PORT_URL } from '../../../PortURL'
 import espacio3 from '../../../images/espacio3.jpg'
 import espacio4 from '../../../images/espacio4.jpg'
 import espacio5 from '../../../images/espacio5.jpg'
+import { useState } from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,15 +47,29 @@ const useStyles = makeStyles((theme) => ({
     label: {
         textTransform: 'capitalize',
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff'
+    }
 }))
 var data;
 const HomeAdmin = () => {
     const classes = useStyles()
+    const [loading, setLoading] = useState(false)
+    const [progress,setProgress]=useState(0)
     // const [openDialog, setOpenDialog] = useState(false)
 
     // const openCloseDialogUpdate = () => {
     //     setOpenDialog(!openDialog)
     // }
+    //---------------LOADING------------
+    const openLoading = () => {
+        setLoading(true)
+    }
+    const closeLoading = () => {
+        setLoading(false)
+    }
+    //-----------------------------------------------------
     const hadle = files => {
         const reader = new FileReader()
         var array = []
@@ -65,14 +80,17 @@ const HomeAdmin = () => {
             var texto = reader.result
             var lines = texto.split("\n")
             for (var i in lines) {
+                // for (var i = 0; i < lines.length; i++) {
                 tmp = lines[i].trim().split("\t")
                 tmp2 = tmp[1]
-                tmp3 = tmp2.split(" ")
-                array.push({
-                    id_bio: tmp[0],
-                    fecha: tmp3[0],
-                    hora: tmp3[1]
-                })
+                if (tmp2 != undefined) {
+                    tmp3 = tmp2.split(" ")
+                    array.push({
+                        id_bio: tmp[0],
+                        fecha: tmp3[0],
+                        hora: tmp3[1]
+                    })
+                }
             }
             data = array
             // console.log(data)
@@ -84,15 +102,20 @@ const HomeAdmin = () => {
     const postAsistencia = async (e) => {
         e.preventDefault()
         const nuevo = data.length
+        openLoading()
+        var carga;
         for (var i = 0; i < nuevo; i++) {
+            carga=i/nuevo
+            carga=carga*100
+            setProgress(carga)
             await axios.post(`${PORT_URL}asistencia`, data[i])
                 .then(resp => {
-                    console.log(resp.data)
-
+                    // console.log(resp.data)
                 })
                 .catch(err => console.log(err))
             if (i >= nuevo - 1) {
-                return alert('informacion subida al servidor')
+                closeLoading()
+                // return alert('informacion subida al servidor')
             }
             console.log(data[i])
         }
@@ -142,6 +165,7 @@ const HomeAdmin = () => {
     //     document.getElementById('archivoTexto').addEventListener('change', abrirArchivo);
     // })
     //--------------------------------------
+    // console.log(progress)
     return (
         <>
             <Container fixed style={{ paddingTop: '5rem' }}>
@@ -189,7 +213,7 @@ const HomeAdmin = () => {
                     </ReactFileReader>
                     <Button onClick={confirmar} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)', marginBottom: '2rem' }}>Subir Datos</Button>
                 </Container>
-                
+
                 {/*----------------OPSION 2----------------------------*/}
                 {/* <input type='file' id="archivoTexto" />
                 <textarea id='contenido2' cols='30' rows='10'></textarea> */}
@@ -209,6 +233,9 @@ const HomeAdmin = () => {
             <Button onClick={openCloseDialogUpdate}  variant='contained' style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', marginLeft: '1rem' }}>Cancelar</Button>
             </div>
         </Dialog> */}
+            <Backdrop className={classes.backdrop} open={loading} onClick={closeLoading}>
+                <CircularProgress color='inherit' variant='determinate' value={progress} />
+            </Backdrop>
         </>
     )
 }

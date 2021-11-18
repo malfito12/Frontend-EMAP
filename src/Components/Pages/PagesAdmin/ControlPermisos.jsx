@@ -1,6 +1,6 @@
 import { Container, Box, Grid, Paper, TextField, Typography, makeStyles, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, InputAdornment, Dialog, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { PORT_URL } from '../../../PortURL'
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -49,7 +49,7 @@ const ControlPermisos = () => {
         await axios.get(`${PORT_URL}permiso`)
             .then(resp => {
                 setPermiso(resp.data)
-                console.log(resp.data)
+                // console.log(resp.data)
             })
             .catch(err => { console.log(err) })
     }
@@ -65,13 +65,13 @@ const ControlPermisos = () => {
                 openCloseErrorAlertRegisterPermiso()
                 console.log(err)
             })
-        setChangeData({
-            id_bio: '',
-            namePermiso: '',
-            tipoPermiso: '',
-            fechaPermisoIni: '',
-            fechaPermisoFin: ''
-        })
+        // setChangeData({
+        //     id_bio: '',
+        //     namePermiso: '',
+        //     tipoPermiso: '',
+        //     fechaPermisoIni: '',
+        //     fechaPermisoFin: ''
+        // })
         getPermiso()
     }
     //----------------EDIT PERMISOS-------------------------------------------
@@ -118,8 +118,10 @@ const ControlPermisos = () => {
     const searchPermiso = (perm) => {
         return function (x) {
             return x.id_bio.includes(perm) ||
+                x.firstNameEmp.includes(perm) ||
                 x.firstNameEmp.toLowerCase().includes(perm) ||
                 x.namePermiso.toLowerCase().includes(perm) ||
+                x.namePermiso.includes(perm) ||
                 x.fechaPermisoIni.includes(perm) ||
                 x.fechaPermisoFin.includes(perm) ||
                 !perm
@@ -158,13 +160,22 @@ const ControlPermisos = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //-----------------------------------------------------------------
+    //--------------------BUSCAR INFORMACION ANTES DE REGISTRAR EL PERMISO---------------------------------------
+    const [name, setName] = useState([])
+    const postPrueba = async (e) => {
+        e.preventDefault()
+        const id = changeData.id_bio
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setName(resp.data))
+            .catch(err => console.log(err))
+    }
+    // console.log(name)
 
     // console.log(changeData)
     // console.log(changeDataEdit)
     return (
         <>
-            <Container maxWidth={false} style={{paddingTop: '5rem'}}>
+            <Container maxWidth={false} style={{ paddingTop: '5rem' }}>
                 <Container maxWidth='lg' >
                     <Grid item xs={12} sm={5}>
                         <Paper className={classes.spacingBott}>
@@ -175,7 +186,7 @@ const ControlPermisos = () => {
                                 scrollButtons="auto"
                                 style={{ height: 60 }}
                             >
-                                <Tab label="Registro Permisos" style={{ fontSize: 'x-small' }}  icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
+                                <Tab label="Registro Permisos" style={{ fontSize: 'x-small' }} icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
                                 <Tab label="Registro Feriados" style={{ fontSize: 'x-small' }} component={Link} to='/controlFeriados' icon={<CheckBoxIcon style={{ fontSize: 'large' }} />} />
                                 <Tab label="Registro Vacaciones" style={{ fontSize: 'x-small' }} component={Link} to='/controlVacaciones' icon={<PlayListAddCheckIcon style={{ fontSize: 'large' }} />} />
                             </Tabs>
@@ -185,20 +196,57 @@ const ControlPermisos = () => {
                 <Typography align='center' variant='h4' style={{ marginBottom: '2rem' }}>Control de Permisos</Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <Paper component={Box} p={2} style={{ marginTop: '4rem' }}>
+                        <Paper component={Box} p={2} >
                             <Typography align='center' className={classes.spacingBott}>Registrar Permiso</Typography>
                             <Grid item xs={12} sm={12} className={classes.spacingBott}>
-                                <TextField
-                                    name='id_bio'
-                                    label='ID Biometrico'
-                                    variant='outlined'
-                                    size='small'
-                                    fullWidth={true}
-                                    onChange={handleChange}
-                                    value={changeData.id_bio}
-
-                                />
+                                <form onSubmit={postPrueba}>
+                                    <TextField
+                                        name='id_bio'
+                                        label='ID Biometrico'
+                                        variant='outlined'
+                                        size='small'
+                                        type='number'
+                                        fullWidth
+                                        onChange={handleChange}
+                                    // value={changeData.id_bio}
+                                    />
+                                    <Button variant='contained' style={{ display: 'none' }} type='submit'>enviar</Button>
+                                </form>
                             </Grid>
+                            {name.length > 0 ? (
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Nombre'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBott}
+                                            value={name[0].firstNameEmp}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido P'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBott}
+                                            value={name[0].lastNameEmpP}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido M'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBott}
+                                            value={name[0].lastNameEmpM}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            ) : null}
                             <Grid container spacing={3} className={classes.spacingBott}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField

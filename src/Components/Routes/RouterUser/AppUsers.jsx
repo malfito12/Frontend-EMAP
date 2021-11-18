@@ -7,7 +7,6 @@ import UserControlEmp from '../../Pages/PagesUsers/Empleados/UserControlEmp'
 import InfoEmp from '../../Molecules/StepFormEmpleados/InfoEmp'
 import UserControlHorario from '../../Pages/PagesUsers/Empleados/UserControlHorario'
 import Page404 from '../Page404'
-import RegisterEmp from '../../Molecules/StepFormEmpleados/RegisterEmp'
 import UserControlCargos from '../../Pages/PagesUsers/Empleados/UserControlCargos'
 import UserControlFeriados from '../../Pages/PagesUsers/Justificaciones/UserControlFeriados'
 import UserControlVacaciones from '../../Pages/PagesUsers/Justificaciones/UserControlVacaciones'
@@ -25,6 +24,7 @@ import Memorandums from '../../Pages/PagesAdmin/Reportes/Memorandums'
 import GeneralConfig from '../../Pages/PagesAdmin/GeneralConfig'
 import AntiguedadEmp from '../../Pages/PagesAdmin/AntiguedadEmp'
 import ReporteCargos from '../../Pages/PagesAdmin/Reportes/ReporteCargos'
+import UserRegistroEmp from '../../Pages/PagesUsers/Empleados/UserRegistroEmp'
 
 
 const AppUsers = () => {
@@ -33,7 +33,7 @@ const AppUsers = () => {
             <HeaderUser/>
             <Switch>
                 <Protected exact  path='/homeuser' component={props=><HomeUser {...props} />} />
-                <Protected exact  path='/registerEmp' component={props=><RegisterEmp {...props} />} />
+                <Protected exact  path='/userRegisterEmp' component={props=><UserRegistroEmp {...props} />} />
                 <Protected exact  path='/userControlCargo' component={props=><UserControlCargos {...props} />} />
                 <Protected exact  path='/userControlHorario' component={props=><UserControlHorario {...props} />} />
                 

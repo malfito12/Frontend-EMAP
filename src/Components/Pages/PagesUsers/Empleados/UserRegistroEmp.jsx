@@ -2,8 +2,8 @@ import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
-import { PORT_URL } from '../../../PortURL'
 import { useEffect } from 'react'
+import { PORT_URL } from '../../../../PortURL'
 
 const useStyles = makeStyles((theme) => ({
     TyphoAlineation: {
@@ -24,9 +24,7 @@ const useStyles = makeStyles((theme) => ({
         width: 200,
     },
 }))
-const RegisterEmp = (props) => {
-    // console.log(props)
-
+const UserRegistroEmp = () => {
     const classes = useStyles()
     const [image, setImage] = useState(null)
     const [preview, setPreview] = useState(null)
@@ -122,7 +120,7 @@ const RegisterEmp = (props) => {
                 // alert('empleado registrado')
                 console.log(resp.data)
             })
-            .catch(err=>console.log(err))
+            .catch(err => console.log(err))
     }
     //-----------------------GET CARGOS--------------------------------
     const getCargos = async (e) => {
@@ -155,7 +153,6 @@ const RegisterEmp = (props) => {
     const closeModalMessage = () => {
         setOpenMessage(false)
     }
-
     //---------------------------------------------------------------------
     const handleChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -632,7 +629,7 @@ const RegisterEmp = (props) => {
                         </Grid>
                         <div align='center'>
                             <Button type='submit' style={{ marginBottom: '3rem', marginRight: '1rem' }} variant='contained' color='primary'>REGISTRAR</Button>
-                            <Button component={Link} to='/controlEmp' style={{ marginBottom: '3rem' }} variant='contained' color='secondary'>cancelar</Button>
+                            <Button component={Link} to='/userControlEmp' style={{ marginBottom: '3rem' }} variant='contained' color='secondary'>cancelar</Button>
                         </div>
                     </form>
                 </Container>
@@ -644,11 +641,11 @@ const RegisterEmp = (props) => {
             >
                 <Container maxWidth='sm' align='center'>
                     <Typography variant='h6' className={classes.TyphoAlineation}>Empleado Registrado</Typography>
-                    <Button style={{ marginBottom: '1rem' }} variant='contained' color='primary' component={Link} to='/controlEmp'>aceptar</Button>
+                    <Button style={{ marginBottom: '1rem' }} variant='contained' color='primary' component={Link} to='/userControlEmp'>aceptar</Button>
                 </Container>
             </Dialog>
         </>
     )
 }
 
-export default RegisterEmp
+export default UserRegistroEmp
