@@ -130,7 +130,7 @@ const AntiguedadEmp = () => {
                 </Grid>
             </Container>
             <Container maxWidth='lg'>
-                <Typography align='center' variant='h5' className={classes.spacingBot} >ANTIGUEDAD</Typography>
+                <Typography align='center' variant='h5' className={classes.spacingBot} >PORCENTAJE DE ANTIGUEDAD</Typography>
                 <Container maxWidth='sm'>
                     <div align='right' className={classes.spacingBot}>
                         <Button size='small' variant='contained' style={{ background: 'green', color: 'white' }} onClick={openModalAddAntiguedad}>Nuevo</Button>

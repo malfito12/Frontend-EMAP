@@ -127,6 +127,15 @@ const KardexRevision = () => {
     const openCloseAlertErrorPrint = () => {
         setOpenAlertErrorPrint(!openAlertErrorPrint)
     }
+    //--------------------BUSCAR INFORMACION DE EMPLEADO---------------------------------------
+    const [name, setName] = useState([])
+    const getPrueba = async (e) => {
+        e.preventDefault()
+        const id = changeData.id_bio
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setName(resp.data))
+            .catch(err => console.log(err))
+    }
     //-----------------------------------------------------------------
     // console.log(changeData)
     // console.log(empleado)
@@ -155,7 +164,7 @@ const KardexRevision = () => {
                         <Container maxWidth='xs'>
                             <Paper component={Box} p={2} className={classes.spacingBot}>
                                 <Typography align='center' className={classes.spacingBot}>Introducir Informacion </Typography>
-                                <form onSubmit={getMarcaciones}>
+                                <form onSubmit={getPrueba}>
                                     <TextField
                                         name='id_bio'
                                         label='ID Biometrico'
@@ -165,8 +174,44 @@ const KardexRevision = () => {
                                         size='small'
                                         className={classes.spacingBot}
                                         onChange={handleChange}
-                                        required
                                     />
+                                    <Button type='submit' style={{display:'none'}}></Button>
+                                </form>
+                                {name.length > 0 ? (
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Nombre'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].firstNameEmp}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido P'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpP}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido M'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpM}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            ) : null}
+                                <form onSubmit={getMarcaciones}>
                                     <TextField
                                         name='fechaini'
                                         label='fecha Inicio'
@@ -203,7 +248,7 @@ const KardexRevision = () => {
                         <div align='right'>
                             <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
                         </div>
-                        <Paper component={Box} p={1}>
+                        <Paper component={Box} p={1} className={classes.spacingBot}>
                             <TableContainer style={{ maxHeight: 500 }}>
                                 <Table stickyHeader id='id-table'>
                                     <TableHead>

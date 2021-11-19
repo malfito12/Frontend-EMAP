@@ -199,7 +199,7 @@ const DrawerMenuAdmin = (props) => {
                         <ListItemIcon>
                             <SendIcon color='primary' />
                         </ListItemIcon>
-                        <ListItemText primary='Configuracion' />
+                        <ListItemText primary='Datos Generales' />
                     </ListItem>
                 </div>
                 <div onClick={props.CloseDrawer} >
@@ -280,7 +280,7 @@ const DrawerMenuAdmin = (props) => {
                         <ListItemIcon>
                             <SendIcon color='primary' />
                         </ListItemIcon>
-                        <ListItemText primary='Memorandums' />
+                        <ListItemText primary='Memorandos' />
                     </ListItem>
                 </div>
                 {/* <div onClick={props.CloseDrawer} />

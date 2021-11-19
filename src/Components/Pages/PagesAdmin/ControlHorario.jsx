@@ -331,6 +331,7 @@ const ControlHorario = () => {
                                         label='Descripción'
                                         variant='outlined'
                                         fullWidth
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         required
@@ -341,6 +342,7 @@ const ControlHorario = () => {
                                         variant='outlined'
                                         type='number'
                                         fullWidth
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         required
@@ -351,6 +353,8 @@ const ControlHorario = () => {
                                         variant='outlined'
                                         fullWidth
                                         select
+                                        size='small'
+                                        align='center'
                                         value={changeData.feriado}
                                         className={classes.spacingBott}
                                         onChange={handleChange}
@@ -367,15 +371,19 @@ const ControlHorario = () => {
                                         label='Orden'
                                         variant='outlined'
                                         fullWidth
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                     // required
                                     />
                                     <TextField
                                         name='est'
-                                        label='Estado'
+                                        // label='Estado'
+                                        label='Tipo de Horario'
                                         variant='outlined'
                                         fullWidth
+                                        size='small'
+                                        align='center'
                                         select
                                         value={changeData.est}
                                         className={classes.spacingBott}
@@ -538,6 +546,7 @@ const ControlHorario = () => {
                                         label='Descripción'
                                         variant='outlined'
                                         fullWidth
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         defaultValue={changeData.descripcion}
@@ -549,6 +558,7 @@ const ControlHorario = () => {
                                         variant='outlined'
                                         type='number'
                                         fullWidth
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         defaultValue={changeData.tolerancia}
@@ -557,9 +567,11 @@ const ControlHorario = () => {
                                     <TextField
                                         name='feriado'
                                         label='Feriado'
+                                        align='center'
                                         variant='outlined'
                                         fullWidth
                                         select
+                                        size='small'
                                         value={changeData.feriado}
                                         className={classes.spacingBott}
                                         onChange={handleChange}
@@ -572,11 +584,25 @@ const ControlHorario = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        name='orden'
+                                        label='Orden'
+                                        variant='outlined'
+                                        fullWidth
+                                        size='small'
+                                        className={classes.spacingBott}
+                                        onChange={handleChange}
+                                        defaultValue={changeData.orden}
+                                    // required
+                                    />
+                                    <TextField
                                         name='est'
-                                        label='Estado'
+                                        // label='Estado'
+                                        label='Tipo de Horario'
+                                        align='center'
                                         variant='outlined'
                                         fullWidth
                                         select
+                                        size='small'
                                         className={classes.spacingBott}
                                         onChange={handleChange}
                                         value={changeData.est}
@@ -585,16 +611,6 @@ const ControlHorario = () => {
                                         <MenuItem value='Diurno'>Diurno</MenuItem>
                                         <MenuItem value='Nocturno'>Nocturno</MenuItem>
                                     </TextField>
-                                    <TextField
-                                        name='orden'
-                                        label='Orden'
-                                        variant='outlined'
-                                        fullWidth
-                                        className={classes.spacingBott}
-                                        onChange={handleChange}
-                                        defaultValue={changeData.orden}
-                                    // required
-                                    />
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12} sm={12} justifyContent='space-evenly' className={classes.spacingBott}>

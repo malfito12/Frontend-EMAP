@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 const KardexPreRevision = () => {
     const classes = useStyles()
-    const [empleado, setEmpleado] = useState([])
+    // const [empleado, setEmpleado] = useState([])
     const [marcaciones, setMarcaciones] = useState([])
     const [openConfirmDatos, setOpenConfirmDatos] = useState(false)
     const [openAlertAdd, setOpenAlertAdd] = useState(false)
@@ -33,9 +33,9 @@ const KardexPreRevision = () => {
         const fechaini = changeData.fechaini
         const fechafin = changeData.fechafin
         //busqueda de empleado
-        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
-            .then(resp => setEmpleado(resp.data))
-            .catch(err => console.log(err))
+        // await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+        //     .then(resp => setEmpleado(resp.data))
+        //     .catch(err => console.log(err))
 
         //buscqueda de marcaciones
         await axios.get(`${PORT_URL}nuevoTodo/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
@@ -84,6 +84,15 @@ const KardexPreRevision = () => {
             [e.target.name]: e.target.value
         })
     }
+    //--------------------BUSCAR INFORMACION DE EMPLEADO---------------------------------------
+    const [name, setName] = useState([])
+    const getPrueba = async (e) => {
+        e.preventDefault()
+        const id = changeData.id_bio
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setName(resp.data))
+            .catch(err => console.log(err))
+    }
     //-----------------------------------------------------------------
 
     // console.log(dos)
@@ -98,7 +107,7 @@ const KardexPreRevision = () => {
                         onChange={scrollChange}
                         variant="scrollable"
                         scrollButtons="auto"
-                        style={{ height: 60,background: 'white', borderRadius: 5, marginBottom: '2rem' }}
+                        style={{ height: 60, background: 'white', borderRadius: 5, marginBottom: '2rem' }}
                     >
                         <Tab label="Subir Info." style={{ fontSize: 'x-small' }} icon={<AcUnitIcon style={{ fontSize: 'large' }} />} />
                         <Tab label="Control Resumen" style={{ fontSize: 'x-small' }} component={Link} to='/kardexRevision' icon={<AccountBalanceIcon style={{ fontSize: 'large' }} />} />
@@ -112,7 +121,7 @@ const KardexPreRevision = () => {
                         <Container maxWidth='xs'>
                             <Paper component={Box} p={2} className={classes.spacingBot}>
                                 <Typography align='center' className={classes.spacingBot}>Introducir Informacion </Typography>
-                                <form onSubmit={getMarcaciones}>
+                                <form onSubmit={getPrueba}>
                                     <TextField
                                         name='id_bio'
                                         label='ID Biometrico'
@@ -124,6 +133,43 @@ const KardexPreRevision = () => {
                                         onChange={handleChange}
                                         required
                                     />
+                                    <Button type='submit' style={{ display: 'none' }}></Button>
+                                </form>
+                                {name.length > 0 ? (
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} sm={4}>
+                                            <TextField
+                                                label='Nombre'
+                                                variant='outlined'
+                                                size='small'
+                                                fullWidth
+                                                className={classes.spacingBot}
+                                                value={name[0].firstNameEmp}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                            <TextField
+                                                label='Apellido P'
+                                                variant='outlined'
+                                                size='small'
+                                                fullWidth
+                                                className={classes.spacingBot}
+                                                value={name[0].lastNameEmpP}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                            <TextField
+                                                label='Apellido M'
+                                                variant='outlined'
+                                                size='small'
+                                                fullWidth
+                                                className={classes.spacingBot}
+                                                value={name[0].lastNameEmpM}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                ) : null}
+                                <form onSubmit={getMarcaciones}>
                                     <TextField
                                         name='fechaini'
                                         label='fecha Inicio'
@@ -158,12 +204,12 @@ const KardexPreRevision = () => {
                     </Grid>
                     <Grid item xs={12} sm={7}>
                         <Paper component={Box} p={1}>
-                            {empleado.length > 0 ? (
+                            {/* {empleado.length > 0 ? (
                                 <>
                                     <Typography className={classes.spacingBot}>Nombre : {empleado[0].firstNameEmp} {empleado[0].lastNameEmpP} {empleado[0].lastNameEmpM}</Typography>
                                     <Typography className={classes.spacingBot}>C.I : {empleado[0].CIEmp}</Typography>
                                 </>
-                            ) : (null)}
+                            ) : (null)} */}
                             <TableContainer style={{ maxHeight: 440 }}>
                                 <Table stickyHeader>
                                     <TableHead>

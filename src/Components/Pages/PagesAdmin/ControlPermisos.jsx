@@ -1,4 +1,4 @@
-import { Container, Box, Grid, Paper, TextField, Typography, makeStyles, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, InputAdornment, Dialog, Tabs, Tab } from '@material-ui/core'
+import { Container, Box, Grid, Paper, TextField, Typography, makeStyles, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, InputAdornment, Dialog, Tabs, Tab, MenuItem } from '@material-ui/core'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -264,12 +264,16 @@ const ControlPermisos = () => {
                                         name='tipoPermiso'
                                         label='Tipo de Permiso'
                                         size='small'
-                                        type='number'
                                         variant='outlined'
-                                        fullWidth={true}
+                                        align='center'
+                                        select
+                                        fullWidth
                                         onChange={handleChange}
                                         value={changeData.tipoPermiso}
-                                    />
+                                    >
+                                        <MenuItem value='2'>Un dia</MenuItem>
+                                        <MenuItem value='3'>Varios Dias</MenuItem>
+                                    </TextField>
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3} className={classes.spacingBott}>

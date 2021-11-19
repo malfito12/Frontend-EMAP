@@ -86,7 +86,6 @@ const ControlFeriado = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //-----------------------------------------------------------------
     // console.log(changeData)
     return (
         <>

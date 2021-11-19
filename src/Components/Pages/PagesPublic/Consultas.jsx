@@ -191,8 +191,9 @@ const Consultas = () => {
                 </div>
             }
             <Container maxWidth='sm' style={{paddingTop:'2rem'}}>
-                <Typography align='center' variant='h5' className={classes.spacingBot}>Consultas</Typography>
+                <Typography align='center' variant='h5' className={classes.spacingBot}>CONSULTAS</Typography>
                 <Paper component={Box} p={2} className={classes.spacingBot}>
+                    <Typography variant='subtitle1'>Introdusca Cedula de Identidad</Typography>
                     <form onSubmit={buscarInfo}>
                         <TextField
                             name='cedula'

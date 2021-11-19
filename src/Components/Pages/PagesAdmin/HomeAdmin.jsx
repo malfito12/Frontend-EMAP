@@ -1,4 +1,4 @@
-import { Button, Paper, Container, Grid, makeStyles, Typography, CircularProgress, Backdrop } from '@material-ui/core'
+import { Button, Paper, Container, Grid, makeStyles, Typography, CircularProgress, Backdrop, IconButton, Box } from '@material-ui/core'
 import axios from 'axios'
 // import React, { useState } from 'react'
 import ReactFileReader from 'react-file-reader'
@@ -7,6 +7,15 @@ import { PORT_URL } from '../../../PortURL'
 import espacio3 from '../../../images/espacio3.jpg'
 import espacio4 from '../../../images/espacio4.jpg'
 import espacio5 from '../../../images/espacio5.jpg'
+import user from '../../../images/imagesMenu/user.png'
+import asistencias from '../../../images/imagesMenu/asistencias.png'
+import empleados from '../../../images/imagesMenu/empleados.png'
+import configuracion from '../../../images/imagesMenu/configuracion.png'
+import justificaciones from '../../../images/imagesMenu/justificaciones.png'
+import memorando from '../../../images/imagesMenu/memorando.png'
+import planillaBono from '../../../images/imagesMenu/planillaBono.png'
+import planillaSueldos from '../../../images/imagesMenu/planillaSueldos.png'
+import reportes from '../../../images/imagesMenu/reportes.png'
 import { useState } from 'react'
 
 
@@ -50,18 +59,23 @@ const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff'
+    },
+    sizeHomeAdmin: {
+        justifyContent: "space-evenly",
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column'
+        }
+    },
+    spacingBot: {
+        marginBottom: '1rem'
     }
 }))
 var data;
 const HomeAdmin = () => {
     const classes = useStyles()
     const [loading, setLoading] = useState(false)
-    const [progress,setProgress]=useState(0)
-    // const [openDialog, setOpenDialog] = useState(false)
+    const [progress, setProgress] = useState(0)
 
-    // const openCloseDialogUpdate = () => {
-    //     setOpenDialog(!openDialog)
-    // }
     //---------------LOADING------------
     const openLoading = () => {
         setLoading(true)
@@ -105,8 +119,8 @@ const HomeAdmin = () => {
         openLoading()
         var carga;
         for (var i = 0; i < nuevo; i++) {
-            carga=i/nuevo
-            carga=carga*100
+            carga = i / nuevo
+            carga = carga * 100
             setProgress(carga)
             await axios.post(`${PORT_URL}asistencia`, data[i])
                 .then(resp => {
@@ -172,9 +186,70 @@ const HomeAdmin = () => {
                 {/* <Container fixed > */}
                 <Typography align='center' variant='h5' style={{ marginBottom: '2rem' }}>ADMINISTRACION</Typography>
                 <Container maxWidth='lg' align='center' style={{ marginBottom: '2rem' }}>
-                    <Grid container spacing={3}>
+                    <div style={{ marginBottom: '3rem' }}>
+                        <Grid container spacing={2} className={classes.sizeHomeAdmin} >
+                            <Box>
+                                <IconButton component={Link} to="/controluser">
+                                    <img src={user} alt="#" />
+                                </IconButton>
+                                <Typography>USUARIOS</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/controlEmp">
+                                    <img src={empleados} alt="#" />
+                                </IconButton>
+                                <Typography>PERSONAL</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/kardexPreRevision">
+                                    <img src={asistencias} alt="#" />
+                                </IconButton>
+                                <Typography>ASISTENCIAS</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/controlPermisos">
+                                    <img src={justificaciones} alt="#" />
+                                </IconButton>
+                                <Typography>PERMISOS</Typography>
+                            </Box>
+                        </Grid>
+                    </div>
+                    <div style={{ marginBottom: '3rem' }}>
+                        <Grid container spacing={2} className={classes.sizeHomeAdmin} >
+                            <Box>
+                                <IconButton component={Link} to="/sueldosPreRevision">
+                                    <img src={planillaSueldos} alt="#" />
+                                </IconButton>
+                                <Typography>PLANILLA SUELDOS</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/reportePersonal">
+                                    <img src={reportes} alt="#" />
+                                </IconButton>
+                                <Typography>REPORTES</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/refrigerioPreRevision">
+                                    <img src={planillaBono} alt="#" />
+                                </IconButton>
+                                <Typography>PLANILLA TE-REFRIGERIO</Typography>
+                            </Box>
+                            <Box>
+                                <IconButton component={Link} to="/generalConfig">
+                                    <img src={configuracion} alt="#" />
+                                </IconButton>
+                                <Typography>DATOS GENERALES</Typography>
+                            </Box>
+                        </Grid>
+                    </div>
+                    {/* <Grid container spacing={3}>
                         <Grid item xs={8} sm={4}>
-                            <Button component={Link} to='/controluser' style={{ marginBottom: '1rem' }} classes={{ root: classes.root1, label: classes.label }}>USUARIOS</Button>
+                            <Button
+                                component={Link}
+                                to='/controluser'
+                                style={{ marginBottom: '1rem' }}
+                                classes={{ root: classes.root1, label: classes.label }}
+                            >USUARIOS</Button>
                             <Paper style={{ width: 300, height: 200 }}>
                                 <Button component={Link} to='/controlHorarios' >
                                     <img src={espacio3} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
@@ -183,7 +258,12 @@ const HomeAdmin = () => {
                             </Paper>
                         </Grid>
                         <Grid item xs={8} sm={4}>
-                            <Button component={Link} to='/controlEmp' style={{ marginBottom: '1rem' }} classes={{ root: classes.root2, label: classes.label }}>EMPLEADOS</Button>
+                            <Button
+                                component={Link}
+                                to='/controlEmp'
+                                style={{ marginBottom: '1rem' }}
+                                classes={{ root: classes.root2, label: classes.label }}
+                            >EMPLEADOS</Button>
                             <Paper style={{ width: 300, height: 200 }}>
                                 <Button component={Link} to='/kardexPreRevision' >
                                     <img src={espacio4} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
@@ -192,7 +272,12 @@ const HomeAdmin = () => {
                             </Paper>
                         </Grid>
                         <Grid item xs={8} sm={4}>
-                            <Button component={Link} to='/registerCargo' style={{ marginBottom: '1rem' }} classes={{ root: classes.root3, label: classes.label }}>CARGOS</Button>
+                            <Button
+                                component={Link}
+                                to='/registerCargo'
+                                style={{ marginBottom: '1rem' }}
+                                classes={{ root: classes.root3, label: classes.label }}
+                            >CARGOS</Button>
                             <Paper style={{ width: 300, height: 200 }}>
                                 <Button component={Link} to='/controlPermisos' >
                                     <img src={espacio5} style={{ width: 280, height: 185, position: 'relative', display: 'inline-block' }} alt="#" />
@@ -200,11 +285,8 @@ const HomeAdmin = () => {
                                 </Button>
                             </Paper>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Container>
-                {/* <Button variant='contained' color='primary'>
-            <input type='file'  onChange={(e)=>hadle(e)}></input>
-            </Button> */}
                 <Typography align='center' style={{ marginBottom: '2rem' }} variant='h5'>Subir Informacion a la base de datos</Typography>
                 <Container style={{ width: 200 }} align='center' >
                     <span id='contenido'></span>
@@ -219,20 +301,6 @@ const HomeAdmin = () => {
                 <textarea id='contenido2' cols='30' rows='10'></textarea> */}
 
             </Container>
-
-            {/* <Button type='button' onClick={nuevo} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }}>Aceptar</Button>
-
-        <Dialog
-            maxWidth='sm'
-            open={openDialog}
-            onClose={openCloseDialogUpdate}
-        >
-            <Typography variant='h5' style={{marginLeft:'3rem',marginRight:'3rem',marginTop:'1rem', marginBottom:'1rem'}} >¿Quieres Subir los datos al servidor?</Typography>
-            <div style={{marginBottom:'2rem'}} align='center'>
-            <Button onClick={e => postAsistencia(e)} defaultValue={true} variant='contained' style={{ background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)' }}>Aceptar</Button>
-            <Button onClick={openCloseDialogUpdate}  variant='contained' style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', marginLeft: '1rem' }}>Cancelar</Button>
-            </div>
-        </Dialog> */}
             <Backdrop className={classes.backdrop} open={loading} onClick={closeLoading}>
                 <CircularProgress color='inherit' variant='determinate' value={progress} />
             </Backdrop>
