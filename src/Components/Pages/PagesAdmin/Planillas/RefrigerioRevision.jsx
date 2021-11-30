@@ -135,9 +135,9 @@ const RefrigerioRevision = () => {
         case 6: mes = 'JULIO'; break;
         case 7: mes = 'AGOSTO'; break;
         case 8: mes = 'SEPTIEMBRE'; break;
-        case 0: mes = 'OCTUBRE'; break;
-        case 0: mes = 'NOVIEMBRE'; break;
-        case 0: mes = 'DICIEMBRE'; break;
+        case 9: mes = 'OCTUBRE'; break;
+        case 10: mes = 'NOVIEMBRE'; break;
+        case 11: mes = 'DICIEMBRE'; break;
         default: mes = 'mes no valido'
     }
     var image = logo2emap
@@ -153,6 +153,13 @@ const RefrigerioRevision = () => {
         doc.setFontSize(12)
         doc.text(`PERSONAL ${(changeData.typePlanilla).toUpperCase()} EN FUNCIONAMIENTO`, pageWidth / 2, 0.9, 'center');
         doc.autoTable({ html: "#id-table", startY: 1, styles: { fontSize: 5, halign: 'center' } })
+        doc.setFontSize(8)
+        doc.text('-----------------------------------',pageWidth/6.4, doc.lastAutoTable.finalY+0.9)
+        doc.text('REALIZADO POR',pageWidth/6, doc.lastAutoTable.finalY+1)
+        doc.text('-----------------------------------',pageWidth/2, doc.lastAutoTable.finalY+0.9,'center')
+        doc.text('REVISADO POR',pageWidth/2, doc.lastAutoTable.finalY+1,'center')
+        doc.text('-----------------------------------',pageWidth/1.33, doc.lastAutoTable.finalY+0.9,)
+        doc.text('APROBADO POR',pageWidth/1.3, doc.lastAutoTable.finalY+1)
         // doc.output('dataurlnewwindow')
         window.open(doc.output('bloburi'))
     }

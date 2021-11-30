@@ -135,7 +135,10 @@ const HomeAdmin = () => {
         }
     }
     const confirmar = (e) => {
-        const a = window.confirm('¿deseas subir los datos?')
+        const info=data
+        const primero=info[0].fecha
+        const ultimo=info[info.length-1].fecha
+        const a = window.confirm(`¿deseas subir los datos desde ${primero} hasta ${ultimo} ?`)
         if (a === true) {
             postAsistencia(e)
         }

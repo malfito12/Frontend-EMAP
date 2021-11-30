@@ -1,11 +1,11 @@
-import { AppBar, Button, Box, Container, Dialog, Backdrop, CircularProgress, IconButton, makeStyles, MenuItem, Paper, TextField, Toolbar, Typography, Grid } from '@material-ui/core'
+import { AppBar, Button, Box, Link, Container, Dialog, Backdrop, CircularProgress, IconButton, makeStyles, MenuItem, Paper, TextField, Toolbar, Typography, Grid } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import loginimage from '../../../images/loginimage.png'
 import logo2emap from '../../../images/logo2emap.png'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { PORT_URL } from '../../../PortURL';
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
@@ -25,6 +25,7 @@ const PublicMainMenu = () => {
     const [openLogin, setOpenLogin] = useState(false)
     const [changeData, setChangeData] = useState({
         email: '',
+        username: '',
         password: '',
         rols: 'usuario'
     })
@@ -116,13 +117,14 @@ const PublicMainMenu = () => {
                 console.log(err)
             })
     }
-
+    //VERIFICAR SI EXISTE USUARIOS
     const openCloseModalLogin = () => {
-        if (user > 0) {
-            setOpenLogin(!openLogin)
-        } else {
-            openModalAddUser()
-        }
+        // if (user > 0) {
+        //     setOpenLogin(!openLogin)
+        // } else {
+        //     openModalAddUser()
+        // }
+        setOpenLogin(!openLogin)
     }
     //---------------LOADING------------
     const openLoading = () => {
@@ -132,6 +134,9 @@ const PublicMainMenu = () => {
         setLoading(false)
     }
     //-----------------------------------------------------------
+    const goPassword = () => {
+        window.location = '/password'
+    }
     //-----------------------------------------------------------
     //-----------------------------------------------------------
     return (
@@ -149,21 +154,21 @@ const PublicMainMenu = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar> */}
-            <Button style={{color:'white'}} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
+            <Button style={{ color: 'white' }} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
             <Dialog
                 maxWidth='md'
                 open={openLogin}
                 onClose={openCloseModalLogin}
 
             >
-                <Container maxWidth='lg'>
+                <Paper component={Box} p={2}>
                     <div style={{ marginLeft: '15rem', marginRight: '15rem', marginTop: '2rem' }}></div>
                     <div align='center'>
                         <img src={loginimage} style={{ width: '20%' }} alt="#" />
                         <Typography className={classes.spacingBott} variant='h5'>Iniciar Sesión</Typography>
                     </div>
                     <form onSubmit={iniciarSesion}>
-                        <TextField
+                        {/* <TextField
                             name='email'
                             label='Correo Electronico'
                             variant='outlined'
@@ -172,6 +177,16 @@ const PublicMainMenu = () => {
                             className={classes.spacingBott}
                             onChange={handleChange}
                             required
+                        /> */}
+                        <TextField
+                            name='username'
+                            label='Nombre de Usuario'
+                            variant='outlined'
+                            fullWidth
+                            className={classes.spacingBott}
+                            onChange={handleChange}
+                            required
+                            size='small'
                         />
                         <TextField
                             name='password'
@@ -182,6 +197,7 @@ const PublicMainMenu = () => {
                             className={classes.spacingBott}
                             onChange={handleChange}
                             required
+                            size='small'
                         />
                         <div align='center'>
                             <TextField
@@ -192,6 +208,7 @@ const PublicMainMenu = () => {
                                 onChange={handleChange}
                                 value={changeData.rols}
                                 style={{ minWidth: 100 }}
+                                size='small'
                             >
 
                                 <MenuItem value={'usuario'}>Usuario</MenuItem>
@@ -205,7 +222,10 @@ const PublicMainMenu = () => {
                             <Button type='submit' fullWidth variant='contained' color='primary'>iniciar sesion</Button>
                         </Grid>
                     </form>
-                </Container>
+                    <div align='center'>
+                        <Link underline='none' className={classes.spacingBott} component='button' onClick={goPassword}>¿Olvidaste tu Contraseña?</Link>
+                    </div>
+                </Paper>
             </Dialog>
             {/*------------------------REGISTRAR PRIMER USUARIO---------------------*/}
             <Dialog

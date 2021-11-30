@@ -5,27 +5,32 @@ import UserNames from './UserNames'
 import UserReview from './UserReview'
 import UserSubmit from './UserSubmit'
 
-const defaultData={
-    username:'',
-    password:'',
-    email:'',
-    sexo:'',
-    rols:''
+const defaultData = {
+    username: '',
+    ciUser:'',
+    firstName: '',
+    lastNameP: '',
+    lastNameM: '',
+    repeatPass: '',
+    password: '',
+    email: '',
+    sexo: '',
+    rols: ''
 }
-const steps=[
-{id:'names'},
-{id:'dates'},
-{id:'review'},
-{id:'submit'},
+const steps = [
+    { id: 'names' },
+    { id: 'dates' },
+    { id: 'review' },
+    { id: 'submit' },
 ]
 const RegisterUser = () => {
-    const [formData, setFormData]=useForm(defaultData)
-    const {step, navigation}=useStep({
+    const [formData, setFormData] = useForm(defaultData)
+    const { step, navigation } = useStep({
         steps,
-        initialStep:0,
+        initialStep: 0,
     })
-    const props={formData, setFormData, navigation}
-    switch(step.id){
+    const props = { formData, setFormData, navigation }
+    switch (step.id) {
         case 'names':
             return <UserNames {...props} />
         case 'dates':

@@ -105,6 +105,7 @@ const ControlEmpleado = (props) => {
         ObserEmp: '',//
         fechaNacEmp: Date(),
         estadoEmp: '',
+        motivoCambio: '',
     })
 
     useEffect(() => {
@@ -153,6 +154,7 @@ const ControlEmpleado = (props) => {
         formData.append('ObserEmp', changeData.ObserEmp)
         formData.append('fechaNacEmp', changeData.fechaNacEmp)
         formData.append('estadoEmp', changeData.estadoEmp)
+        formData.append('motivoCambio', changeData.motivoCambio)
 
         formData.append('cargoEmp', changeData.cargoEmp)
         formData.append('departamentEmp', changeData.departamentEmp)
@@ -165,6 +167,7 @@ const ControlEmpleado = (props) => {
         formData.append('afilSindicato', changeData.afilSindicato)
         formData.append('fechaini', changeData.fechaini)
         formData.append('fechafin', changeData.fechafin)
+        // console.log(changeData)
         await axios.put(`${PORT_URL}empleado/${id}`, formData)
             .then(resp => {
                 // setPreview(null)
@@ -352,7 +355,6 @@ const ControlEmpleado = (props) => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //-----------------------------------------------------------------
 
     // console.log(empleado)
     // console.log(changeData)
@@ -462,16 +464,19 @@ const ControlEmpleado = (props) => {
                                     type='number'
                                     onChange={handleChange}
                                     defaultValue={changeData.id_bio}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField
+                                    disabled
                                     name='itemEmp'
                                     variant='outlined'
                                     label='N° de Item'
                                     type='number'
                                     onChange={handleChange}
                                     defaultValue={changeData.itemEmp}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -483,6 +488,7 @@ const ControlEmpleado = (props) => {
                                     fullWidth={true}
                                     onChange={handleChange}
                                     defaultValue={changeData.firstNameEmp}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -494,6 +500,7 @@ const ControlEmpleado = (props) => {
                                     fullWidth={true}
                                     onChange={handleChange}
                                     defaultValue={changeData.lastNameEmpP}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -505,6 +512,7 @@ const ControlEmpleado = (props) => {
                                     fullWidth={true}
                                     onChange={handleChange}
                                     defaultValue={changeData.lastNameEmpM}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -516,6 +524,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     style={{ minWidth: 300 }}
                                     defaultValue={changeData.CIEmp}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -526,6 +535,7 @@ const ControlEmpleado = (props) => {
                                     select
                                     onChange={handleChange}
                                     style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    size='small'
                                     value={changeData.departamentEmp}
                                     required
                                 >
@@ -542,6 +552,7 @@ const ControlEmpleado = (props) => {
                                     select
                                     onChange={handleChange}
                                     style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    size='small'
                                     value={changeData.cargoEmp}
                                     // defaultValue={}
                                     required
@@ -561,6 +572,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.typeContrato}
                                     style={{ background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
                                     <MenuItem value='permanente'>Permanente</MenuItem>
                                     <MenuItem value='eventual'>Eventual</MenuItem>
@@ -576,6 +588,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.clasificacionLab}
                                     style={{ background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
                                     <MenuItem value='operativo'>Operativo</MenuItem>
                                     <MenuItem value='administrativo'>Administrativo</MenuItem>
@@ -591,6 +604,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.typeHorario}
                                     style={{ background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
                                     {horario && horario.map(h => (
                                         <MenuItem key={h._id} value={h.descripcion}>{h.descripcion}</MenuItem>
@@ -608,6 +622,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.typeAntiguedad}
                                     style={{ background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
                                     <MenuItem value='0'>Sin Antiguedad</MenuItem>
                                     <MenuItem value='1'>Antiguedad de 2 a 4 años</MenuItem>
@@ -629,6 +644,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.AFP}
                                     style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
                                     <MenuItem value='prevision'>Prevision</MenuItem>
                                     <MenuItem value='re-prevision'>re Prevision</MenuItem>
@@ -644,6 +660,7 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     defaultValue={changeData.nacionalityEmp}
                                     style={{ background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem', marginTop: '2.3rem' }}>
@@ -655,6 +672,7 @@ const ControlEmpleado = (props) => {
                                     style={{ minWidth: 300 }}
                                     onChange={handleChange}
                                     defaultValue={changeData.professionEmp}
+                                    size='small'
 
                                 />
                             </div>
@@ -667,7 +685,32 @@ const ControlEmpleado = (props) => {
                                     fullWidth={true}
                                     onChange={handleChange}
                                     defaultValue={changeData.ObserEmp}
+                                    size='small'
 
+                                />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='emailEmp'
+                                    variant='outlined'
+                                    label='Correo Electrónico'
+                                    type='email'
+                                    fullWidth={true}
+                                    onChange={handleChange}
+                                    defaultValue={changeData.emailEmp}
+                                    size='small'
+                                />
+                            </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='nacionalityEmp'
+                                    variant='outlined'
+                                    label='Nacionalidad'
+                                    type='text'
+                                    fullWidth={true}
+                                    onChange={handleChange}
+                                    defaultValue={changeData.nacionalityEmp}
+                                    size='small'
                                 />
                             </div>
                         </Grid>
@@ -692,28 +735,7 @@ const ControlEmpleado = (props) => {
                                     <Button style={{ marginBottom: '1rem', marginTop: '1rem' }} variant='contained' color='primary' component='span' >cargar</Button>
                                 </label>
                             </div>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <TextField
-                                    name='emailEmp'
-                                    variant='outlined'
-                                    label='Correo Electrónico'
-                                    type='email'
-                                    fullWidth={true}
-                                    onChange={handleChange}
-                                    defaultValue={changeData.emailEmp}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <TextField
-                                    name='nacionalityEmp'
-                                    variant='outlined'
-                                    label='Nacionalidad'
-                                    type='text'
-                                    fullWidth={true}
-                                    onChange={handleChange}
-                                    defaultValue={changeData.nacionalityEmp}
-                                />
-                            </div>
+
                             <div style={{ marginBottom: '1.5rem' }}>
                                 <TextField
                                     name='dirEmp'
@@ -723,6 +745,7 @@ const ControlEmpleado = (props) => {
                                     fullWidth={true}
                                     onChange={handleChange}
                                     defaultValue={changeData.dirEmp}
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -734,7 +757,7 @@ const ControlEmpleado = (props) => {
                                     style={{ minWidth: 300 }}
                                     onChange={handleChange}
                                     defaultValue={changeData.numCelEmp}
-
+                                    size='small'
                                 />
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -747,9 +770,10 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.afilSindicato}
                                     style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
-                                    <MenuItem value='si'>Si</MenuItem>
-                                    <MenuItem value='no'>No</MenuItem>
+                                    <MenuItem value='si'>SI</MenuItem>
+                                    <MenuItem value='no'>NO</MenuItem>
                                 </TextField>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -762,9 +786,10 @@ const ControlEmpleado = (props) => {
                                     onChange={handleChange}
                                     value={changeData.cotizante}
                                     style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
+                                    size='small'
                                 >
-                                    <MenuItem value='1'>1</MenuItem>
-                                    <MenuItem value='8'>8</MenuItem>
+                                    <MenuItem value='1'>SI</MenuItem>
+                                    <MenuItem value='8'>NO</MenuItem>
                                 </TextField>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>
@@ -854,6 +879,7 @@ const ControlEmpleado = (props) => {
                                         InputLabelProps={{ shrink: true }}
                                         onChange={handleChange}
                                         defaultValue={changeData.fechaNacEmp}
+                                        size='small'
 
                                     />
                                 </div>
@@ -870,6 +896,7 @@ const ControlEmpleado = (props) => {
                                         InputLabelProps={{ shrink: true }}
                                         onChange={handleChange}
                                         defaultValue={changeData.fechaini}
+                                        size='small'
 
                                     // name='fechaNacEmp'
                                     // label='fecha de Nacimiento'
@@ -893,6 +920,7 @@ const ControlEmpleado = (props) => {
                                         InputLabelProps={{ shrink: true }}
                                         onChange={handleChange}
                                         defaultValue={changeData.fechafin}
+                                        size='small'
                                     />
                                 </div>
                             </div>
@@ -905,12 +933,24 @@ const ControlEmpleado = (props) => {
                                     style={{ minWidth: 300 }}
                                     onChange={handleChange}
                                     value={changeData.estadoEmp}
+                                    size='small'
 
                                 >
                                     <MenuItem value='activo'>Activo</MenuItem>
                                     <MenuItem value='baja'>Baja</MenuItem>
                                 </TextField>
                             </div>
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <TextField
+                                    name='motivoCambio'
+                                    variant='outlined'
+                                    label='Motivo Cambio de Estado'
+                                    onChange={handleChange}
+                                    fullWidth
+                                    size='small'
+                                />
+                            </div>
+
                         </Grid>
                     </Grid>
                     <div style={{ marginBottom: '2rem', marginTop: '2rem' }} align='center'>
@@ -945,6 +985,7 @@ const ControlEmpleado = (props) => {
                     </div>
                 </div>
             </Dialog>
+            {/*---------------ALERTAS--------------------------*/}
             <AlertDelete name={changeData.firstNameEmp} open={openAlertDelete} onClose={openCloseAlertDelete} />
             <AlertEdit name={changeData.firstNameEmp} open={openAlertEdit} onClose={openCloseAlertEdit} />
         </>

@@ -29,6 +29,8 @@ import Memorandums from '../../Pages/PagesAdmin/Reportes/Memorandums'
 import ReporteAltasBajas from '../../Pages/PagesAdmin/Reportes/ReporteAltasBajas'
 import Page404 from '../Page404'
 import ReporteCargos from '../../Pages/PagesAdmin/Reportes/ReporteCargos'
+import RetroactivoSalarial from '../../Pages/PagesAdmin/Planillas/RetroactivoSalarial'
+import AportesPatronales from '../../Pages/PagesAdmin/Planillas/AportesPatronales'
 
 const AppAdmin = () => {
     return (
@@ -78,6 +80,10 @@ const AppAdmin = () => {
 
                 <Protected exact path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
                 <Protected exact path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />
+                <Protected exact path='/aportesPatronales' component={props=><AportesPatronales {...props} />} />
+
+                <Protected exact path='/retroactivo' component={props=><RetroactivoSalarial {...props} />} />
+                
                 
                 <Route component={Page404}/>
             </Switch>

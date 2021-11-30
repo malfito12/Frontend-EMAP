@@ -46,7 +46,7 @@ const ReporteMovimiento = () => {
         await axios.get(`${PORT_URL}movimiento`)
             .then(resp => {
                 setMovimiento(resp.data)
-                console.log(resp.data)
+                // console.log(resp.data)
             })
             .catch(err => console.log(err))
     }

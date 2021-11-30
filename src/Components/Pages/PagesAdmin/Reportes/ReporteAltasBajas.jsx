@@ -52,12 +52,8 @@ const ReporteAltasBajas = () => {
     //-------------------------BUSCADOR--------------------------------
     const buscarAltasBajas = (buscador) => {
         return function (x) {
-            return x.firstNameEmp.includes(buscador) ||
-                x.firstNameEmp.toLowerCase().includes(buscador) ||
-                x.lastNameEmpP.includes(buscador) ||
-                x.lastNameEmpP.toLowerCase().includes(buscador) ||
-                x.lastNameEmpM.includes(buscador) ||
-                x.lastNameEmpM.toLowerCase().includes(buscador) ||
+            return x.fullName.includes(buscador) ||
+                x.fullName.toLowerCase().includes(buscador) ||
                 x.fechaAltasBajas.includes(buscador) ||
                 x.fechaAltasBajas.toLowerCase().includes(buscador) ||
                 x.id_bio.includes(buscador) ||
@@ -71,11 +67,24 @@ const ReporteAltasBajas = () => {
     //-----------------------PDF GENERATE--------------------------------
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
+        // const doc = new jsPDF()
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.text("REPORTE ALTAS Y BAJAS DE PERSONAL", pageWidth / 2, 0.5, 'center')
         doc.autoTable({ html: "#id-table", startY: 1 })
+
+        doc.text('Aqui van las firmas', 2, doc.lastAutoTable.finalY + 1)
+
+        //---------------ULTIMA PAGINA-------------------
+        // var pageCount = doc.internal.getNumberOfPages(); // pageCount es el nº de páginas
+        // for (let i = 0; i < pageCount; i++) { // código que se repite para cada página (bucle)
+        //     if(i==(pageCount-1)){
+        //         doc.text(5, 5, "ÚLTIMA PÁGINA"); // escribir 'ÚLTIMA PÁGINA'
+        //     }
+
+        // }
+
         doc.output("dataurlnewwindow")
     }
     //-----------------------------------------------------------------
@@ -133,9 +142,8 @@ const ReporteAltasBajas = () => {
                                 <TableRow>
                                     <TableCell className={classes.tableHead}>Fecha</TableCell>
                                     <TableCell className={classes.tableHead}>ID Biometrico</TableCell>
-                                    <TableCell className={classes.tableHead}>Nombres</TableCell>
-                                    <TableCell className={classes.tableHead}>Apellido P</TableCell>
-                                    <TableCell className={classes.tableHead}>Apellido M</TableCell>
+                                    <TableCell className={classes.tableHead}>Nombres y Apellidos</TableCell>
+                                    <TableCell className={classes.tableHead}>Motivo</TableCell>
                                     <TableCell className={classes.tableHead}>Estado</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -146,9 +154,8 @@ const ReporteAltasBajas = () => {
                                             <TableRow key={a._id}>
                                                 <TableCell>{a.fechaAltasBajas}</TableCell>
                                                 <TableCell>{a.id_bio}</TableCell>
-                                                <TableCell>{a.firstNameEmp}</TableCell>
-                                                <TableCell>{a.lastNameEmpP}</TableCell>
-                                                <TableCell>{a.lastNameEmpM}</TableCell>
+                                                <TableCell>{a.fullName}</TableCell>
+                                                <TableCell>{a.motivoCambio}</TableCell>
                                                 <TableCell>{a.estadoEmp === 'activo'
                                                     ? <div style={{ color: 'green' }}>{a.estadoEmp}</div>
                                                     : <div style={{ color: 'red' }}>{a.estadoEmp}</div>

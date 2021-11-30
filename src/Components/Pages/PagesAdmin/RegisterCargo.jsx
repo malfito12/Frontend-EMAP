@@ -26,13 +26,13 @@ const RegisterCargo = () => {
     const [openDeleteCargo, setOpenDeleteCargo] = useState(false)
     const [cargo, setCargo] = useState([])
     const [changeData, setChangeData] = useState({
-        cod_cargo: '',
+        // cod_cargo: '',
         nameCargo: '',
         nameDepartament: '',
         haber_basico: ''
     })
     const [changeData2, setChangeData2] = useState({
-        cod_dep: '',
+        // cod_dep: '',
         nameDepartament: ''
     })
 
@@ -50,22 +50,28 @@ const RegisterCargo = () => {
 
     const postCargo = async (e) => {
         e.preventDefault()
-        var aux = changeData.nameDepartament
-        aux = aux.split("/")
+        // console.log(changeData)
         const data = {
-            cod_dep: aux[1],
-            nameDepartament: aux[0],
-            cod_cargo: changeData.cod_cargo,
             nameCargo: changeData.nameCargo,
-            haber_basico: changeData.haber_basico
+            nameDepartament: changeData.nameDepartament.nameDepartament,
+            haber_basico: changeData.haber_basico,
+            idDepartament: changeData.nameDepartament.idDepartament,
         }
-        await axios.post(`${PORT_URL}cargo`, data)
-            .then(resp => {
-                console.log(resp.data)
-            })
-            .catch(err => console.log(err))
-        closeModalRegisterCargo()
-        getCargo()
+        try {
+            await axios.post(`${PORT_URL}cargo`, data)
+                .then(resp => {
+                    closeModalRegisterCargo()
+                    getCargo()
+                    console.log(resp.data)
+                })
+                .catch(err => {
+                    alert('el cargo ya existe')
+                    console.log(err)
+                })
+        } catch (error) {
+            console.log(error)
+        }
+
     }
     //---------------------GET CARGO---------------------------------
     const getCargo = async () => {
@@ -78,6 +84,7 @@ const RegisterCargo = () => {
     //-------------------UPDATE CARGO--------------------------------
     const openModalEditCargo = (e) => {
         setChangeData(e)
+        // console.log(e)
         setOpenEditCargo(true)
     }
     const closeModalEditCargo = () => {
@@ -85,24 +92,23 @@ const RegisterCargo = () => {
     }
     const editCargo = async (e) => {
         e.preventDefault()
+        // console.log(changeData)
+        const id = changeData._id
+        var idDep;
         const contDep = departament.length
-        var cod_dep;
+        for (var i = 0; i < contDep; i++) {
+            if (changeData.nameDepartament === departament[i].nameDepartament) {
+                idDep = departament[i].idDepartament
+                break;
+            }
+        }
+        const data = {
+            nameCargo: changeData.nameCargo,
+            nameDepartament: changeData.nameDepartament,
+            haber_basico: changeData.haber_basico,
+            idDepartament: idDep,
+        }
         try {
-            for (var i = 0; i < contDep; i++) {
-                if (changeData.nameDepartament === departament[i].nameDepartament) {
-                    cod_dep = departament[i].cod_dep
-                    break;
-                }
-            }
-            const data = {
-                _id: changeData._id,
-                cod_cargo: changeData.cod_cargo,
-                nameCargo: changeData.nameCargo,
-                cod_dep: cod_dep,
-                nameDepartament: changeData.nameDepartament,
-                haber_basico: changeData.haber_basico
-            }
-            const id = changeData._id
             await axios.put(`${PORT_URL}cargo/${id}`, data)
                 .then(resp => {
                     closeModalEditCargo()
@@ -147,7 +153,7 @@ const RegisterCargo = () => {
                 getDepartament()
                 console.log(resp.data)
             })
-            .catch(err => { alert('el N° de codigo ya existe'); console.log(err) })
+            .catch(err => { alert('el Departamento ya existe'); console.log(err) })
 
     }
     //--------------------------GET DEPARTAMENT-----------------------
@@ -215,6 +221,8 @@ const RegisterCargo = () => {
     }
     //--------------------------------------------------------------
     // console.log(changeData)
+    // console.log(departament)
+    // console.log(cargo)
     // console.log(changeData2)
     // console.log(empleadoCargo)
     return (
@@ -246,15 +254,15 @@ const RegisterCargo = () => {
                                     <Table stickyHeader style={{ minWidth: 600 }}>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
+                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>N°</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre Departamento</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Acciones</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {departament.length > 0 ? (departament.map(d => (
-                                                <TableRow key={d._id}>
-                                                    <TableCell>{d.cod_dep}</TableCell>
+                                            {departament.length > 0 ? (departament.map((d, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{index + 1}</TableCell>
                                                     <TableCell>{d.nameDepartament}</TableCell>
                                                     <TableCell>
                                                         <Grid container justifyContent='space-evenly'>
@@ -290,7 +298,7 @@ const RegisterCargo = () => {
                                     <Table stickyHeader style={{ minWidth: 700 }}>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
+                                                <TableCell style={{ color: 'white', backgroundColor: "black" }}>N°</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
                                                 <TableCell style={{ color: 'white', backgroundColor: "black" }}>Haber Basico</TableCell>
@@ -298,9 +306,9 @@ const RegisterCargo = () => {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {cargo.length > 0 ? (cargo.map(c => (
-                                                <TableRow key={c._id}>
-                                                    <TableCell>{c.cod_cargo}</TableCell>
+                                            {cargo.length > 0 ? (cargo.map((c, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell>{index + 1}</TableCell>
                                                     <TableCell>{c.nameCargo}</TableCell>
                                                     <TableCell>{c.nameDepartament}</TableCell>
                                                     <TableCell>{c.haber_basico}</TableCell>
@@ -344,16 +352,6 @@ const RegisterCargo = () => {
                     <Typography variant='subtitle1' align='center'>Registrar Departamento</Typography>
                     <Grid container direction='column'>
                         <TextField
-                            name='cod_dep'
-                            label='Codigo de Departamento'
-                            variant='outlined'
-                            fullWidth
-                            type='number'
-                            size='small'
-                            className={classes.spacingBot}
-                            onChange={handleChange2}
-                        />
-                        <TextField
                             name='nameDepartament'
                             label='Nombre Departamento'
                             variant='outlined'
@@ -363,7 +361,7 @@ const RegisterCargo = () => {
                             onChange={handleChange2}
                         />
                     </Grid>
-                    <Grid container justify='space-evenly'>
+                    <Grid container justifyContent='space-evenly'>
                         <Button onClick={postDepartament} variant='contained' color='primary' >registrar</Button>
                         <Button onClick={closeModalRegisterDepartament} variant='contained' color='secondary'>cancelar</Button>
                     </Grid>
@@ -375,21 +373,10 @@ const RegisterCargo = () => {
                 maxWidth='sm'
             >
                 <Paper component={Box} p={2}>
+                    <div style={{ marginLeft: '15rem', marginRight: '15rem' }}></div>
                     <Typography variant='subtitle1' align='center' className={classes.spacingBot}>EDITAR DEPARTAMENTO</Typography>
                     <form onSubmit={editDepartament}>
                         <Grid container >
-                            <TextField
-                                name='cod_dep'
-                                label='Codigo de Departamento'
-                                variant='outlined'
-                                fullWidth
-                                type='number'
-                                size='small'
-                                className={classes.spacingBot}
-                                onChange={handleChange2}
-                                defaultValue={changeData2.cod_dep}
-                                required
-                            />
                             <TextField
                                 name='nameDepartament'
                                 label='Nombre Departamento'
@@ -429,20 +416,10 @@ const RegisterCargo = () => {
                             className={classes.spacingBot}
                             onChange={handleChange}
                         >
-                            {departament && departament.map(d => (
-                                <MenuItem key={d._id} value={`${d.nameDepartament}/${d.cod_dep}`}>{d.nameDepartament}</MenuItem>
+                            {departament && departament.map((d, index) => (
+                                <MenuItem key={index} value={d}>{d.nameDepartament}</MenuItem>
                             ))}
                         </TextField>
-                        <TextField
-                            name='cod_cargo'
-                            label='Codigo de Cargo'
-                            variant='outlined'
-                            type='number'
-                            fullWidth
-                            size='small'
-                            className={classes.spacingBot}
-                            onChange={handleChange}
-                        />
                         <TextField
                             name='nameCargo'
                             label='Nombre del Cargo'
@@ -464,7 +441,7 @@ const RegisterCargo = () => {
                             onChange={handleChange}
                         />
                     </Grid>
-                    <Grid container justify='space-evenly'>
+                    <Grid container justifyContent='space-evenly'>
                         <Button onClick={postCargo} variant='contained' color='primary' >registrar</Button>
                         <Button onClick={closeModalRegisterCargo} variant='contained' color='secondary'>cancelar</Button>
                     </Grid>
@@ -493,23 +470,10 @@ const RegisterCargo = () => {
                                 onChange={handleChange}
                                 required
                             >
-                                {departament.length > 0 ? departament.map(d => (
-                                    // <MenuItem key={d._id} value={`${d.nameDepartament}/${d.cod_dep}`}>{d.nameDepartament}</MenuItem>
-                                    <MenuItem key={d._id} value={d.nameDepartament}>{d.nameDepartament}</MenuItem>
+                                {departament.length > 0 ? departament.map((d, index) => (
+                                    <MenuItem key={index} value={d.nameDepartament}>{d.nameDepartament}</MenuItem>
                                 )) : (null)}
                             </TextField>
-                            <TextField
-                                name='cod_cargo'
-                                label='Codigo de Cargo'
-                                variant='outlined'
-                                type='number'
-                                fullWidth
-                                size='small'
-                                className={classes.spacingBot}
-                                defaultValue={changeData.cod_cargo}
-                                onChange={handleChange}
-                                required
-                            />
                             <TextField
                                 name='nameCargo'
                                 label='Nombre del Cargo'

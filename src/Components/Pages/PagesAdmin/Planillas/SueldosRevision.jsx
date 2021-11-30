@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import SearchIcon from '@material-ui/icons/Search'
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';
 import EditIcon from '@material-ui/icons/Edit'
@@ -139,9 +140,9 @@ const SueldosRevision = () => {
         case 6: mes = 'JULIO'; break;
         case 7: mes = 'AGOSTO'; break;
         case 8: mes = 'SEPTIEMBRE'; break;
-        case 0: mes = 'OCTUBRE'; break;
-        case 0: mes = 'NOVIEMBRE'; break;
-        case 0: mes = 'DICIEMBRE'; break;
+        case 9: mes = 'OCTUBRE'; break;
+        case 10: mes = 'NOVIEMBRE'; break;
+        case 11: mes = 'DICIEMBRE'; break;
         default: mes = 'mes no valido'
     }
     // console.log(numeroAnio)
@@ -158,10 +159,67 @@ const SueldosRevision = () => {
         doc.text(`Correspondiente al mes de ${mes} del ${numeroAnio}`, pageWidth / 2, 0.9, 'center');
         doc.text(`(En Bolivianos)`, pageWidth / 2, 1.1, 'center');
         doc.autoTable({ html: "#id-table", startY: 1.5, styles: { fontSize: 5, halign: 'center' } })
+        doc.setFontSize(8)
+        doc.text('-----------------------------------',pageWidth/6.4, doc.lastAutoTable.finalY+0.9)
+        doc.text('REALIZADO POR',pageWidth/6, doc.lastAutoTable.finalY+1)
+        doc.text('-----------------------------------',pageWidth/2, doc.lastAutoTable.finalY+0.9,'center')
+        doc.text('REVISADO POR',pageWidth/2, doc.lastAutoTable.finalY+1,'center')
+        doc.text('-----------------------------------',pageWidth/1.33, doc.lastAutoTable.finalY+0.9,)
+        doc.text('APROBADO POR',pageWidth/1.3, doc.lastAutoTable.finalY+1)
         // doc.output('dataurlnewwindow')
         window.open(doc.output('bloburi'))
     }
-    //-----------------------------------------------------------------
+    //---------------------PDF GENERATE BOLETAS DE PAGO--------------------------------
+    const pdfGenrateBoletas=()=>{
+        const doc=new jsPDF({orientation:'portrait',unit:'in',format:[8,7]})
+        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+        doc.setFontSize(12)
+        // doc.text("PAPELETA DE PAGO", pageWidth / 2, 0.5, 'center')
+
+        planilla.map(d=>(
+            // doc.text(`${d.nameEmp}`,1,1),
+            doc.autoTable({
+                // startY:0.5,
+                theme:'plain',
+                styles:{fontSize:7,cellPadding:0.05},
+                margin:{top:0.5},
+                head:[[
+                    {content:'PAPELETA DE PAGO',colSpan:3,styles:{halign:'center',fontSize:10}},
+                ]],
+                body:[
+                    [{content:`ITEM N°: ${d.numItem}`},{content:`NOMBRE: ${d.nameEmp}`},{content:`CI: ${d.CIEmp}`}],
+                    [{content:`CARGO: ${d.cargoEmp}`,colSpan:2},{content:`GESTION: PEDIENTE`}],
+                    [{content:`DIAS TRAB: ${d.diasTrabajados}`,colSpan:3}],
+                ],
+            }),
+            doc.autoTable({
+                // theme:'plain',
+                styles:{fontSize:7,cellPadding:0.05},
+                footStyles:{fillColor:'white',fontStyle:'normal', textColor:'black'},
+                head:[[
+                    {content:'INGRESOS',styles:{halign:'center'},colSpan:2},
+                    {content:'EGRESOS',styles:{halign:'center'},colSpan:2},
+                ]],
+                body:[
+                    [{content:`HABER BASICO: `,styles:{halign:'center'}},{content:d.haber_basico},{content:`APORTE AFP 12.71%: `,styles:{halign:'center'}},{content:d.AFP}],
+                    [{content:`SUELDO: `,styles:{halign:'center'}},{content:d.sueldo},{content:`RC-IVA: `,styles:{halign:'center'}},{content:d.RC_IVA}],
+                    [{content:`ANTIGUEDAD: `,styles:{halign:'center'}},{content:d.bonoDeAntiguedad},{content:`OTROS DESCUENTOS: `,styles:{halign:'center'}}],
+                    [{content:`RECARGA NOCTURNA: `,styles:{halign:'center'}},{content:d.bonoRecargaNoc},{content:`FALTAS Y SANCIONES: `,styles:{halign:'center'}},{content:d.sancionFaltasAtrasos}],
+                    [{content:`INTERINATO: `,styles:{halign:'center'}},{content:d.interinato},{content:`SINDICATO: `,styles:{halign:'center'}},{content:d.sind}],
+                    [{content:`DOMINICAL: `,styles:{halign:'center'}},{content:d.domingosFeriados}],
+                ],
+                foot:[
+                    [{content:'TOTAL INGRESOS',colSpan:2},{content:'TOTAL DECUENTOS',colSpan:2}],
+                    [{content:'Pago de haberes correspondiente al mes de : ',colSpan:3},{content:`LIQUIDO PAGABLE: ${d.auxLiquidoPagable}`}],
+                    [{content:'Firma del empleado:.............................................. ',colSpan:4,styles:{halign:'right'}}],
+                ]
+            })
+        ))
+
+        window.open(doc.output('bloburi'))
+    }
+    //-----------------------------------------------------
     // console.log(planilla)
     // console.log(departamento)
     // console.log(changeData)
@@ -222,17 +280,16 @@ const SueldosRevision = () => {
                                         className={classes.spacingBot}
                                         onChange={handleChange}
                                     />
-                                    <div align='center'>
-                                        <Button size='small' variant='contained' color='primary' type='submit' >Buscar</Button>
+                                    <div align='center' className={classes.spacingBot}>
+                                        <Button endIcon={<SearchIcon />} fullWidth  size='small' variant='contained' color='primary' type='submit' >Buscar</Button>
                                     </div>
                                 </form>
+                                <Button size='small' fullWidth style={{ backgroundColor: '#689f38', color: 'white'}} className={classes.spacingBot} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir planilla</Button>
+                                <Button size='small' variant='contained' color='primary' fullWidth onClick={pdfGenrateBoletas} endIcon={<PrintIcon />}>imprimir boletas</Button>
                             </Paper>
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
-                        <div align='right'>
-                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
-                        </div>
                         <Paper component={Box} p={1}>
                             <TableContainer style={{ maxHeight: 440 }}>
                                 <Table style={{ minWidth: 2000 }} id='id-table'>

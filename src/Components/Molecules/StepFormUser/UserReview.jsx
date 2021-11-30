@@ -12,12 +12,17 @@ const UserReview = (props) => {
     const { go } = props.navigation
     const {
         username,
+        ciUser,
+        firstName,
+        lastNameP,
+        lastNameM,
+        repeatPass,
         password,
         email,
         sexo,
         rols
     } = props.formData
-    console.log(props.formData)
+    // console.log(props.formData)
 
     const openCloseModalError = () => {
         setError(!error)
@@ -45,6 +50,7 @@ const UserReview = (props) => {
                 details={[
                     { 'Nombre Usuario': username },
                     { 'Contraseña': password },
+                    { 'Repita Contraseña': repeatPass },
                     { 'Correo Electronico': email }
                 ]}
             />
@@ -53,12 +59,17 @@ const UserReview = (props) => {
                 summary='Dates'
                 go={go}
                 details={[
+                    { 'Nombres': firstName },
+                    { 'Apellido Paterno': lastNameP },
+                    { 'Apellido Materno': lastNameM },
+                    { 'Cedula de Identidad': ciUser },
                     { 'Sexo': sexo },
                     { 'Roles': rols }
                 ]}
             />
-            <div style={{ marginTop: '1.5rem' }} align='center'>
+            <div style={{ marginTop: '1.5rem',paddingBottom:'2rem' }} align='center'>
                 <Button
+                    size='small'
                     color='primary'
                     variant='contained'
                     style={{ marginRight: '1rem' }}
@@ -66,6 +77,7 @@ const UserReview = (props) => {
                 // onClick={()=>go('submit')}
                 >Registrar</Button>
                 <Button
+                    size='small'
                     component={Link}
                     color='secondary'
                     variant='contained'

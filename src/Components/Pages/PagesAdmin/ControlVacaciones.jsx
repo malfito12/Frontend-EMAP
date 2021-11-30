@@ -45,16 +45,18 @@ const ControlVacaciones = () => {
         await axios.post(`${PORT_URL}vacacion`, changeData)
             .then(resp => {
                 getVacaciones()
-                console.log(resp.data)
+                // console.log(resp.data)
             })
-            .catch(err => console.log(err))
-        setChangeData({
-            id_bio: '',
-            nameVacaciones: 'Vacaciones',
-            tipoVacacion: '',
-            fechaVacacionIni: '',
-            fechaVacacionFin: '',
-        })
+            .catch(err => {
+                alert('Error ya se Registro de vacacion o no cumple con los requisitos')
+                console.log(err)})
+        // setChangeData({
+        //     id_bio: '',
+        //     nameVacaciones: 'Vacaciones',
+        //     tipoVacacion: '',
+        //     fechaVacacionIni: '',
+        //     fechaVacacionFin: '',
+        // })
 
     }
     //---------------------EDIT VACACIONES------------------------------

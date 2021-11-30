@@ -20,6 +20,7 @@ const KardexPreRevision = () => {
     const [openConfirmDatos, setOpenConfirmDatos] = useState(false)
     const [openAlertAdd, setOpenAlertAdd] = useState(false)
     const [openAlertError, setOpenAlertError] = useState(false)
+    const [openAddAll,setOpenAddAll]=useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
         fechaini: '',
@@ -92,6 +93,33 @@ const KardexPreRevision = () => {
         await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
             .then(resp => setName(resp.data))
             .catch(err => console.log(err))
+    }
+    //-----------------------POST ALL MARCACIONES--------------------
+    const [changeDataAll,setChangeDataAll]=useState({
+        fechaini:'',
+        fechafin:''
+    })
+    const openModalAddAll=()=>{
+        setOpenAddAll(true)
+    }
+    const closeModalAddAll=()=>{
+        setOpenAddAll(false)
+    }
+    const postAddAll=async(e)=>{
+        e.preventDefault()
+        // console.log(changeDataAll)
+        await axios.post(`${PORT_URL}registerAllMarcaciones`,changeDataAll)
+        .then(resp=>{
+            closeModalAddAll()
+            console.log(resp.data)
+        })
+        .catch(err=>console.log(err))
+    }
+    const handleChangeAll=(e)=>{
+        setChangeDataAll({
+            ...changeDataAll,
+            [e.target.name]:e.target.value
+        })
     }
     //-----------------------------------------------------------------
 
@@ -200,6 +228,7 @@ const KardexPreRevision = () => {
                                     </div>
                                 </form>
                             </Paper>
+                            <Button variant='contained' color='primary' size='small' onClick={openModalAddAll}>registrar todo</Button>
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
@@ -277,6 +306,45 @@ const KardexPreRevision = () => {
             </Dialog>
             <AlertAddAsistencia name={changeData.id_bio} open={openAlertAdd} onClose={openCloseAlertAdd} />
             <AlertErrorAsistencia open={openAlertError} onClose={openCloseAlertError} />
+
+            {/*----------------REGISTER TODAS LAS MARCACIONES------------------*/}
+            <Dialog
+                open={openAddAll}
+                onClose={closeModalAddAll}
+                maxWidth='sm'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography align='center' variant='subtitle1' className={classes.spacingBot}>REGISTRAR MARCACIONES</Typography>
+                    <form onSubmit={postAddAll}>
+                        <TextField 
+                            name='fechaini'
+                            label='Fecha de Inicio'
+                            variant='outlined'
+                            fullWidth
+                            type='date'
+                            size='small'
+                            className={classes.spacingBot}
+                            InputLabelProps={{ shrink: true }}
+                            onChange={handleChangeAll}
+                        />
+                        <TextField 
+                            name='fechafin'
+                            label='Fecha Fin'
+                            variant='outlined'
+                            fullWidth
+                            type='date'
+                            size='small'
+                            className={classes.spacingBot}
+                            InputLabelProps={{ shrink: true }}
+                            onChange={handleChangeAll}
+                        />
+                        <Grid container justifyContent='space-evenly'>
+                            <Button size='small' variant='contained' color='primary' type='submit'>aceptar</Button>
+                            <Button size='small' variant='contained' color='secondary' onClick={closeModalAddAll}>cancelar</Button>
+                        </Grid>
+                    </form>
+                </Paper>
+            </Dialog>
         </>
     )
 }

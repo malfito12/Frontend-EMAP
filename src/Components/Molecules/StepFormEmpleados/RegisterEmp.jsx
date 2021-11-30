@@ -35,7 +35,7 @@ const RegisterEmp = (props) => {
     const [cargo, setCargo] = useState([])
     const [horario, setHorario] = useState([])
     const [changeData, setChangeData] = useState({
-        itemEmp: 0,
+        // itemEmp: 0,
         id_bio: '',
         firstNameEmp: '',
         lastNameEmpP: '',
@@ -84,7 +84,7 @@ const RegisterEmp = (props) => {
         const haber_basico = aux[1]
         const formData = new FormData()
         formData.append('image', image)
-        formData.append('itemEmp', changeData.itemEmp)
+        // formData.append('itemEmp', changeData.itemEmp)
         formData.append('id_bio', changeData.id_bio)
         formData.append('firstNameEmp', changeData.firstNameEmp)
         formData.append('lastNameEmpP', changeData.lastNameEmpP)
@@ -132,7 +132,7 @@ const RegisterEmp = (props) => {
             .catch(err => console.log(err))
     }
     // console.log(cargo)
-    //-----------------------GET HORARIO    --------------------------------
+    //-----------------------GET HORARIO--------------------------------
     const getHorario = async () => {
         await axios.get(`${PORT_URL}horario`)
             .then(resp => setHorario(resp.data))
@@ -201,7 +201,7 @@ const RegisterEmp = (props) => {
                                         required
                                     />
                                 </div>
-                                <div style={{ marginBottom: '1.5rem' }}>
+                                {/* <div style={{ marginBottom: '1.5rem' }}>
                                     <TextField
                                         name='itemEmp'
                                         variant='outlined'
@@ -212,7 +212,7 @@ const RegisterEmp = (props) => {
                                         style={{ background: 'white', borderRadius: 5 }}
                                         required
                                     />
-                                </div>
+                                </div> */}
                                 <div style={{ marginBottom: '1.5rem' }}>
                                     <TextField
                                         name='firstNameEmp'
@@ -478,13 +478,14 @@ const RegisterEmp = (props) => {
                                         label='N° de Contizante'
                                         select
                                         // fullWidth
+                                        align='center'
                                         onChange={handleChange}
                                         value={changeData.cotizante}
                                         style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
                                         required
                                     >
-                                        <MenuItem value='1'>1</MenuItem>
-                                        <MenuItem value='8'>8</MenuItem>
+                                        <MenuItem value='1'>Si</MenuItem>
+                                        <MenuItem value='8'>NO</MenuItem>
                                     </TextField>
                                 </div>
 
