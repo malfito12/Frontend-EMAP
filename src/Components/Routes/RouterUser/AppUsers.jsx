@@ -25,6 +25,8 @@ import GeneralConfig from '../../Pages/PagesAdmin/GeneralConfig'
 import AntiguedadEmp from '../../Pages/PagesAdmin/AntiguedadEmp'
 import ReporteCargos from '../../Pages/PagesAdmin/Reportes/ReporteCargos'
 import UserRegistroEmp from '../../Pages/PagesUsers/Empleados/UserRegistroEmp'
+import AportesPatronales from '../../Pages/PagesAdmin/Planillas/AportesPatronales'
+import RetroactivoSalarial from '../../Pages/PagesAdmin/Planillas/RetroactivoSalarial'
 
 
 const AppUsers = () => {
@@ -49,6 +51,9 @@ const AppUsers = () => {
 
                 <Protected exact path='/refrigerioPreRevision' component={props=><RefrigerioPreRevision {...props} />} />
                 <Protected exact path='/refrigerioRevision' component={props=><RefrigerioRevision {...props} />} />
+                
+                <Protected exact path='/aportesPatronales' component={props=><AportesPatronales {...props} />} />
+                <Protected exact path='/retroactivo' component={props=><RetroactivoSalarial {...props} />} />
 
                 <Protected exact path='/reportePersonal' component={props=><ReportePersonal {...props} />} />
                 <Protected exact path='/reporteMovimiento' component={props=><ReporteMovimiento {...props} />} />

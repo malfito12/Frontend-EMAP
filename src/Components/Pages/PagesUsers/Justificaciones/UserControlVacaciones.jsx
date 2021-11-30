@@ -1,4 +1,4 @@
-import { Box, Button, Container, Dialog, Grid, IconButton, makeStyles, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Tooltip, Typography } from '@material-ui/core'
+import { Box, Button, Container, Dialog, Grid, IconButton, makeStyles, MenuItem, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Tooltip, Typography } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -74,16 +74,16 @@ const UserControlVacaciones = () => {
     const closeModalDeleteVacaciones = () => {
         setOpenDeleteVacaciones(false)
     }
-    const deleteVacaciones = async(e) => {
+    const deleteVacaciones = async (e) => {
         e.preventDefault()
-        const id=changeData._id
+        const id = changeData._id
         await axios.delete(`${PORT_URL}vacacion/${id}`)
-        .then(resp=>{
-            closeModalDeleteVacaciones()
-            getVacaciones()
-            console.log(resp.data)
-        })
-        .catch(err=>console.log(err))
+            .then(resp => {
+                closeModalDeleteVacaciones()
+                getVacaciones()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
     //----------------------------------------------------
     //----------------HANDLE CHANGE-----------------------------
@@ -98,6 +98,16 @@ const UserControlVacaciones = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
+    //--------------------BUSCAR INFORMACION ANTES DE REGISTRAR VACACION---------------------------------------
+    const [name, setName] = useState([])
+    const postPrueba = async (e) => {
+        e.preventDefault()
+        const id = changeData.id_bio
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setName(resp.data))
+            .catch(err => console.log(err))
+    }
+    //----------------------------------------------------------------
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
@@ -121,7 +131,7 @@ const UserControlVacaciones = () => {
                     <Grid item xs={12} sm={4}>
                         <Paper component={Box} p={2}>
                             <Typography variant='subtitle1' align='center' className={classes.spacingBot}>REGISTRAR VACACIONES</Typography>
-                            <form onSubmit={postVacaciones}>
+                            <form onSubmit={postPrueba}>
                                 <TextField
                                     name='id_bio'
                                     label='ID Biometrico'
@@ -132,19 +142,60 @@ const UserControlVacaciones = () => {
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                     required
-
                                 />
+                                <Button type='submit' style={{ display: 'none' }}>ss</Button>
+                            </form>
+                            {name.length > 0 ? (
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Nombre'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].firstNameEmp}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido P'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpP}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido M'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpM}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            ) : null}
+                            <form onSubmit={postVacaciones}>
                                 <TextField
                                     name='tipoVacacion'
                                     label='Tipo de Vacaciones'
                                     variant='outlined'
                                     size='small'
                                     fullWidth
+                                    align='center'
                                     className={classes.spacingBot}
                                     onChange={handleChange}
+                                    value={changeData.tipoVacacion}
                                     required
-
-                                />
+                                    select
+                                >
+                                    <MenuItem value='Vacación Anual'>Vacación Anual</MenuItem>
+                                    <MenuItem value='Cuenta Vacación'>Cuenta Vacación</MenuItem>
+                                </TextField>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField

@@ -198,7 +198,7 @@ const UserControlCargos = () => {
                                 <Table stickyHeader>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
+                                            <TableCell style={{ color: 'white', backgroundColor: "black" }}>N°</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre Departamento</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Acciones</TableCell>
                                         </TableRow>
@@ -207,7 +207,7 @@ const UserControlCargos = () => {
                                         {departament.length > 0 ? (
                                             departament.map((d, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{d.cod_dep}</TableCell>
+                                                    <TableCell>{index+1}</TableCell>
                                                     <TableCell>{d.nameDepartament}</TableCell>
                                                     <TableCell>
                                                         <Grid container justifyContent='space-evenly'>
@@ -238,7 +238,7 @@ const UserControlCargos = () => {
                                 <Table stickyHeader style={{ minWidth: 700 }}>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell style={{ color: 'white', backgroundColor: "black" }}>Codigo</TableCell>
+                                            <TableCell style={{ color: 'white', backgroundColor: "black" }}>N°</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
                                             <TableCell style={{ color: 'white', backgroundColor: "black" }}>Haber Basico</TableCell>
@@ -249,7 +249,7 @@ const UserControlCargos = () => {
                                         {cargo.length > 0 ? (
                                             cargo.map((c, index) => (
                                                 <TableRow key={index}>
-                                                    <TableCell>{c.cod_cargo}</TableCell>
+                                                    <TableCell>{index+1}</TableCell>
                                                     <TableCell>{c.nameCargo}</TableCell>
                                                     <TableCell>{c.nameDepartament}</TableCell>
                                                     <TableCell>{c.haber_basico}</TableCell>

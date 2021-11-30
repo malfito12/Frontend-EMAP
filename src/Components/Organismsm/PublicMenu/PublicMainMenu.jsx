@@ -154,15 +154,13 @@ const PublicMainMenu = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar> */}
-            <Button style={{ color: 'white' }} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
+            <Button style={{ color: 'white' }} startIcon={<AccountCircleIcon />} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
             <Dialog
-                maxWidth='md'
+                maxWidth='xs'
                 open={openLogin}
                 onClose={openCloseModalLogin}
-
             >
                 <Paper component={Box} p={2}>
-                    <div style={{ marginLeft: '15rem', marginRight: '15rem', marginTop: '2rem' }}></div>
                     <div align='center'>
                         <img src={loginimage} style={{ width: '20%' }} alt="#" />
                         <Typography className={classes.spacingBott} variant='h5'>Iniciar Sesión</Typography>

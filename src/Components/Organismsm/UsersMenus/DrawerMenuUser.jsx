@@ -93,6 +93,16 @@ const DrawerMenuUser = (props) => {
             icon: <InboxIcon color='primary' />,
             oncl: () => history.push('/refrigerioPreRevision')
         },
+        {
+            text: 'Retroactivo',
+            icon: <InboxIcon color='primary' />,
+            oncl: () => history.push('/retroactivo')
+        },
+        {
+            text: 'Aportes Patronales',
+            icon: <InboxIcon color='primary' />,
+            oncl: () => history.push('/aportesPatronales')
+        },
 
     ]
     return (

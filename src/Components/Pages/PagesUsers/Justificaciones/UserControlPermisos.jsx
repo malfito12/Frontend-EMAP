@@ -1,4 +1,4 @@
-import { Box, Button, Container, Dialog, Grid, IconButton, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Tooltip, Typography } from '@material-ui/core'
+import { Box, Button, Container, Dialog, Grid, IconButton, MenuItem, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Tooltip, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -76,14 +76,14 @@ const UserControlPermisos = () => {
     }
     const deletePermiso = async (e) => {
         e.preventDefault()
-        const id=changeData._id
+        const id = changeData._id
         await axios.delete(`${PORT_URL}permiso/${id}`)
-        .then(resp=>{
-            closeModalDeletePermiso()
-            getPermisos()
-            console.log(resp.data)
-        })
-        .catch(err=>console.log(err))
+            .then(resp => {
+                closeModalDeletePermiso()
+                getPermisos()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
     //-------------------HANDLE CHANGE---------------------------
     const handleChange = (e) => {
@@ -97,6 +97,16 @@ const UserControlPermisos = () => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
+    //--------------------BUSCAR INFORMACION ANTES DE REGISTRAR EL PERMISO---------------------------------------
+    const [name, setName] = useState([])
+    const postPrueba = async (e) => {
+        e.preventDefault()
+        const id = changeData.id_bio
+        await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
+            .then(resp => setName(resp.data))
+            .catch(err => console.log(err))
+    }
+
     // console.log(permisos)
     return (
         <>
@@ -119,9 +129,9 @@ const UserControlPermisos = () => {
                 <Typography variant='h5' align='center' className={classes.spacingBot}>CONTROL DE PERMISOS</Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={4}>
-                        <form onSubmit={postPermiso}>
-                            <Paper component={Box} p={2}>
-                                <Typography variant='subtitle1' align='center' className={classes.spacingBot}>REGISTRAR PERMISO</Typography>
+                        <Paper component={Box} p={2}>
+                            <Typography variant='subtitle1' align='center' className={classes.spacingBot}>REGISTRAR PERMISO</Typography>
+                            <form onSubmit={postPrueba}>
                                 <TextField
                                     name='id_bio'
                                     label='ID Biometrico'
@@ -132,6 +142,43 @@ const UserControlPermisos = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                <Button variant='contained' style={{ display: 'none' }} type='submit'>enviar</Button>
+                            </form>
+                            {name.length > 0 ? (
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Nombre'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].firstNameEmp}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido P'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpP}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            label='Apellido M'
+                                            variant='outlined'
+                                            size='small'
+                                            fullWidth
+                                            className={classes.spacingBot}
+                                            value={name[0].lastNameEmpM}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            ) : null}
+                            <form onSubmit={postPermiso}>
                                 <TextField
                                     name='namePermiso'
                                     label='Nombre de Permiso'
@@ -152,7 +199,12 @@ const UserControlPermisos = () => {
                                     className={classes.spacingBot}
                                     onChange={handleChange}
                                     required
-                                />
+                                    select
+                                    value={changeData.tipoPermiso}
+                                >
+                                    <MenuItem value='2'>Un dia</MenuItem>
+                                    <MenuItem value='3'>Varios Dias</MenuItem>
+                                </TextField>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
@@ -186,8 +238,8 @@ const UserControlPermisos = () => {
                                 <Grid container justifyContent='center'>
                                     <Button type='submit' size='small' variant='contained' color='primary'>registrar</Button>
                                 </Grid>
-                            </Paper>
-                        </form>
+                            </form>
+                        </Paper>
                     </Grid>
                     <Grid item xs={12} sm={8}>
                         <Paper>

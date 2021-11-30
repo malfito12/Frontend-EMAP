@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import PrintICon from '@material-ui/icons/Print'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import logo2emap from '../../../../images/logo2emap.png'
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
@@ -66,6 +67,7 @@ const UserControlEmp = (props) => {
         ObserEmp: '',//
         fechaNacEmp: Date(),
         estadoEmp: '',
+        motivoCambio: '',
     })
 
     useEffect(() => {
@@ -137,6 +139,7 @@ const UserControlEmp = (props) => {
         formData.append('ObserEmp', changeData.ObserEmp)
         formData.append('fechaNacEmp', changeData.fechaNacEmp)
         formData.append('estadoEmp', changeData.estadoEmp)
+        formData.append('motivoCambio', changeData.motivoCambio)
 
         formData.append('cargoEmp', changeData.cargoEmp)
         formData.append('departamentEmp', changeData.departamentEmp)
@@ -227,6 +230,7 @@ const UserControlEmp = (props) => {
         }
     }
     //------------------------PDF GENERATE-------------------------------
+    var image2=logo2emap
     const pdfGenerate = (e) => {
         // console.log(e)
         var data=e
@@ -236,6 +240,7 @@ const UserControlEmp = (props) => {
         doc.setFontSize(12)
         // doc.addFont('Calibri', 'Calibri', 'normal');
         // doc.setFont('Calibri');
+        doc.addImage(image2, 0.5, 0, 1.5, 1)
         doc.text("FORMULARIO PERSONAL", pageWidth / 2, 0.5, 'center')
         doc.setFontSize(11)
         doc.text("I. DATOS PERSONALES", 1,1)
@@ -273,7 +278,8 @@ const UserControlEmp = (props) => {
         //     ]],
         //     startY: 1,
         // })
-        doc.output('dataurlnewwindow')
+        // doc.output('dataurlnewwindow')
+        window.open(doc.output('bloburi'))
     }
     //---------------------------------------------------------------------
     //----------------REGISTER EMPLEADO---------------------------------
@@ -629,6 +635,17 @@ const UserControlEmp = (props) => {
                                         className={classes.spacingBott}
                                     />
                                     <TextField
+                                        name='dirEmp'
+                                        variant='outlined'
+                                        label='Direccion'
+                                        type='text'
+                                        size='small'
+                                        fullWidth
+                                        onChange={handleChange}
+                                        defaultValue={changeData.dirEmp}
+                                        className={classes.spacingBott}
+                                    />
+                                    <TextField
                                         name='ObserEmp'
                                         variant='outlined'
                                         label='Observaciones'
@@ -663,17 +680,6 @@ const UserControlEmp = (props) => {
                                             >cargar</Button>
                                         </label>
                                     </div>
-                                    <TextField
-                                        name='dirEmp'
-                                        variant='outlined'
-                                        label='Direccion'
-                                        type='text'
-                                        size='small'
-                                        fullWidth
-                                        onChange={handleChange}
-                                        defaultValue={changeData.dirEmp}
-                                        className={classes.spacingBott}
-                                    />
                                     <TextField
                                         name='nacionalityEmp'
                                         variant='outlined'
@@ -723,8 +729,8 @@ const UserControlEmp = (props) => {
                                         value={changeData.cotizante}
                                         className={classes.spacingBott}
                                     >
-                                        <MenuItem value='1'>1</MenuItem>
-                                        <MenuItem value='8'>8</MenuItem>
+                                        <MenuItem value='1'>SI</MenuItem>
+                                        <MenuItem value='8'>NO</MenuItem>
                                     </TextField>
                                     <TextField
                                         name='civilStatusEmp'
@@ -835,6 +841,15 @@ const UserControlEmp = (props) => {
                                         <MenuItem value='activo'>Activo</MenuItem>
                                         <MenuItem value='baja'>Baja</MenuItem>
                                     </TextField>
+                                    <TextField
+                                        name='motivoCambio'
+                                        variant='outlined'
+                                        label='Motivo Cambio de Estado'
+                                        size='small'
+                                        fullWidth
+                                        onChange={handleChange}
+                                        className={classes.spacingBott}
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid container justifyContent='center'>

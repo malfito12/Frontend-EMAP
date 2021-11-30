@@ -110,7 +110,7 @@ const ControlEmpleado = (props) => {
 
     useEffect(() => {
         getEmpleado()
-        getCargos()
+        // getCargos()
         getDepartament()
         getHorario()
     }, [])
@@ -126,7 +126,7 @@ const ControlEmpleado = (props) => {
     const openModalEdit = (ele) => {
         setChangeData(ele)
         setPreview(ele.avatar)
-        // console.log(ele.avatar)
+        getCargos(ele.departamentEmp)
         setOpenEdit(true)
     }
     const closeModalEdit = () => {
@@ -223,9 +223,9 @@ const ControlEmpleado = (props) => {
             }
             else { console.log('no funciona') }
         }
-        // if(e.target.name==='departamentEmp'){
-        //     getCargos(e.target.value)
-        // }
+        if (e.target.name === 'departamentEmp') {
+            getCargos(e.target.value)
+        }
         setChangeData({
             ...changeData,
             [e.target.name]: e.target.value
@@ -256,7 +256,7 @@ const ControlEmpleado = (props) => {
     }
     //-----------------------GET CARGOS--------------------------------
     const getCargos = async (e) => {
-        await axios.get(`${PORT_URL}cargo`)
+        await axios.get(`${PORT_URL}cargo/${e}`)
             .then(resp => setCargo(resp.data))
             .catch(err => console.log(err))
     }
@@ -557,9 +557,11 @@ const ControlEmpleado = (props) => {
                                     // defaultValue={}
                                     required
                                 >
-                                    {cargo && cargo.map(c => (
-                                        <MenuItem key={c._id} value={c.nameCargo}>{c.nameCargo}</MenuItem>
-                                    ))}
+                                    {cargo.length > 0 ? (
+                                        cargo.map((c, index) => (
+                                            <MenuItem key={index} value={c.nameCargo}>{c.nameCargo}</MenuItem>
+                                        ))
+                                    ) : (null)}
                                 </TextField>
                             </div>
                             <div style={{ marginBottom: '1.5rem' }}>

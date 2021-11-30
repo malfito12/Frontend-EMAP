@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import RegisterApp from '@material-ui/icons/CloudUpload'
+import SearchIcon from '@material-ui/icons/Search'
 import { Link } from 'react-router-dom'
 import { AlertAddAsistencia, AlertErrorAsistencia } from '../../../Atoms/Alerts/AlertReEdDe'
 
@@ -20,7 +23,7 @@ const KardexPreRevision = () => {
     const [openConfirmDatos, setOpenConfirmDatos] = useState(false)
     const [openAlertAdd, setOpenAlertAdd] = useState(false)
     const [openAlertError, setOpenAlertError] = useState(false)
-    const [openAddAll,setOpenAddAll]=useState(false)
+    const [openAddAll, setOpenAddAll] = useState(false)
     const [changeData, setChangeData] = useState({
         id_bio: '',
         fechaini: '',
@@ -95,30 +98,30 @@ const KardexPreRevision = () => {
             .catch(err => console.log(err))
     }
     //-----------------------POST ALL MARCACIONES--------------------
-    const [changeDataAll,setChangeDataAll]=useState({
-        fechaini:'',
-        fechafin:''
+    const [changeDataAll, setChangeDataAll] = useState({
+        fechaini: '',
+        fechafin: ''
     })
-    const openModalAddAll=()=>{
+    const openModalAddAll = () => {
         setOpenAddAll(true)
     }
-    const closeModalAddAll=()=>{
+    const closeModalAddAll = () => {
         setOpenAddAll(false)
     }
-    const postAddAll=async(e)=>{
+    const postAddAll = async (e) => {
         e.preventDefault()
         // console.log(changeDataAll)
-        await axios.post(`${PORT_URL}registerAllMarcaciones`,changeDataAll)
-        .then(resp=>{
-            closeModalAddAll()
-            console.log(resp.data)
-        })
-        .catch(err=>console.log(err))
+        await axios.post(`${PORT_URL}registerAllMarcaciones`, changeDataAll)
+            .then(resp => {
+                closeModalAddAll()
+                console.log(resp.data)
+            })
+            .catch(err => console.log(err))
     }
-    const handleChangeAll=(e)=>{
+    const handleChangeAll = (e) => {
         setChangeDataAll({
             ...changeDataAll,
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
     }
     //-----------------------------------------------------------------
@@ -223,12 +226,13 @@ const KardexPreRevision = () => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    <div align='center'>
-                                        <Button variant='contained' color='primary' size='small' type='submit'>Buscar</Button>
+                                    <div align='center' className={classes.spacingBot}>
+                                        <Button variant='contained' color='primary' size='small' type='submit' fullWidth endIcon={<SearchIcon />}>Buscar marcaciones</Button>
                                     </div>
                                 </form>
+                                <Button className={classes.spacingBot} endIcon={<AccountCircleIcon />} fullWidth variant='contained' size='small' color='primary' onClick={openModalCofirmDatos}>subir informacion Personal</Button>
+                                <Button variant='contained' color='primary' size='small' onClick={openModalAddAll} endIcon={<RegisterApp />} fullWidth>registro de toda informacion</Button>
                             </Paper>
-                            <Button variant='contained' color='primary' size='small' onClick={openModalAddAll}>registrar todo</Button>
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
@@ -283,9 +287,6 @@ const KardexPreRevision = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <div align='center'>
-                                <Button variant='contained' size='small' color='primary' onClick={openModalCofirmDatos}>subir informacion</Button>
-                            </div>
                         </Paper>
                     </Grid>
                 </Grid>
@@ -316,7 +317,7 @@ const KardexPreRevision = () => {
                 <Paper component={Box} p={2}>
                     <Typography align='center' variant='subtitle1' className={classes.spacingBot}>REGISTRAR MARCACIONES</Typography>
                     <form onSubmit={postAddAll}>
-                        <TextField 
+                        <TextField
                             name='fechaini'
                             label='Fecha de Inicio'
                             variant='outlined'
@@ -327,7 +328,7 @@ const KardexPreRevision = () => {
                             InputLabelProps={{ shrink: true }}
                             onChange={handleChangeAll}
                         />
-                        <TextField 
+                        <TextField
                             name='fechafin'
                             label='Fecha Fin'
                             variant='outlined'

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { PORT_URL } from '../../../../PortURL'
 import SearchIcon from '@material-ui/icons/Search'
 import PrintIcon from '@material-ui/icons/Print'
+import RegisterApp from '@material-ui/icons/CloudUpload'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import logo2emap from '../../../../images/logo2emap.png'
@@ -14,6 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
     headTable: {
         padding: 0,
+        color: 'white',
+        background: 'black',
     }
 }))
 
@@ -109,11 +112,11 @@ const RetroactivoSalarial = () => {
         <>
             <Container style={{ paddingTop: '5rem' }}>
                 <Typography align='center' variant='h5' className={classes.spacingBot}>RETROACTIVO - INCREMENTO SALARIAL</Typography>
-                <Grid item xs={12} sm={4}>
+                {/* <Grid item xs={12} sm={4}>
                     <Paper component={Box} p={1} className={classes.spacingBot}>
                         <Button fullWidth color='primary' variant='contained' onClick={openModalAddRetro}>registrar</Button>
                     </Paper>
-                </Grid>
+                </Grid> */}
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={4}>
                         <Container maxWidth='xs'>
@@ -160,7 +163,8 @@ const RetroactivoSalarial = () => {
                                         <Button type='submit' variant='contained' size='small' fullWidth color='primary' endIcon={<SearchIcon />}>buscar</Button>
                                     </Grid>
                                 </form>
-                                <Button variant='contained' size='small' fullWidth color='primary' endIcon={<PrintIcon />} onClick={pdfGenerate}>imprimir</Button>
+                                <Button size='small' fullWidth color='primary' endIcon={<RegisterApp/>} variant='contained' onClick={openModalAddRetro} className={classes.spacingBot}>registrar</Button>
+                                <Button variant='contained' size='small' fullWidth style={{background:'green',color:'white'}} endIcon={<PrintIcon />} onClick={pdfGenerate}>imprimir</Button>
                             </Paper>
                         </Container>
                     </Grid>

@@ -2,6 +2,7 @@ import { BottomNavigation, Box, BottomNavigationAction, Button, Container, Grid,
 import React, { useState } from 'react'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import SearchIcon from '@material-ui/icons/Search'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';
@@ -238,16 +239,14 @@ const KardexRevision = () => {
                                         required
                                     />
                                     <div align='center'>
-                                        <Button variant='contained' color='primary' size='small' type='submit'>Buscar</Button>
+                                        <Button variant='contained' color='primary' size='small' type='submit' fullWidth endIcon={<SearchIcon />} className={classes.spacingBot} >Buscar informacion</Button>
                                     </div>
                                 </form>
+                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} fullWidth variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
                             </Paper>
                         </Container>
                     </Grid>
                     <Grid item xs={12} sm={7}>
-                        <div align='right'>
-                            <Button size='small' style={{ backgroundColor: '#689f38', color: 'white', marginBottom: '0.5rem' }} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir</Button>
-                        </div>
                         <Paper component={Box} p={1} className={classes.spacingBot}>
                             <TableContainer style={{ maxHeight: 500 }}>
                                 <Table stickyHeader id='id-table'>

@@ -198,7 +198,7 @@ const UserRegistroEmp = () => {
                                         required
                                     />
                                 </div>
-                                <div style={{ marginBottom: '1.5rem' }}>
+                                {/* <div style={{ marginBottom: '1.5rem' }}>
                                     <TextField
                                         name='itemEmp'
                                         variant='outlined'
@@ -209,14 +209,14 @@ const UserRegistroEmp = () => {
                                         style={{ background: 'white', borderRadius: 5 }}
                                         required
                                     />
-                                </div>
+                                </div> */}
                                 <div style={{ marginBottom: '1.5rem' }}>
                                     <TextField
                                         name='firstNameEmp'
                                         variant='outlined'
                                         label='Nombre Completo'
                                         type='text'
-                                        fullWidth={true}
+                                        fullWidth
                                         onChange={handleChange}
                                         style={{ background: 'white', borderRadius: 5 }}
                                         required
@@ -228,7 +228,7 @@ const UserRegistroEmp = () => {
                                         variant='outlined'
                                         label='Apellido Paterno'
                                         type='text'
-                                        fullWidth={true}
+                                        fullWidth
                                         onChange={handleChange}
                                         style={{ background: 'white', borderRadius: 5 }}
                                         required
@@ -472,7 +472,7 @@ const UserRegistroEmp = () => {
                                     <TextField
                                         name='cotizante'
                                         variant='outlined'
-                                        label='N° de Contizante'
+                                        label='Contizante'
                                         select
                                         // fullWidth
                                         onChange={handleChange}
@@ -480,8 +480,8 @@ const UserRegistroEmp = () => {
                                         style={{ minWidth: 300, background: 'white', borderRadius: 5 }}
                                         required
                                     >
-                                        <MenuItem value='1'>1</MenuItem>
-                                        <MenuItem value='8'>8</MenuItem>
+                                        <MenuItem value='1'>SI</MenuItem>
+                                        <MenuItem value='8'>NO</MenuItem>
                                     </TextField>
                                 </div>
 

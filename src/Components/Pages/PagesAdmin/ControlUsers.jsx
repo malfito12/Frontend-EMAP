@@ -77,11 +77,16 @@ const ControlUsers = () => {
     const deleteUser = async () => {
         const id = changeData._id
         await axios.delete(`${PORT_URL}user/${id}`)
-            .then(resp => console.log(resp.data))
-        closeModalDelete()
-        openCloseAlertDelete()
-        getUser()
-
+            .then(resp => {
+                closeModalDelete()
+                openCloseAlertDelete()
+                getUser()
+                console.log(resp.data)
+            })
+            .catch(err=>{
+                alert('Error no se puede realizar esa accion')
+                console.log(err)
+            })
     }
     
     const openModalDelete = (ele) => {
@@ -221,8 +226,8 @@ const ControlUsers = () => {
                 </div>
 
                 <div style={{ marginBottom: '2rem' }} align='center'>
-                    <Button type='submit' variant='contained' color='primary'>aceptar</Button>
-                    <Button variant='contained' color='secondary' style={{ marginLeft: '2rem' }} onClick={closeModalEdit}>cancelar</Button>
+                    <Button size='small' type='submit' variant='contained' color='primary'>aceptar</Button>
+                    <Button size='small' variant='contained' color='secondary' style={{ marginLeft: '2rem' }} onClick={closeModalEdit}>cancelar</Button>
 
                 </div>
             </form>
@@ -234,8 +239,8 @@ const ControlUsers = () => {
         >
             <Typography align='center' style={{ marginLeft: '3rem', marginRight: '3rem', marginTop: '1rem', marginBottom: '1rem' }} variant='h6'>estas seguro de borrar a {changeData && changeData.username} </Typography>
             <div style={{ marginBottom: '2rem' }} align='center'>
-                <Button onClick={deleteUser} variant='contained' color='primary'>aceptar</Button>
-                <Button variant='contained' style={{ marginLeft: '2rem', backgroundColor: 'red', color: 'white' }} onClick={closeModalDelete}>cancelar</Button>
+                <Button size='small' onClick={deleteUser} variant='contained' color='primary'>aceptar</Button>
+                <Button size='small' variant='contained' style={{ marginLeft: '2rem', backgroundColor: 'red', color: 'white' }} onClick={closeModalDelete}>cancelar</Button>
 
             </div>
         </Dialog>
