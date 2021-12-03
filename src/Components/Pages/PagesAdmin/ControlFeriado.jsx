@@ -126,7 +126,7 @@ const ControlFeriado = () => {
                                         required
 
                                     />
-                                    <TextField
+                                    {/* <TextField
                                         name='tipoFeriado'
                                         label='Tipo Feriado'
                                         variant='outlined'
@@ -137,7 +137,7 @@ const ControlFeriado = () => {
                                         onChange={handleChange}
                                         value={changeData.tipoFeriado}
                                         required
-                                    />
+                                    /> */}
                                     <Grid container spacing={3} >
                                         <Grid item xs={12} sm={6}>
                                             <TextField
@@ -182,8 +182,9 @@ const ControlFeriado = () => {
                                     <Table stickyHeader>
                                         <TableHead>
                                             <TableRow>
+                                                <TableCell style={{ color: 'white', background: 'black' }}>N°</TableCell>
                                                 <TableCell style={{ color: 'white', background: 'black' }}>Nombre</TableCell>
-                                                <TableCell style={{ color: 'white', background: 'black' }}>Tipo</TableCell>
+                                                {/* <TableCell style={{ color: 'white', background: 'black' }}>Tipo</TableCell> */}
                                                 <TableCell style={{ color: 'white', background: 'black' }}>Fecha Inicio</TableCell>
                                                 <TableCell style={{ color: 'white', background: 'black' }}>Fecha Fin</TableCell>
                                                 <TableCell style={{ color: 'white', background: 'black' }}>Acciones</TableCell>
@@ -191,10 +192,11 @@ const ControlFeriado = () => {
                                         </TableHead>
                                         <TableBody>
                                             {feriado &&
-                                                feriado.map(f => (
-                                                    <TableRow key={f._id}>
+                                                feriado.map((f,index) => (
+                                                    <TableRow key={index}>
+                                                        <TableCell>{index+1}</TableCell>
                                                         <TableCell>{f.nameFeriado}</TableCell>
-                                                        <TableCell>{f.tipoFeriado}</TableCell>
+                                                        {/* <TableCell>{f.tipoFeriado}</TableCell> */}
                                                         <TableCell>{f.fechaFeriadoIni}</TableCell>
                                                         <TableCell>{f.fechaFeriadoFin}</TableCell>
                                                         <TableCell>

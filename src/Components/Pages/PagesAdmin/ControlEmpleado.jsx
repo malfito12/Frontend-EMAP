@@ -1,4 +1,4 @@
-import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab, InputAdornment } from '@material-ui/core'
+import { Button, Box, Container, Dialog, FormControl, Grid, makeStyles, MenuItem, NativeSelect, Radio, Select, TextField, Typography, Tooltip, Paper, IconButton, Tabs, Tab, InputAdornment, TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
@@ -283,6 +283,7 @@ const ControlEmpleado = (props) => {
             return x.allName.includes(buscador) ||
                 x.allName.toLowerCase().includes(buscador) ||
                 x.id_bio.includes(buscador) ||
+                x.CIEmp.includes(buscador) ||
                 !buscador
         }
     }
@@ -397,7 +398,59 @@ const ControlEmpleado = (props) => {
                         />
                     )}
                 </article>
-                <Grid container spacing={3} justifyContent='center'>
+                <Container maxWidth='md'>
+                    <Paper component={Box} p={1}>
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>N°</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>ID Biometrico</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>Nombre Completo</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }}>CI</TableCell>
+                                        <TableCell style={{ color: 'white', backgroundColor: "black" }} align='center'>Acciones</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {array.length > 0 ? (
+                                        array.filter(buscarEmpleado(buscador)).map((e, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{index + 1}</TableCell>
+                                                <TableCell>{e.id_bio}</TableCell>
+                                                <TableCell>{e.allName}</TableCell>
+                                                <TableCell>{e.CIEmp}</TableCell>
+                                                <TableCell style={{width:'15%'}}>
+                                                    <Grid container justifyContent='space-evenly'>
+                                                        <Tooltip title='edit'>
+                                                            <IconButton size='small' style={{ color: 'green' }} onClick={() => openModalEdit(e)}>
+                                                                <EditIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                        <Tooltip title='delete'>
+                                                            <IconButton size='small' style={{ color: 'red' }} onClick={() => openModalDelete(e)} >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                        <Tooltip title='imprimir'>
+                                                            <IconButton size='small' style={{ color: 'black' }} onClick={() => pdfGenerate(e)}>
+                                                                <PrintICon />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </Grid>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell align='center' colSpan='4'>no existe informacion</TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Container>
+                {/* <Grid container spacing={3} justifyContent='center'>
                     {array &&
                         array.filter(buscarEmpleado(buscador)).map(e => (
                             <Grid key={e._id} item xs={12} sm={3}>
@@ -414,7 +467,6 @@ const ControlEmpleado = (props) => {
                                     </div>
                                     <div align='center'>
                                         <Typography variant='subtitle1'>ID Biometrico : {e.id_bio}</Typography>
-                                        {/* <Typography variant='subtitle1'>{e.firstNameEmp} {e.lastNameEmpP} {e.lastNameEmpM}</Typography> */}
                                         <Typography variant='subtitle1'>{e.allName}</Typography>
                                         <Typography variant='subtitle1'>C.I.: {e.CIEmp}</Typography>
                                     </div>
@@ -434,17 +486,12 @@ const ControlEmpleado = (props) => {
                                                 <PrintICon />
                                             </IconButton>
                                         </Tooltip>
-                                        {/* <Tooltip title='info'>
-                                            <IconButton style={{ color: 'black' }} onClick={() => infoEmpleado(e)}>
-                                                <InfoIcon />
-                                            </IconButton>
-                                        </Tooltip> */}
                                     </Grid>
                                 </Paper>
                             </Grid>
                         ))
                     }
-                </Grid>
+                </Grid> */}
             </Container>
             <Dialog
                 maxWidth='lg'

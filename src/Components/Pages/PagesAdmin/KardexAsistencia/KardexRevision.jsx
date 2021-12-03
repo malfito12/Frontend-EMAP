@@ -1,4 +1,4 @@
-import { BottomNavigation, Box, BottomNavigationAction, Button, Container, Grid, makeStyles, Paper, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Tooltip, IconButton, Dialog, Tabs, Tab } from '@material-ui/core'
+import { BottomNavigation, Box, BottomNavigationAction, Button, Container, Grid, makeStyles, Paper, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Tooltip, IconButton, Dialog, Tabs, Tab, TableFooter, MenuItem } from '@material-ui/core'
 import React, { useState } from 'react'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -10,6 +10,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import jsPDF from 'jspdf';
 import PrintIcon from '@material-ui/icons/Print'
 import { AlertErrorAsistenciaPrint } from '../../../Atoms/Alerts/AlertReEdDe';
+import moment from 'moment';
 
 
 
@@ -27,7 +28,9 @@ const KardexRevision = () => {
     const [changeData, setChangeData] = useState({
         id_bio: '',
         fechaini: '',
-        fechafin: ''
+        fechafin: '',
+        mes:'',
+        year:'',
     })
     const [changeDataEdit, setChangeDataEdit] = useState({
         _id: '',
@@ -51,15 +54,23 @@ const KardexRevision = () => {
         const id = changeData.id_bio
         const fechaini = changeData.fechaini
         const fechafin = changeData.fechafin
+
+        const mes=changeData.mes
+        const year=changeData.year
+        // console.log(changeData)
         //busqueda de empleado
         await axios.get(`${PORT_URL}personalAsisSearch/${id}`)
             .then(resp => setEmpleado(resp.data))
             .catch(err => console.log(err))
 
         //buscqueda de marcaciones
-        await axios.get(`${PORT_URL}kardexAsistencia/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
+        // await axios.get(`${PORT_URL}kardexAsistencia/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
+        await axios.get(`${PORT_URL}kardexAsistencia/${id}?mes=${mes}&year=${year}`)
             .then(resp => setMarcaciones(resp.data))
             .catch(err => console.log(err))
+
+        
+
     }
     //------------------------EDITAR MARCACION-------------------------------------
     const openModalEdit = (e) => {
@@ -92,14 +103,15 @@ const KardexRevision = () => {
     //--------------------------PDF GENERATE--------------------------------------
     const pdfGenerate = () => {
         try {
-            const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [14, 7] })
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
             var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
             var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
-            doc.setFontSize(12)
+            doc.setFontSize(11)
             doc.text("KARDEX DE ASISTENCIA", pageWidth / 2, 0.5, 'center')
-            doc.setFontSize(8)
-            doc.text(`DESDE:    ${changeData.fechaini}        HASTA:    ${changeData.fechafin}`, pageWidth / 2, 0.7, 'center');
-            doc.setFontSize(8)
+            doc.setFontSize(7)
+            // doc.text(`DESDE:    ${changeData.fechaini}        HASTA:    ${changeData.fechafin}`, pageWidth / 2, 0.7, 'center');
+            doc.text(`MES DE ${changeData.mes}`, pageWidth / 2, 0.7, 'center');
+            doc.setFontSize(5)
             doc.text(`ID_BIO:   ${empleado[0].id_bio}`, 0.6, 1);
             doc.text(`NOMBRE:   ${empleado[0].firstNameEmp} ${empleado[0].lastNameEmpP} ${empleado[0].lastNameEmpM} `, 2.2, 1);
             doc.text(`CARGO:   ${empleado[0].cargoEmp} `, 0.6, 1.2);
@@ -137,6 +149,38 @@ const KardexRevision = () => {
             .then(resp => setName(resp.data))
             .catch(err => console.log(err))
     }
+    //-----------------------------------------------------------------
+    const array=[]
+    var sumaAtraso= moment(`1990-01-01 00:00:00`)
+    var sumaExtras=moment(`1990-01-01 00:00:00`)
+    var sumaHoras=0;
+    var diaTrab=0;
+    var sumaFaltas=0;
+    for(var a=0;a<marcaciones.length;a++){
+        var sumaAtrasoAux=marcaciones[a].atraso
+        var sumaExtrasAux=marcaciones[a].horasExtra
+        sumaAtrasoAux=sumaAtrasoAux.split(":")
+        sumaExtrasAux=sumaExtrasAux.split(":")
+        sumaAtraso=moment(sumaAtraso).add(parseInt(sumaAtrasoAux[0]),'h').add(parseInt(sumaAtrasoAux[1]),'m').add(parseInt(sumaAtrasoAux[2]),'s')
+        sumaExtras=moment(sumaExtras).add(parseInt(sumaExtrasAux[0]),'h').add(parseInt(sumaExtrasAux[1]),'m').add(parseInt(sumaExtrasAux[2]),'s')
+        sumaHoras=sumaHoras+parseFloat(marcaciones[a].horasDeTrabajo)
+        diaTrab=diaTrab+parseFloat(marcaciones[a].diaTrabajado)
+        sumaFaltas=sumaFaltas+parseFloat(marcaciones[a].faltas)
+
+
+
+        // sumaExtras=sumaExtras+parseFloat(marcaciones[a].horasExtra)
+    }
+    sumaAtraso=moment(sumaAtraso).format("HH:mm:ss")
+    sumaExtras=moment(sumaExtras).format("HH:mm:ss")
+    array.push({
+        sumaAtr:sumaAtraso,
+        sumaExt:sumaExtras,
+        sumaHor:sumaHoras.toFixed(2),
+        sumaDiaTrab:diaTrab,
+        sumaFalt:sumaFaltas
+    })
+    // console.log(array)
     //-----------------------------------------------------------------
     // console.log(changeData)
     // console.log(empleado)
@@ -213,7 +257,7 @@ const KardexRevision = () => {
                                 </Grid>
                             ) : null}
                                 <form onSubmit={getMarcaciones}>
-                                    <TextField
+                                    {/* <TextField
                                         name='fechaini'
                                         label='fecha Inicio'
                                         variant='outlined'
@@ -237,7 +281,44 @@ const KardexRevision = () => {
                                         className={classes.spacingBot}
                                         onChange={handleChange}
                                         required
+                                    /> */}
+                                    <TextField
+                                        name='mes'
+                                        label='Mes'
+                                        variant='outlined'
+                                        fullWidth
+                                        size='small'
+                                        select
+                                        className={classes.spacingBot}
+                                        value={changeData.mes}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <MenuItem value='ENERO'>ENERO</MenuItem>
+                                        <MenuItem value='FEBRERO'>FEBRERO</MenuItem>
+                                        <MenuItem value='MARZO'>MARZO</MenuItem>
+                                        <MenuItem value='ABRIL'>ABRIL</MenuItem>
+                                        <MenuItem value='MAYO'>MAYO</MenuItem>
+                                        <MenuItem value='JUNIO'>JUNIO</MenuItem>
+                                        <MenuItem value='JULIO'>JULIO</MenuItem>
+                                        <MenuItem value='AGOSTO'>AGOSTO</MenuItem>
+                                        <MenuItem value='SEPTIEMBRE'>SEPTIEMBRE</MenuItem>
+                                        <MenuItem value='OCTUBRE'>OCTUBRE</MenuItem>
+                                        <MenuItem value='NOVIEMBRE'>NOVIEMBRE</MenuItem>
+                                        <MenuItem value='DICIEMBRE'>DICIEMBRE</MenuItem>
+                                    </TextField>
+                                    <TextField
+                                        name='year'
+                                        label='Año'
+                                        variant='outlined'
+                                        fullWidth
+                                        type='number'
+                                        size='small'
+                                        className={classes.spacingBot}
+                                        onChange={handleChange}
+                                        required
                                     />
+
                                     <div align='center'>
                                         <Button variant='contained' color='primary' size='small' type='submit' fullWidth endIcon={<SearchIcon />} className={classes.spacingBot} >Buscar informacion</Button>
                                     </div>
@@ -299,6 +380,16 @@ const KardexRevision = () => {
                                             </TableRow>
                                         )}
                                     </TableBody>
+                                    <TableFooter>
+                                        <TableRow>
+                                            <TableCell colSpan='6' align='center'>Total</TableCell>
+                                            <TableCell>{array[0].sumaAtr}</TableCell>
+                                            <TableCell>{array[0].sumaExt}</TableCell>
+                                            <TableCell>{array[0].sumaHor}</TableCell>
+                                            <TableCell>{array[0].sumaDiaTrab}</TableCell>
+                                            <TableCell>{array[0].sumaFalt}</TableCell>
+                                        </TableRow>
+                                    </TableFooter>
                                 </Table>
                             </TableContainer>
                         </Paper>

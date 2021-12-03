@@ -114,7 +114,8 @@ const KardexPreRevision = () => {
         await axios.post(`${PORT_URL}registerAllMarcaciones`, changeDataAll)
             .then(resp => {
                 closeModalAddAll()
-                console.log(resp.data)
+                alert('informacion registrada')
+                // console.log(resp.data)
             })
             .catch(err => console.log(err))
     }

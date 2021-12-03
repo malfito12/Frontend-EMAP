@@ -1,4 +1,4 @@
-import { Button, Paper, Container, Grid, makeStyles, Typography, CircularProgress, Backdrop, IconButton, Box } from '@material-ui/core'
+import { Button, Paper, Container, Grid, makeStyles, Typography, CircularProgress, Backdrop, IconButton, Box, Dialog, TextField } from '@material-ui/core'
 import axios from 'axios'
 // import React, { useState } from 'react'
 import ReactFileReader from 'react-file-reader'
@@ -74,7 +74,12 @@ var data;
 const HomeAdmin = () => {
     const classes = useStyles()
     const [loading, setLoading] = useState(false)
+    const [marcaciones, setMarcaciones] = useState(false)
     const [progress, setProgress] = useState(0)
+    const [changeData, setChangeData] = useState({
+        fechaini: '',
+        fechafin: '',
+    })
 
     //---------------LOADING------------
     const openLoading = () => {
@@ -82,6 +87,41 @@ const HomeAdmin = () => {
     }
     const closeLoading = () => {
         setLoading(false)
+    }
+    //--------------POST MARCACIONES ESPECIFICAS------------------------------
+    const openModalMarcaciones = () => {
+        setMarcaciones(true)
+    }
+    const closeModalMarcaciones = () => {
+        setMarcaciones(false)
+    }
+    const postMarcaciones = async (e) => {
+        e.preventDefault()
+        console.log(changeData)
+        // console.log(data)
+        // console.log('entra')
+        const contData = data.length
+        const data2 = []
+        for (var i = 0; i < contData; i++) {
+            if (data[i].fecha >= changeData.fechaini && data[i].fecha <= changeData.fechafin) {
+                data2.push(data[i])
+            }
+        }
+        if (data2.length === 0) {
+            alert('no se encontro marcacines de esa fecha')
+        } else {
+            // console.log(data2)
+            postAsistencia(data2)
+            closeModalMarcaciones()
+        }
+
+    }
+    //-------------------HANDLE CHANGE-----------------------------
+    const handleChange = (e) => {
+        setChangeData({
+            ...changeData,
+            [e.target.name]: e.target.value
+        })
     }
     //-----------------------------------------------------
     const hadle = files => {
@@ -114,34 +154,46 @@ const HomeAdmin = () => {
         reader.readAsText(files[0])
     }
     const postAsistencia = async (e) => {
-        e.preventDefault()
-        const nuevo = data.length
+        // e.preventDefault()
+        // const nuevo = data.length
+        const nuevo = e.length
+        // console.log(e)
         openLoading()
         var carga;
-        for (var i = 0; i < nuevo; i++) {
-            carga = i / nuevo
-            carga = carga * 100
-            setProgress(carga)
-            await axios.post(`${PORT_URL}asistencia`, data[i])
-                .then(resp => {
-                    // console.log(resp.data)
-                })
-                .catch(err => console.log(err))
-            if (i >= nuevo - 1) {
-                closeLoading()
-                // return alert('informacion subida al servidor')
+        try {
+            for (var i = 0; i < nuevo; i++) {
+                carga = i / nuevo
+                carga = carga * 100
+                setProgress(carga)
+                await axios.post(`${PORT_URL}asistencia`, e[i])
+                    .then(resp => {
+                        // console.log(resp.data)
+                    })
+                    .catch(err => console.log(err))
+                if (i >= nuevo - 1) {
+                    closeLoading()
+                    // return alert('informacion subida al servidor')
+                }
+                console.log(data[i])
             }
-            console.log(data[i])
+        } catch (error) {
+            console.log(error)
         }
     }
     const confirmar = (e) => {
-        const info=data
-        const primero=info[0].fecha
-        const ultimo=info[info.length-1].fecha
-        const a = window.confirm(`¿deseas subir los datos desde ${primero} hasta ${ultimo} ?`)
-        if (a === true) {
-            postAsistencia(e)
+        console.log(data)
+        if (data != undefined) {
+            openModalMarcaciones()
+        } else {
+            alert('no existe infromacion cargada intentelo de nuevo')
         }
+        // const info = data
+        // const primero = info[0].fecha
+        // const ultimo = info[info.length - 1].fecha
+        // const a = window.confirm(`¿deseas subir los datos desde ${primero} hasta ${ultimo} ?`)
+        // if (a === true) {
+        //     // postAsistencia(e)
+        // }
     }
     //---------------------------------------------
     //-------OPSION 2-----------------
@@ -307,6 +359,46 @@ const HomeAdmin = () => {
             <Backdrop className={classes.backdrop} open={loading} onClick={closeLoading}>
                 <CircularProgress color='inherit' variant='determinate' value={progress} />
             </Backdrop>
+            {/*---------------MARCACIONES ESPECIFICAS-----------------*/}
+            <Dialog
+                open={marcaciones}
+                onClose={closeModalMarcaciones}
+                maxWidth='sm'
+            >
+                <Paper component={Box} p={2}>
+                    <Typography align='center' variant='subtitle1' className={classes.spacingBot}>FECHAS</Typography>
+                    <form onSubmit={postMarcaciones}>
+                        <TextField
+                            name='fechaini'
+                            label='Fecha Inicial'
+                            variant='outlined'
+                            fullWidth
+                            size='small'
+                            type='date'
+                            InputLabelProps={{ shrink: true }}
+                            className={classes.spacingBot}
+                            required
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            name='fechafin'
+                            label='Fecha Inicial'
+                            variant='outlined'
+                            fullWidth
+                            size='small'
+                            type='date'
+                            InputLabelProps={{ shrink: true }}
+                            className={classes.spacingBot}
+                            required
+                            onChange={handleChange}
+                        />
+                        <Grid container justifyContent='space-evenly'>
+                            <Button size='small' variant='contained' color='primary' type='submit'>aceptar</Button>
+                            <Button size='small' variant='contained' color='secondary' onClick={closeModalMarcaciones}>cancelar</Button>
+                        </Grid>
+                    </form>
+                </Paper>
+            </Dialog>
         </>
     )
 }

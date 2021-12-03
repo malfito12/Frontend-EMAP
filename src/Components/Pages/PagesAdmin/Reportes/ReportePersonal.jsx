@@ -9,6 +9,7 @@ import { PORT_URL } from '../../../../PortURL';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import PrintIcon from '@material-ui/icons/Print'
+import moment, { months } from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -69,7 +70,8 @@ const ReportePersonal = () => {
         doc.setFont('Calibri');
         doc.text('Lista de Personal', 6, 0.5)
         doc.setFontSize(11)
-        doc.autoTable({ html: "#id-table", startY: 1 })
+        // doc.autoTable({ html: "#id-table", startY: 1 })
+        doc.autoTable({ html: "#id-table2", startY: 1 })
         doc.output('dataurlnewwindow')
     }
     //---------------------------------------------------------------------
@@ -79,7 +81,21 @@ const ReportePersonal = () => {
         setScroll(newScroll)
     }
     //-----------------------------------------------------------------
+    const empleado2=[]
+    for(var j=0;j<empleado.length;j++){
+        var year=moment().diff(`${empleado[j].fechaini}`,'years',false)
+        // var mes=moment().diff(`${empleado[j].fechaini}`,'months',false)
+        // var dia=moment().diff(`${empleado[j].fechaini}`,'days',false)
+        // var prueba = moment().diff(`${menor[i].fechaNacimientoEst}`, 'years', false)
+        // const data={...empleado[j],fecha:year,months:mes,day:dia}
+        const data={...empleado[j],fecha:year}
+        // const data={...empleado[j],fecha:year}
+        empleado2.push(data)
+    }
+    console.log(empleado2)
+    //-----------------------------------------------------------------
     // console.log(empleado)
+    // console.log(array1)
     return (
         <>
             <Container maxWidth='lg' style={{ paddingTop: '4.5rem' }}>
@@ -152,7 +168,7 @@ const ReportePersonal = () => {
                             )}
                         </Table>
                         {/*-----------------------------------------------------------------------------------*/}
-                        <Table stickyHeader >
+                        <Table stickyHeader id="id-table2">
                             <TableHead>
                                 <TableRow>
                                     <TableCell style={{ color: 'white', backgroundColor: "black" }}>ID Biometrico</TableCell>
@@ -161,14 +177,14 @@ const ReportePersonal = () => {
                                     <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido P</TableCell>
                                     <TableCell style={{ color: 'white', backgroundColor: "black" }}>Apellido M</TableCell>
                                     <TableCell style={{ color: 'white', backgroundColor: "black" }}>Sexo</TableCell>
-                                    <TableCell style={{ color: 'white', backgroundColor: "black" }}>Departamento</TableCell>
                                     <TableCell style={{ color: 'white', backgroundColor: "black" }}>Cargo</TableCell>
+                                    <TableCell style={{ color: 'white', backgroundColor: "black" }}>Tiempo de trabajo</TableCell>
                                 </TableRow>
 
                             </TableHead>
                             <TableBody>
-                                {empleado.length > 0 ? (
-                                    empleado.map((e, index) => (
+                                {empleado2.length > 0 ? (
+                                    empleado2.map((e, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{e.id_bio}</TableCell>
                                             <TableCell>{e.itemEmp}</TableCell>
@@ -176,8 +192,9 @@ const ReportePersonal = () => {
                                             <TableCell>{e.lastNameEmpP}</TableCell>
                                             <TableCell>{e.lastNameEmpM}</TableCell>
                                             <TableCell>{e.sexoEmp}</TableCell>
-                                            <TableCell>{e.departamentEmp}</TableCell>
                                             <TableCell>{e.cargoEmp}</TableCell>
+                                            {/* <TableCell>{e.fecha} años {e.months}meses {e.day} dias </TableCell> */}
+                                            <TableCell>{e.fecha} años  </TableCell>
                                         </TableRow>
                                     ))
                                 ) : (

@@ -122,7 +122,9 @@ const RegisterEmp = (props) => {
                 // alert('empleado registrado')
                 console.log(resp.data)
             })
-            .catch(err=>console.log(err))
+            .catch(err=>{
+                alert('El Numero ID Biometrico ya existe')
+                console.log(err)})
     }
     //-----------------------GET CARGOS--------------------------------
     const getCargos = async (e) => {

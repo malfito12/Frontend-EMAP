@@ -1,4 +1,4 @@
-import { Container, Box, Grid, makeStyles, Paper, Tab, Tabs, Typography, FormLabel, RadioGroup, FormControlLabel, Radio, TextField, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, Dialog } from '@material-ui/core'
+import { Container, Box, Grid, makeStyles, Paper, Tab, Tabs, Typography, FormLabel, RadioGroup, FormControlLabel, Radio, TextField, Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, IconButton, Dialog, MenuItem } from '@material-ui/core'
 import React, { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
@@ -37,7 +37,9 @@ const SueldosRevision = () => {
         // id_bio:'',
         typePlanilla: '',
         fechaini: '',
-        fechafin: ''
+        fechafin: '',
+        mes:'',
+        year:'',
     })
     const [changeDataEdit, setChangeDataEdit] = useState({
         _id: '',
@@ -53,9 +55,13 @@ const SueldosRevision = () => {
     const getPlanilla = async (e) => {
         e.preventDefault()
         const typePlanilla = changeData.typePlanilla
-        const fechaini = changeData.fechaini
-        const fechafin = changeData.fechafin
-        await axios.get(`${PORT_URL}planillaSueldo?typePlanilla=${typePlanilla}&fechaini=${fechaini}&fechafin=${fechafin}`)
+        // const fechaini = changeData.fechaini
+        // const fechafin = changeData.fechafin
+        const mes = changeData.mes
+        const year = changeData.year
+        
+        // await axios.get(`${PORT_URL}planillaSueldo?typePlanilla=${typePlanilla}&fechaini=${fechaini}&fechafin=${fechafin}`)
+        await axios.get(`${PORT_URL}planillaSueldo?typePlanilla=${typePlanilla}&mes=${mes}&year=${year}`)
             .then(resp => {
                 setPlanilla(resp.data)
                 // console.log(resp.data)
@@ -156,64 +162,101 @@ const SueldosRevision = () => {
         doc.text("PLANILLA DE SUELDOS", pageWidth / 2, 0.5, 'center')
         doc.text(`${(changeData.typePlanilla).toUpperCase()}`, pageWidth / 2, 0.7, 'center');
         doc.setFontSize(10)
-        doc.text(`Correspondiente al mes de ${mes} del ${numeroAnio}`, pageWidth / 2, 0.9, 'center');
+        // doc.text(`Correspondiente al mes de ${mes} del ${numeroAnio}`, pageWidth / 2, 0.9, 'center');
+        doc.text(`Correspondiente al mes de ${changeData.mes} del ${changeData.year}`, pageWidth / 2, 0.9, 'center');
         doc.text(`(En Bolivianos)`, pageWidth / 2, 1.1, 'center');
         doc.autoTable({ html: "#id-table", startY: 1.5, styles: { fontSize: 5, halign: 'center' } })
         doc.setFontSize(8)
-        doc.text('-----------------------------------',pageWidth/6.4, doc.lastAutoTable.finalY+0.9)
-        doc.text('REALIZADO POR',pageWidth/6, doc.lastAutoTable.finalY+1)
-        doc.text('-----------------------------------',pageWidth/2, doc.lastAutoTable.finalY+0.9,'center')
-        doc.text('REVISADO POR',pageWidth/2, doc.lastAutoTable.finalY+1,'center')
-        doc.text('-----------------------------------',pageWidth/1.33, doc.lastAutoTable.finalY+0.9,)
-        doc.text('APROBADO POR',pageWidth/1.3, doc.lastAutoTable.finalY+1)
+        doc.text('-----------------------------------', pageWidth / 6.4, doc.lastAutoTable.finalY + 0.9)
+        doc.text('REALIZADO POR', pageWidth / 6, doc.lastAutoTable.finalY + 1)
+        doc.text('-----------------------------------', pageWidth / 2, doc.lastAutoTable.finalY + 0.9, 'center')
+        doc.text('REVISADO POR', pageWidth / 2, doc.lastAutoTable.finalY + 1, 'center')
+        doc.text('-----------------------------------', pageWidth / 1.33, doc.lastAutoTable.finalY + 0.9,)
+        doc.text('APROBADO POR', pageWidth / 1.3, doc.lastAutoTable.finalY + 1)
         // doc.output('dataurlnewwindow')
         window.open(doc.output('bloburi'))
     }
     //---------------------PDF GENERATE BOLETAS DE PAGO--------------------------------
-    const pdfGenrateBoletas=()=>{
-        const doc=new jsPDF({orientation:'portrait',unit:'in',format:[8,7]})
+    const pdfGenrateBoletas = () => {
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
         var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         // doc.text("PAPELETA DE PAGO", pageWidth / 2, 0.5, 'center')
 
-        planilla.map(d=>(
+        planilla.map(d => (
             // doc.text(`${d.nameEmp}`,1,1),
             doc.autoTable({
                 // startY:0.5,
-                theme:'plain',
-                styles:{fontSize:7,cellPadding:0.05},
-                margin:{top:0.5},
-                head:[[
-                    {content:'PAPELETA DE PAGO',colSpan:3,styles:{halign:'center',fontSize:10}},
+                theme: 'plain',
+                styles: { fontSize: 7, cellPadding: 0.05 },
+                margin: { top: 0.5 },
+                head: [[
+                    { content: 'PAPELETA DE PAGO', colSpan: 3, styles: { halign: 'center', fontSize: 10 } },
                 ]],
-                body:[
-                    [{content:`ITEM N°: ${d.numItem}`},{content:`NOMBRE: ${d.nameEmp}`},{content:`CI: ${d.CIEmp}`}],
-                    [{content:`CARGO: ${d.cargoEmp}`,colSpan:2},{content:`GESTION: PEDIENTE`}],
-                    [{content:`DIAS TRAB: ${d.diasTrabajados}`,colSpan:3}],
+                body: [
+                    [{ content: `ITEM N°: ${d.numItem}` }, { content: `NOMBRE: ${d.nameEmp}` }, { content: `CI: ${d.CIEmp}` }],
+                    [{ content: `CARGO: ${d.cargoEmp}`, colSpan: 2 }, { content: `GESTION: PEDIENTE` }],
+                    [{ content: `DIAS TRAB: ${d.diasTrabajados}`, colSpan: 3 }],
                 ],
             }),
             doc.autoTable({
                 // theme:'plain',
-                styles:{fontSize:7,cellPadding:0.05},
-                footStyles:{fillColor:'white',fontStyle:'normal', textColor:'black'},
-                head:[[
-                    {content:'INGRESOS',styles:{halign:'center'},colSpan:2},
-                    {content:'EGRESOS',styles:{halign:'center'},colSpan:2},
+                styles: { fontSize: 7, cellPadding: 0.05 },
+                footStyles: { fillColor: 'white', fontStyle: 'normal', textColor: 'black' },
+                head: [[
+                    { content: 'INGRESOS', styles: { halign: 'center' }, colSpan: 2 },
+                    { content: 'EGRESOS', styles: { halign: 'center' }, colSpan: 2 },
                 ]],
-                body:[
-                    [{content:`HABER BASICO: `,styles:{halign:'center'}},{content:d.haber_basico},{content:`APORTE AFP 12.71%: `,styles:{halign:'center'}},{content:d.AFP}],
-                    [{content:`SUELDO: `,styles:{halign:'center'}},{content:d.sueldo},{content:`RC-IVA: `,styles:{halign:'center'}},{content:d.RC_IVA}],
-                    [{content:`ANTIGUEDAD: `,styles:{halign:'center'}},{content:d.bonoDeAntiguedad},{content:`OTROS DESCUENTOS: `,styles:{halign:'center'}}],
-                    [{content:`RECARGA NOCTURNA: `,styles:{halign:'center'}},{content:d.bonoRecargaNoc},{content:`FALTAS Y SANCIONES: `,styles:{halign:'center'}},{content:d.sancionFaltasAtrasos}],
-                    [{content:`INTERINATO: `,styles:{halign:'center'}},{content:d.interinato},{content:`SINDICATO: `,styles:{halign:'center'}},{content:d.sind}],
-                    [{content:`DOMINICAL: `,styles:{halign:'center'}},{content:d.domingosFeriados}],
+                body: [
+                    [{ content: `HABER BASICO: `, styles: { halign: 'center' } }, { content: d.haber_basico }, { content: `APORTE AFP 12.71%: `, styles: { halign: 'center' } }, { content: d.AFP }],
+                    [{ content: `SUELDO: `, styles: { halign: 'center' } }, { content: d.sueldo }, { content: `RC-IVA: `, styles: { halign: 'center' } }, { content: d.RC_IVA }],
+                    [{ content: `ANTIGUEDAD: `, styles: { halign: 'center' } }, { content: d.bonoDeAntiguedad }, { content: `OTROS DESCUENTOS: `, styles: { halign: 'center' } }],
+                    [{ content: `RECARGA NOCTURNA: `, styles: { halign: 'center' } }, { content: d.bonoRecargaNoc }, { content: `FALTAS Y SANCIONES: `, styles: { halign: 'center' } }, { content: d.sancionFaltasAtrasos }],
+                    [{ content: `INTERINATO: `, styles: { halign: 'center' } }, { content: d.interinato }, { content: `SINDICATO: `, styles: { halign: 'center' } }, { content: d.sind }],
+                    [{ content: `DOMINICAL: `, styles: { halign: 'center' } }, { content: d.domingosFeriados }],
                 ],
-                foot:[
-                    [{content:'TOTAL INGRESOS',colSpan:2},{content:'TOTAL DECUENTOS',colSpan:2}],
-                    [{content:'Pago de haberes correspondiente al mes de : ',colSpan:3},{content:`LIQUIDO PAGABLE: ${d.auxLiquidoPagable}`}],
-                    [{content:'Firma del empleado:.............................................. ',colSpan:4,styles:{halign:'right'}}],
-                ]
+                foot: [
+                    [{ content: `TOTAL INGRESOS: ${d.auxTotalGanado}`, colSpan: 2 }, { content: `TOTAL DECUENTOS: ${d.auxTotalDescuento}`, colSpan: 2 }],
+                    [{ content: 'Pago de haberes correspondiente al mes de : ', colSpan: 3 }, { content: `LIQUIDO PAGABLE: ${d.auxLiquidoPagable}` }],
+                    [{ content: 'Firma del empleado:.............................................. ', colSpan: 4, styles: { halign: 'right' } }],
+                ],
+            }),
+            doc.autoTable({
+                // startY:0.5,
+                theme: 'plain',
+                styles: { fontSize: 7, cellPadding: 0.05 },
+                margin: { top: 0.5 },
+                head: [[
+                    { content: 'PAPELETA DE PAGO', colSpan: 3, styles: { halign: 'center', fontSize: 10 } },
+                ]],
+                body: [
+                    [{ content: `ITEM N°: ${d.numItem}` }, { content: `NOMBRE: ${d.nameEmp}` }, { content: `CI: ${d.CIEmp}` }],
+                    [{ content: `CARGO: ${d.cargoEmp}`, colSpan: 2 }, { content: `GESTION: PEDIENTE` }],
+                    [{ content: `DIAS TRAB: ${d.diasTrabajados}`, colSpan: 3 }],
+                ],
+            }),
+            doc.autoTable({
+                // theme:'plain',
+                styles: { fontSize: 7, cellPadding: 0.05 },
+                footStyles: { fillColor: 'white', fontStyle: 'normal', textColor: 'black' },
+                head: [[
+                    { content: 'INGRESOS', styles: { halign: 'center' }, colSpan: 2 },
+                    { content: 'EGRESOS', styles: { halign: 'center' }, colSpan: 2 },
+                ]],
+                body: [
+                    [{ content: `HABER BASICO: `, styles: { halign: 'center' } }, { content: d.haber_basico }, { content: `APORTE AFP 12.71%: `, styles: { halign: 'center' } }, { content: d.AFP }],
+                    [{ content: `SUELDO: `, styles: { halign: 'center' } }, { content: d.sueldo }, { content: `RC-IVA: `, styles: { halign: 'center' } }, { content: d.RC_IVA }],
+                    [{ content: `ANTIGUEDAD: `, styles: { halign: 'center' } }, { content: d.bonoDeAntiguedad }, { content: `OTROS DESCUENTOS: `, styles: { halign: 'center' } }],
+                    [{ content: `RECARGA NOCTURNA: `, styles: { halign: 'center' } }, { content: d.bonoRecargaNoc }, { content: `FALTAS Y SANCIONES: `, styles: { halign: 'center' } }, { content: d.sancionFaltasAtrasos }],
+                    [{ content: `INTERINATO: `, styles: { halign: 'center' } }, { content: d.interinato }, { content: `SINDICATO: `, styles: { halign: 'center' } }, { content: d.sind }],
+                    [{ content: `DOMINICAL: `, styles: { halign: 'center' } }, { content: d.domingosFeriados }],
+                ],
+                foot: [
+                    [{ content: `TOTAL INGRESOS: ${d.auxTotalGanado}`, colSpan: 2 }, { content: `TOTAL DECUENTOS: ${d.auxTotalDescuento}`, colSpan: 2 }],
+                    [{ content: 'Pago de haberes correspondiente al mes de : ', colSpan: 3 }, { content: `LIQUIDO PAGABLE: ${d.auxLiquidoPagable}` }],
+                    [{ content: 'Firma del empleado:.............................................. ', colSpan: 4, styles: { halign: 'right' } }],
+                ],
             })
         ))
 
@@ -258,7 +301,7 @@ const SueldosRevision = () => {
                                         <FormControlLabel value='permanente' control={<Radio color='primary' />} label='Permanente' />
                                         <FormControlLabel value='eventual' control={<Radio color='primary' />} label='Eventual' />
                                     </RadioGroup>
-                                    <TextField
+                                    {/* <TextField
                                         name='fechaini'
                                         label='Fecha Inicial'
                                         variant='outlined'
@@ -271,7 +314,7 @@ const SueldosRevision = () => {
                                     />
                                     <TextField
                                         name='fechafin'
-                                        label='Fecha Inicial'
+                                        label='Fecha Fin'
                                         variant='outlined'
                                         fullWidth
                                         size='small'
@@ -279,12 +322,49 @@ const SueldosRevision = () => {
                                         InputLabelProps={{ shrink: true }}
                                         className={classes.spacingBot}
                                         onChange={handleChange}
+                                    /> */}
+                                    <TextField
+                                        name='mes'
+                                        label='Mes'
+                                        variant='outlined'
+                                        fullWidth
+                                        size='small'
+                                        select
+                                        align='center'
+                                        className={classes.spacingBot}
+                                        value={changeData.mes}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <MenuItem value='ENERO'>ENERO</MenuItem>
+                                        <MenuItem value='FEBRERO'>FEBRERO</MenuItem>
+                                        <MenuItem value='MARZO'>MARZO</MenuItem>
+                                        <MenuItem value='ABRIL'>ABRIL</MenuItem>
+                                        <MenuItem value='MAYO'>MAYO</MenuItem>
+                                        <MenuItem value='JUNIO'>JUNIO</MenuItem>
+                                        <MenuItem value='JULIO'>JULIO</MenuItem>
+                                        <MenuItem value='AGOSTO'>AGOSTO</MenuItem>
+                                        <MenuItem value='SEPTIEMBRE'>SEPTIEMBRE</MenuItem>
+                                        <MenuItem value='OCTUBRE'>OCTUBRE</MenuItem>
+                                        <MenuItem value='NOVIEMBRE'>NOVIEMBRE</MenuItem>
+                                        <MenuItem value='DICIEMBRE'>DICIEMBRE</MenuItem>
+                                    </TextField>
+                                    <TextField
+                                        name='year'
+                                        label='Año'
+                                        variant='outlined'
+                                        fullWidth
+                                        type='number'
+                                        size='small'
+                                        className={classes.spacingBot}
+                                        onChange={handleChange}
+                                        required
                                     />
                                     <div align='center' className={classes.spacingBot}>
-                                        <Button endIcon={<SearchIcon />} fullWidth  size='small' variant='contained' color='primary' type='submit' >Buscar</Button>
+                                        <Button endIcon={<SearchIcon />} fullWidth size='small' variant='contained' color='primary' type='submit' >Buscar</Button>
                                     </div>
                                 </form>
-                                <Button size='small' fullWidth style={{ backgroundColor: '#689f38', color: 'white'}} className={classes.spacingBot} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir planilla</Button>
+                                <Button size='small' fullWidth style={{ backgroundColor: '#689f38', color: 'white' }} className={classes.spacingBot} variant='contained' onClick={pdfGenerate} endIcon={<PrintIcon />} >Imprimir planilla</Button>
                                 <Button size='small' variant='contained' color='primary' fullWidth onClick={pdfGenrateBoletas} endIcon={<PrintIcon />}>imprimir boletas</Button>
                             </Paper>
                         </Container>

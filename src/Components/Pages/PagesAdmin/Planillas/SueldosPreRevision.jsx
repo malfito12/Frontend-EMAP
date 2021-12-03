@@ -1,10 +1,12 @@
-import { Box, Button, Container, FormControlLabel, FormLabel, RadioGroup, Radio, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Tabs, Tab, Dialog } from '@material-ui/core'
+import { Box, Button, Container, MenuItem, FormControlLabel, FormLabel, RadioGroup, Radio, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, Tabs, Tab, Dialog } from '@material-ui/core'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
 import { PORT_URL } from '../../../../PortURL'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import RegisterApp from '@material-ui/icons/CloudUpload'
+import SearchIcon from '@material-ui/icons/Search'
 import { AlertAddPlanillaS, AlertErrorPlanillaS } from '../../../Atoms/Alerts/AlertReEdDe'
 
 const useStyles = makeStyles((theme) => ({
@@ -32,21 +34,23 @@ const SueldosPreRevision = () => {
         // id_bio:'',
         typePlanilla: '',
         fechaini: '',
-        fechafin: ''
+        fechafin: '',
+        mes: '',
+        year: '',
     })
 
     //-------------------GET PRE-PLANILLA DE SUELDO--------------------------------
     const getPlanilla = async (e) => {
         e.preventDefault()
-        // const id = changeData.id_bio
         const typePlanilla = changeData.typePlanilla
-        const fechaini = changeData.fechaini
-        const fechafin = changeData.fechafin
-        // console.log(id)
-        // console.log(fechaini)
-        // console.log(fechafin)
+        // const fechaini = changeData.fechaini
+        // const fechafin = changeData.fechafin
+        const mes = changeData.mes
+        const year = changeData.year
+
         // await axios.get(`${PORT_URL}sueldo/${id}?fechaini=${fechaini}&fechafin=${fechafin}`)
-        await axios.get(`${PORT_URL}pre-planillasueldo?typePlanilla=${typePlanilla}&fechaini=${fechaini}&fechafin=${fechafin}`)
+        // await axios.get(`${PORT_URL}pre-planillasueldo?typePlanilla=${typePlanilla}&fechaini=${fechaini}&fechafin=${fechafin}`)
+        await axios.get(`${PORT_URL}pre-planillasueldo?typePlanilla=${typePlanilla}&mes=${mes}&year=${year}`)
             .then(resp => {
                 setPlanilla(resp.data)
                 console.log(resp.data)
@@ -124,7 +128,7 @@ const SueldosPreRevision = () => {
                         <Container maxWidth='xs'>
                             <Paper component={Box} p={2} className={classes.spacingBot}>
                                 <Typography variant='subtitle1' align='center' className={classes.spacingBot}>BUSCAR INFORMACION</Typography>
-                                <form onSubmit={getPlanilla}>
+                                <form onSubmit={getPlanilla} className={classes.spacingBot}>
                                     <div align='center'><FormLabel >Tipo de Planilla</FormLabel></div>
                                     <RadioGroup
                                         name='typePlanilla'
@@ -137,7 +141,7 @@ const SueldosPreRevision = () => {
                                         <FormControlLabel value="eventual" control={<Radio color='primary' />} label="Eventual" />
 
                                     </RadioGroup>
-                                    <TextField
+                                    {/* <TextField
                                         name='fechaini'
                                         label='Fecha Inicial'
                                         variant='outlined'
@@ -158,11 +162,48 @@ const SueldosPreRevision = () => {
                                         InputLabelProps={{ shrink: true }}
                                         className={classes.spacingBot}
                                         onChange={handleChange}
+                                    /> */}
+                                    <TextField
+                                        name='mes'
+                                        label='Mes'
+                                        variant='outlined'
+                                        fullWidth
+                                        size='small'
+                                        select
+                                        className={classes.spacingBot}
+                                        value={changeData.mes}
+                                        onChange={handleChange}
+                                        required
+                                    >
+                                        <MenuItem value='ENERO'>ENERO</MenuItem>
+                                        <MenuItem value='FEBRERO'>FEBRERO</MenuItem>
+                                        <MenuItem value='MARZO'>MARZO</MenuItem>
+                                        <MenuItem value='ABRIL'>ABRIL</MenuItem>
+                                        <MenuItem value='MAYO'>MAYO</MenuItem>
+                                        <MenuItem value='JUNIO'>JUNIO</MenuItem>
+                                        <MenuItem value='JULIO'>JULIO</MenuItem>
+                                        <MenuItem value='AGOSTO'>AGOSTO</MenuItem>
+                                        <MenuItem value='SEPTIEMBRE'>SEPTIEMBRE</MenuItem>
+                                        <MenuItem value='OCTUBRE'>OCTUBRE</MenuItem>
+                                        <MenuItem value='NOVIEMBRE'>NOVIEMBRE</MenuItem>
+                                        <MenuItem value='DICIEMBRE'>DICIEMBRE</MenuItem>
+                                    </TextField>
+                                    <TextField
+                                        name='year'
+                                        label='Año (ejemplo 2020)'
+                                        variant='outlined'
+                                        fullWidth
+                                        type='number'
+                                        size='small'
+                                        className={classes.spacingBot}
+                                        onChange={handleChange}
+                                        required
                                     />
                                     <div align='center'>
-                                        <Button variant='contained' color='primary' type='submit' >Buscar</Button>
+                                        <Button variant='contained' color='primary' type='submit' fullWidth size='small' endIcon={<SearchIcon />}>Buscar</Button>
                                     </div>
                                 </form>
+                                <Button onClick={openModalConfirmPlanilla} variant='contained' color='primary' size='small' fullWidth endIcon={<RegisterApp />}>Subir informacion</Button>
                             </Paper>
                         </Container>
                     </Grid>
@@ -241,9 +282,6 @@ const SueldosPreRevision = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <div align='center'>
-                                <Button onClick={openModalConfirmPlanilla} variant='contained' color='primary' size='small'>Subir informacion</Button>
-                            </div>
                         </Paper>
                     </Grid>
                 </Grid>
