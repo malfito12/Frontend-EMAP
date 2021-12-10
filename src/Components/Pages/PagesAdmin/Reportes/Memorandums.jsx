@@ -1,4 +1,4 @@
-import { Container, Paper, Box, Typography, FormControl, FormControlLabel, TextField, InputLabel, Input, FormHelperText, Grid, TextareaAutosize, Button } from '@material-ui/core'
+import { Container, Paper, Box, Typography, TextField, Grid, TextareaAutosize, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { useState } from 'react'
 import PrintIcon from '@material-ui/icons/Print'
@@ -6,7 +6,6 @@ import logo2emap from '../../../../images/logo2emap.png'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 // import moment from 'moment'
-const moment = require('moment')
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {
@@ -30,7 +29,7 @@ const Memorandums = () => {
     const pdfGenerate = () => {
         const doc= new jsPDF({orientation:'portrait',unit:'in',format:[8,7]})
         // const doc = new jsPDF("p", "in", "letter")
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         // console.log(width)
         // console.log(height)
@@ -50,7 +49,7 @@ const Memorandums = () => {
         doc.text(lines,1,3.5)
         var pageCount = doc.internal.getNumberOfPages(); // pageCount es el nº de páginas
         for (let i = 0; i < pageCount; i++) { // código que se repite para cada página (bucle)
-            if(i==(pageCount-1)){
+            if(i===(pageCount-1)){
                 doc.setFontSize(9)
                 doc.text("---------------------------------------------------------",pageWidth / 2,6.9,'center'); // escribir 'ÚLTIMA PÁGINA'
                 doc.text("SUPERVISOR DE TURNO",pageWidth / 2,7,'center'); // escribir 'ÚLTIMA PÁGINA'

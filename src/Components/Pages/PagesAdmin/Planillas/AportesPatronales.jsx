@@ -97,7 +97,7 @@ const AportesPatronales = () => {
     var image = logo2emap
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.addImage(image, 0.5, 0, 1.5, 1)

@@ -30,17 +30,17 @@ const RecuperarPass = () => {
     })
 
     //-------------------POST-------------------------
-    const postPassword = async (e) => {
-        e.preventDefault()
-        // console.log(changeData)
-        try {
-            await axios.post(`${PORT_URL}password`, changeData)
-                .then(resp => { console.log(resp.data) })
-                .catch(err => { console.log(err) })
-        } catch (error) {
+    // const postPassword = async (e) => {
+    //     e.preventDefault()
+    //     // console.log(changeData)
+    //     try {
+    //         await axios.post(`${PORT_URL}password`, changeData)
+    //             .then(resp => { console.log(resp.data) })
+    //             .catch(err => { console.log(err) })
+    //     } catch (error) {
 
-        }
-    }
+    //     }
+    // }
     //----------------GET---------------------------
     const getPassword = async (e) => {
         e.preventDefault()

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Typography, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, makeStyles, IconButton, Grid, Tabs, Tab, Button, Box, Tooltip, Dialog, TextField, MenuItem, RadioGroup, FormControlLabel, Radio, InputAdornment } from '@material-ui/core'
+import { Container, Typography, Paper, makeStyles, IconButton, Grid, Tabs, Tab, Button, Box, Tooltip, Dialog, TextField, MenuItem, RadioGroup, FormControlLabel, Radio, InputAdornment } from '@material-ui/core'
 import axios from 'axios'
 import { PORT_URL } from '../../../../PortURL'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -203,13 +203,6 @@ const UserControlEmp = (props) => {
     const scrollChange = (e, newScroll) => {
         setScroll(newScroll)
     }
-    //----------------INFO EMPLEADO---------------------------------
-    const { history } = props
-    const infoEmpleado = (e) => {
-        const id = e._id
-        const id_bio = e.id_bio
-        history.push('/infoEmp/' + id + "/" + id_bio)
-    }
     //------------------------NUEVO ARRAY-------------------------------
     const array = []
     var name
@@ -233,9 +226,8 @@ const UserControlEmp = (props) => {
     var image2=logo2emap
     const pdfGenerate = (e) => {
         // console.log(e)
-        var data=e
         const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         // doc.addFont('Calibri', 'Calibri', 'normal');

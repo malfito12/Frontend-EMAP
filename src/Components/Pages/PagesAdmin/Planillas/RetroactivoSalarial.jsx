@@ -46,6 +46,7 @@ const RetroactivoSalarial = () => {
         await axios.post(`${PORT_URL}restrospectivaSalarial`, changeData)
             .then(resp => {
                 closeModalAddRetro()
+                alert('registro exitoso')
                 console.log(resp.data)
             })
             .catch(err => {
@@ -69,7 +70,7 @@ const RetroactivoSalarial = () => {
     var image = logo2emap
     const pdfGenerate=()=>{
         const doc= new jsPDF({orientation: 'landscape', unit: 'in', format: [14, 7]})
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         document.getElementById('firma').style.display='block'
         doc.setFontSize(12)

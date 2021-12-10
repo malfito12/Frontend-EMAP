@@ -1,5 +1,4 @@
 import React from 'react'
-import PublicMainMenu from '../PublicMenu/PublicMainMenu'
 import DrawerMainUser from './DrawerMainUser'
 
 const HeaderUser = () => {

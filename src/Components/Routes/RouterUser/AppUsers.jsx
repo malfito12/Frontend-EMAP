@@ -4,7 +4,6 @@ import HeaderUser from '../../Organismsm/UsersMenus/HeaderUser'
 import HomeUser from '../../Pages/PagesUsers/HomeUser'
 import Protected from '../Protected'
 import UserControlEmp from '../../Pages/PagesUsers/Empleados/UserControlEmp'
-import InfoEmp from '../../Molecules/StepFormEmpleados/InfoEmp'
 import UserControlHorario from '../../Pages/PagesUsers/Empleados/UserControlHorario'
 import Page404 from '../Page404'
 import UserControlCargos from '../../Pages/PagesUsers/Empleados/UserControlCargos'
@@ -66,8 +65,6 @@ const AppUsers = () => {
                 
 
                 <Protected exact  path='/userControlEmp' component={props=><UserControlEmp {...props} />} />
-
-                <Protected exact  path='/infoEmp/:id' component={props=><InfoEmp {...props} />} />
 
                 
 

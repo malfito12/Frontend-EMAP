@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Grid, makeStyles, Paper, Box, Tab, Tabs, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, TextField, InputAdornment, Tooltip, IconButton, Button } from '@material-ui/core'
+import { Container, Grid, makeStyles, Paper, Box, Tab, Tabs, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, TextField, InputAdornment, Tooltip, Button } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
@@ -75,7 +75,7 @@ const ReporteMovimiento = () => {
     //-----------------------PDF GENERATE--------------------------------
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.text("REPORTE MOVIMIENTO DE PERSONAL", pageWidth / 2, 0.5, 'center')

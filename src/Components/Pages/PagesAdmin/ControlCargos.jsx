@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 const ControlCargos = () => {
     const classes = useStyles()
     const [empleado, setEmpleado] = useState([])
-    const [term, setTerm] = useState("")
     const [openModalCargo, setOpenModalCargo] = useState(false)
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)

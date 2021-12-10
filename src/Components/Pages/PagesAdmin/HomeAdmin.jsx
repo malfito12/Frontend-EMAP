@@ -4,15 +4,11 @@ import axios from 'axios'
 import ReactFileReader from 'react-file-reader'
 import { Link } from 'react-router-dom'
 import { PORT_URL } from '../../../PortURL'
-import espacio3 from '../../../images/espacio3.jpg'
-import espacio4 from '../../../images/espacio4.jpg'
-import espacio5 from '../../../images/espacio5.jpg'
 import user from '../../../images/imagesMenu/user.png'
 import asistencias from '../../../images/imagesMenu/asistencias.png'
 import empleados from '../../../images/imagesMenu/empleados.png'
 import configuracion from '../../../images/imagesMenu/configuracion.png'
 import justificaciones from '../../../images/imagesMenu/justificaciones.png'
-import memorando from '../../../images/imagesMenu/memorando.png'
 import planillaBono from '../../../images/imagesMenu/planillaBono.png'
 import planillaSueldos from '../../../images/imagesMenu/planillaSueldos.png'
 import reportes from '../../../images/imagesMenu/reportes.png'
@@ -137,7 +133,7 @@ const HomeAdmin = () => {
                 // for (var i = 0; i < lines.length; i++) {
                 tmp = lines[i].trim().split("\t")
                 tmp2 = tmp[1]
-                if (tmp2 != undefined) {
+                if (tmp2 !== undefined) {
                     tmp3 = tmp2.split(" ")
                     array.push({
                         id_bio: tmp[0],
@@ -182,7 +178,7 @@ const HomeAdmin = () => {
     }
     const confirmar = (e) => {
         console.log(data)
-        if (data != undefined) {
+        if (data !== undefined) {
             openModalMarcaciones()
         } else {
             alert('no existe infromacion cargada intentelo de nuevo')

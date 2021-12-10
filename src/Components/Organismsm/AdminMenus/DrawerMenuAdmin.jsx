@@ -35,85 +35,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 const DrawerMenuAdmin = (props) => {
     const classes = useStyles()
-    const [abrir, setAbrir] = useState(false)
-    const [abrir2, setAbrir2] = useState(false)
     const [abrir3, setAbrir3] = useState(false)
 
-    const handleClick = () => {
-        setAbrir(!abrir)
-    }
-    const handleClick2 = () => {
-        setAbrir2(!abrir2)
-    }
     const handleClick3 = () => {
         setAbrir3(!abrir3)
     }
-    const removeToken = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('rols')
-        window.location = '/login'
-    }
     const { history } = props
-    const ItemList = [
-        // {
-        //     text: 'Home Admin',
-        //     icon: <SendIcon color='primary' />,
-        //     oncl: ()=>history.push('/homeadmin')
-        // },
-        {
-            text: 'Usuarios',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controluser')
-        },
-        {
-            text: 'Personal',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controlEmp')
-        },
-        {
-            text: 'Cargos',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controlCargos')
-        },
-        {
-            text: 'Registrar Cargos',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/registerCargo')
-        },
-        {
-            text: 'Configuracion General',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/generalConfig')
-        },
-
-    ]
-    const ItemList2 = [
-        {
-            text: 'Horarios',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controlHorarios')
-        },
-        {
-            text: 'Asignar Horario',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/asigHorario')
-        },
-        {
-            text: 'Permisos',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controlPermisos')
-        },
-        {
-            text: 'Feriados',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/controlFeriados')
-        },
-        {
-            text: 'Ver Kardex',
-            icon: <InboxIcon color='primary' />,
-            oncl: () => history.push('/kardexPreRevision')
-        },
-    ]
     const ItemList3 = [
         {
             text: 'Sueldos',
@@ -156,54 +83,6 @@ const DrawerMenuAdmin = (props) => {
             </div>
             <Divider />
             <List>
-                {/* <ListItem button onClick={handleClick} className={classes.diseño} >
-                    <ListItemIcon>
-                        <SendIcon color='primary' />
-                    </ListItemIcon>
-                    <ListItemText primary='Control Personal' />
-                    {abrir ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={abrir} timeout='auto' unmountOnExit>
-                    <List component='div' disablePadding onClick={props.CloseDrawer}>
-                        {ItemList.map((item) => {
-                            const { text, icon, oncl } = item
-                            return (
-                                <div key={text}>
-                                    <ListItem button className={classes.nested} onClick={oncl}>
-                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                </div>
-                            )
-                        })
-
-                        }
-                    </List>
-                </Collapse> */}
-                {/* <ListItem button onClick={handleClick2} className={classes.diseño} >
-                    <ListItemIcon>
-                        <SendIcon color='primary' />
-                    </ListItemIcon>
-                    <ListItemText primary='Asistencias' />
-                    {abrir2 ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={abrir2} timeout='auto' unmountOnExit>
-                    <List component='div' disablePadding onClick={props.CloseDrawer}>
-                        {ItemList2.map((item) => {
-                            const { text, icon, oncl } = item
-                            return (
-                                <div key={text}>
-                                    <ListItem button className={classes.nested} onClick={oncl}>
-                                        {icon && <ListItemIcon>{icon}</ListItemIcon>}
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                </div>
-                            )
-                        })
-
-                        }
-                    </List>
-                </Collapse> */}
                 <div onClick={props.CloseDrawer} >
                     <ListItem button onClick={() => history.push("/generalConfig")} className={classes.diseño}>
                         <ListItemIcon>
@@ -268,15 +147,6 @@ const DrawerMenuAdmin = (props) => {
                         }
                     </List>
                 </Collapse>
-                {/* <div onClick={props.CloseDrawer} >
-                    <ListItem button onClick={() => history.push("/sueldosPreRevision")} className={classes.diseño}>
-                        <ListItemIcon>
-                            <SendIcon color='primary' />
-                        </ListItemIcon>
-                        <ListItemText primary='Planillas' />
-                    </ListItem>
-                </div> */}
-                
                 <div onClick={props.CloseDrawer} >
                     <ListItem button onClick={() => history.push("/reportePersonal")} className={classes.diseño}>
                         <ListItemIcon>
@@ -293,13 +163,6 @@ const DrawerMenuAdmin = (props) => {
                         <ListItemText primary='Memorandos' />
                     </ListItem>
                 </div>
-                {/* <div onClick={props.CloseDrawer} />
-                <ListItem button onClick={() => removeToken()} className={classes.diseño}>
-                    <ListItemIcon>
-                        <SendIcon color='primary' />
-                    </ListItemIcon>
-                    <ListItemText primary='cerrar' />
-                </ListItem> */}
             </List>
         </Drawer>
     )

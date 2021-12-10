@@ -6,7 +6,6 @@ import { PORT_URL } from '../../../PortURL'
 import AlertDelete from '../../Atoms/Alerts/AlertDelete'
 import AlertEdit from '../../Atoms/Alerts/AlertEdit'
 import EditIcon from '@material-ui/icons/Edit';
-import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import PrintICon from '@material-ui/icons/Print'
@@ -201,13 +200,6 @@ const ControlEmpleado = (props) => {
 
     }
     //--------------------------------------------------------------
-    //INFORMACION
-    const infoEmpleado = (e) => {
-        const id = e._id
-        const id_bio = e.id_bio
-        history.push('/infoEmp/' + id + "/" + id_bio)
-
-    }
     //--------------------------------------------------------------
 
     const handleChange = (e) => {
@@ -289,14 +281,10 @@ const ControlEmpleado = (props) => {
     }
     //------------------------PDF GENERATE-------------------------------
     const pdfGenerate = (e) => {
-        // console.log(e)
-        var data = e
         const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
-        // doc.addFont('Calibri', 'Calibri', 'normal');
-        // doc.setFont('Calibri');
         doc.text("FORMULARIO PERSONAL", pageWidth / 2, 0.5, 'center')
         doc.setFontSize(11)
         doc.text("I. DATOS PERSONALES", 1, 1)
@@ -338,8 +326,6 @@ const ControlEmpleado = (props) => {
     }
     //---------------------------------------------------------------------
 
-
-    const { history } = props
     // const columnas = [
     //     { title: 'ID BIO', field: 'id_bio' },
     //     { title: 'Nombre', field: 'firstNameEmp' },

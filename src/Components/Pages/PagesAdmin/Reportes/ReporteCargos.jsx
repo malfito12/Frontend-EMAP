@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TimerIcon from '@material-ui/icons/Timer';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
-import SearchIcon from '@material-ui/icons/Search';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { PORT_URL } from '../../../../PortURL';

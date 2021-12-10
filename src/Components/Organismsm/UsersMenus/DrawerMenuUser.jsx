@@ -38,50 +38,13 @@ const useStyles=makeStyles((theme)=>({
 }))
 const DrawerMenuUser = (props) => {
     const classes=useStyles()
-    const [abrir,setAbrir]=useState(false)
     const [abrir3, setAbrir3] = useState(false)
 
-    const handleClick=()=>{
-        setAbrir(!abrir)
-    }
     const handleClick3 = () => {
         setAbrir3(!abrir3)
     }
 
-    const removeToken=()=>{
-        localStorage.removeItem('token')
-        localStorage.removeItem('rols')
-        localStorage.removeItem('username')
-        window.location='/'
-    }
     const {history}=props
-    const ItemList=[
-        {
-            text: 'Personal',
-            icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/userControlEmp')
-        },
-        {
-            text: 'Permisos',
-            icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/userControlPermiso')
-        },
-        {
-            text: 'Horarios',
-            icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/userControlHorario')
-        },
-        {
-            text: 'Reportes',
-            icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/userControlReporte')
-        },
-        {
-            text: 'Planillas',
-            icon: <SendIcon className={classes.color} />,
-            oncl: ()=>history.push('/userControlPlanilla')
-        }
-    ]
     const ItemList3 = [
         {
             text: 'Sueldos',
@@ -122,30 +85,6 @@ const DrawerMenuUser = (props) => {
             </div>
             <Divider/>
             <List>
-                {/* <ListItem button onClick={handleClick} className={classes.diseño} >
-                    <ListItemIcon>
-                        <SendIcon color='secondary' />
-                    </ListItemIcon>
-                    <ListItemText primary='Modulos' />
-                    {abrir ? <ExpandLess /> : <ExpandMore /> }
-                </ListItem>
-                <Collapse in={abrir} timeout='auto' unmountOnExit>
-                <List component='div' disablePadding onClick={props.CloseDrawer}>
-                    {ItemList.map((item)=>{
-                        const {text, icon, oncl}=item
-                        return(
-                            <div key={text}>
-                                <ListItem button className={classes.nested} onClick={oncl}>
-                                    {icon&&<ListItemIcon>{icon}</ListItemIcon>}
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            </div>
-                        )
-                    })
-
-                    }
-                </List>
-                </Collapse> */}
                 <div onClick={props.CloseDrawer} >
                 <ListItem button onClick={()=>history.push("/generalConfig")} className={classes.diseño}>
                    <ListItemIcon>
@@ -218,13 +157,6 @@ const DrawerMenuUser = (props) => {
                     <ListItemText primary='Memorando' />
                 </ListItem>
                 </div>
-                {/* <div onClick={props.CloseDrawer} />
-                <ListItem button onClick={()=>removeToken()} className={classes.diseño}>
-                   <ListItemIcon>
-                        <SendIcon color='primary' />
-                    </ListItemIcon> 
-                    <ListItemText primary='cerrar' />
-                </ListItem> */}
             </List>
         </Drawer>
     )

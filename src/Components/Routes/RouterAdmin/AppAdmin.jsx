@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch,Route } from 'react-router-dom'
 import RegisterCargo from '../../Pages/PagesAdmin/RegisterCargo'
-import InfoEmp from '../../Molecules/StepFormEmpleados/InfoEmp'
 import RegisterEmp from '../../Molecules/StepFormEmpleados/RegisterEmp'
 import RegisterUser from '../../Molecules/StepFormUser/RegisterUser'
 import HeaderAdmin from '../../Organismsm/AdminMenus/HeaderAdmin'
@@ -44,7 +43,6 @@ const AppAdmin = () => {
                 <Protected exact path='/controlEmp' component={props=><ControlEmpleado {...props} />} />
                 <Protected exact path='/registerEmp' component={props=><RegisterEmp {...props} />} />
                 {/* <Protected path='/infoEmp' component={props=><InfoEmp {...props} />} /> */}
-                <Protected exact path='/infoEmp/:id' component={props=><InfoEmp {...props} />} />
                 
                 <Protected exact path='/controlPermisos' component={props=><ControlPermisos {...props} />} />
                 <Protected exact path='/controlVacaciones' component={props=><ControlVacaciones {...props} />} />

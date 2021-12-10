@@ -1,4 +1,4 @@
-import { BottomNavigation, Box, BottomNavigationAction, Button, Container, Grid, makeStyles, Paper, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Tooltip, IconButton, Dialog, Tabs, Tab, TableFooter, MenuItem } from '@material-ui/core'
+import { Box, Button, Container, Grid, makeStyles, Paper, TextField, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Tooltip, IconButton, Dialog, Tabs, Tab, TableFooter, MenuItem } from '@material-ui/core'
 import React, { useState } from 'react'
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -52,8 +52,8 @@ const KardexRevision = () => {
     const getMarcaciones = async (e) => {
         e.preventDefault()
         const id = changeData.id_bio
-        const fechaini = changeData.fechaini
-        const fechafin = changeData.fechafin
+        // const fechaini = changeData.fechaini
+        // const fechafin = changeData.fechafin
 
         const mes=changeData.mes
         const year=changeData.year
@@ -104,7 +104,7 @@ const KardexRevision = () => {
     const pdfGenerate = () => {
         try {
             const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
-            var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+            // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
             var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
             doc.setFontSize(11)
             doc.text("KARDEX DE ASISTENCIA", pageWidth / 2, 0.5, 'center')

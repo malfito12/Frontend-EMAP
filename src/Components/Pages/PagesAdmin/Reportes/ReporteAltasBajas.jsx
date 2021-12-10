@@ -68,7 +68,7 @@ const ReporteAltasBajas = () => {
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
         // const doc = new jsPDF()
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.text("REPORTE ALTAS Y BAJAS DE PERSONAL", pageWidth / 2, 0.5, 'center')

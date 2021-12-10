@@ -1,10 +1,9 @@
-import { Box, Button, Container, Grid, makeStyles, MobileStepper, Paper, TextField, Typography, useMediaQuery, useTheme } from '@material-ui/core'
+import { Box, Button, Container, Grid, makeStyles, MobileStepper, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils'
-import emap1 from '../../../images/imagesEmap/emap1.jpg'
 import emap2 from '../../../images/imagesEmap/emap2.jpg'
 import emap3 from '../../../images/imagesEmap/emap3.jpg'
 import emap4 from '../../../images/imagesEmap/emap4.jpg'

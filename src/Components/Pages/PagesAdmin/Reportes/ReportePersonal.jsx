@@ -9,7 +9,7 @@ import { PORT_URL } from '../../../../PortURL';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import PrintIcon from '@material-ui/icons/Print'
-import moment, { months } from 'moment';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     spacingBot: {

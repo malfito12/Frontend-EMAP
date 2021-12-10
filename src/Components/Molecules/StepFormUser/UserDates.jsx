@@ -64,7 +64,6 @@ const UserDates = (props) => {
                     margin='normal'
                     variant='outlined'
                     autoComplete='off'
-                    value={sexo}
                     size='small'
                     fullWidth
                     align='center'
@@ -84,7 +83,6 @@ const UserDates = (props) => {
                     onChange={props.setFormData}
                     margin='normal'
                     variant='outlined'
-                    align='center'
                     autoComplete='off'
                     fullWidth
                     required

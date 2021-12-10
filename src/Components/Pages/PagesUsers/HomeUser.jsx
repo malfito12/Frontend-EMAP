@@ -1,7 +1,6 @@
 import React from 'react'
 import { Backdrop, Box, Button, CircularProgress, Container, Grid, IconButton, makeStyles, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import user from '../../../images/imagesMenu/user.png'
 import asistencias from '../../../images/imagesMenu/asistencias.png'
 import empleados from '../../../images/imagesMenu/empleados.png'
 import configuracion from '../../../images/imagesMenu/configuracion.png'
@@ -62,7 +61,7 @@ const HomeUser = () => {
                 // for (var i = 0; i < lines.length; i++) {
                 tmp = lines[i].trim().split("\t")
                 tmp2 = tmp[1]
-                if (tmp2 != undefined) {
+                if (tmp2 !== undefined) {
                     tmp3 = tmp2.split(" ")
                     array.push({
                         id_bio: tmp[0],

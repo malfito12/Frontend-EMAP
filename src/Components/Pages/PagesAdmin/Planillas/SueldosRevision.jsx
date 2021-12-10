@@ -10,7 +10,6 @@ import EditIcon from '@material-ui/icons/Edit'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import PrintIcon from '@material-ui/icons/Print'
-import moment from 'moment';
 import logo2emap from '../../../../images/logo2emap.png'
 
 const useStyles = makeStyles((theme) => ({
@@ -133,29 +132,29 @@ const SueldosRevision = () => {
     }
     // console.log(array1)
     //---------------------------PDF GENERATE-------------------------------
-    var numeroMes = moment(changeData.fechaini).get('month')
-    var numeroAnio = moment(changeData.fechaini).get('year')
-    var mes = ''
-    switch (numeroMes) {
-        case 0: mes = 'ENERO'; break;
-        case 1: mes = 'FEBRERO'; break;
-        case 2: mes = 'MARZO'; break;
-        case 3: mes = 'ABRIL'; break;
-        case 4: mes = 'MAYO'; break;
-        case 5: mes = 'JUNIO'; break;
-        case 6: mes = 'JULIO'; break;
-        case 7: mes = 'AGOSTO'; break;
-        case 8: mes = 'SEPTIEMBRE'; break;
-        case 9: mes = 'OCTUBRE'; break;
-        case 10: mes = 'NOVIEMBRE'; break;
-        case 11: mes = 'DICIEMBRE'; break;
-        default: mes = 'mes no valido'
-    }
+    // var numeroMes = moment(changeData.fechaini).get('month')
+    // var numeroAnio = moment(changeData.fechaini).get('year')
+    // var mes = ''
+    // switch (numeroMes) {
+    //     case 0: mes = 'ENERO'; break;
+    //     case 1: mes = 'FEBRERO'; break;
+    //     case 2: mes = 'MARZO'; break;
+    //     case 3: mes = 'ABRIL'; break;
+    //     case 4: mes = 'MAYO'; break;
+    //     case 5: mes = 'JUNIO'; break;
+    //     case 6: mes = 'JULIO'; break;
+    //     case 7: mes = 'AGOSTO'; break;
+    //     case 8: mes = 'SEPTIEMBRE'; break;
+    //     case 9: mes = 'OCTUBRE'; break;
+    //     case 10: mes = 'NOVIEMBRE'; break;
+    //     case 11: mes = 'DICIEMBRE'; break;
+    //     default: mes = 'mes no valido'
+    // }
     // console.log(numeroAnio)
     var image = logo2emap
     const pdfGenerate = () => {
         const doc = new jsPDF({ orientation: 'landscape', unit: 'in', format: [14, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
         var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         doc.addImage(image, 0.5, 0, 1.5, 1)
@@ -179,8 +178,8 @@ const SueldosRevision = () => {
     //---------------------PDF GENERATE BOLETAS DE PAGO--------------------------------
     const pdfGenrateBoletas = () => {
         const doc = new jsPDF({ orientation: 'portrait', unit: 'in', format: [8, 7] })
-        var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
-        var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
+        // var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight()
+        // var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth()
         doc.setFontSize(12)
         // doc.text("PAPELETA DE PAGO", pageWidth / 2, 0.5, 'center')
 
@@ -198,7 +197,7 @@ const SueldosRevision = () => {
                     [{ content: `ITEM N°: ${d.numItem}` }, { content: `NOMBRE: ${d.nameEmp}` }, { content: `CI: ${d.CIEmp}` }],
                     [{ content: `CARGO: ${d.cargoEmp}`, colSpan: 2 }, { content: `GESTION: PEDIENTE` }],
                     [{ content: `DIAS TRAB: ${d.diasTrabajados}`, colSpan: 3 }],
-                ],
+                ]
             }),
             doc.autoTable({
                 // theme:'plain',
@@ -220,7 +219,7 @@ const SueldosRevision = () => {
                     [{ content: `TOTAL INGRESOS: ${d.auxTotalGanado}`, colSpan: 2 }, { content: `TOTAL DECUENTOS: ${d.auxTotalDescuento}`, colSpan: 2 }],
                     [{ content: 'Pago de haberes correspondiente al mes de : ', colSpan: 3 }, { content: `LIQUIDO PAGABLE: ${d.auxLiquidoPagable}` }],
                     [{ content: 'Firma del empleado:.............................................. ', colSpan: 4, styles: { halign: 'right' } }],
-                ],
+                ]
             }),
             doc.autoTable({
                 // startY:0.5,

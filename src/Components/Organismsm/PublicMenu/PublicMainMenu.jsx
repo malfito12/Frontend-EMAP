@@ -1,11 +1,9 @@
-import { AppBar, Button, Box, Link, Container, Dialog, Backdrop, CircularProgress, IconButton, makeStyles, MenuItem, Paper, TextField, Toolbar, Typography, Grid } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import { Button, Box, Link, Dialog, Backdrop, CircularProgress, makeStyles, Paper, TextField, Typography, Grid } from '@material-ui/core'
+import React, { useState } from 'react'
 import axios from 'axios'
 import loginimage from '../../../images/loginimage.png'
-import logo2emap from '../../../images/logo2emap.png'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { PORT_URL } from '../../../PortURL';
-import { NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     spacingBott: {
@@ -19,29 +17,15 @@ const useStyles = makeStyles((theme) => ({
 
 const PublicMainMenu = () => {
     const classes = useStyles()
-    const [user, setUser] = useState()
-    const [openAddUser, setOpenAddUser] = useState(false)
     const [loading, setLoading] = useState(false)
     const [openLogin, setOpenLogin] = useState(false)
     const [changeData, setChangeData] = useState({
         email: '',
         username: '',
         password: '',
-        rols: 'usuario'
-    })
-    const [changeDataUser, setChangeDataUser] = useState({
-        rols: 'admin',
-        username: '',
-        password: '',
-        repitPassword: '',
-        email: '',
-        sexo: '',
-        telefono: '',
+        // rols: 'usuario'
     })
 
-    useEffect(() => {
-        getUser()
-    }, [])
     //----------------------------------------------------------
     const handleChange = e => {
         setChangeData({
@@ -49,64 +33,23 @@ const PublicMainMenu = () => {
             [e.target.name]: e.target.value
         })
     }
-    const handleChangeUser = (e) => {
-        setChangeDataUser({
-            ...changeDataUser,
-            [e.target.name]: e.target.value
-        })
-    }
-    //------------------------GET USARIOS------------------------------
-    const getUser = async () => {
-        await axios.get(`${PORT_URL}consultaUser`)
-            .then(resp => {
-                // console.log(resp.data)
-                setUser(resp.data)
-            })
-            .catch(err => console.log(err))
-    }
-    // console.log(user)
-    //------------------------ADD USER--------------------------------
-    const openModalAddUser = () => {
-        setOpenAddUser(true)
-    }
-    const closeModalAddUser = () => {
-        setOpenAddUser(false)
-    }
-    const postUser = async (e) => {
-        e.preventDefault()
-        try {
-            if (changeDataUser.password === changeDataUser.repitPassword) {
-                await axios.post(`${PORT_URL}user`, changeDataUser)
-                    .then(resp => {
-                        console.log(resp.data)
-                        closeModalAddUser()
-                        getUser()
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        alert('ocurrio algun error no se pudo registrar el usuario')
-                    })
-            } else {
-                alert('error verifique su contraseña')
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
     //-----------------------------------------------------------
     const iniciarSesion = async (e) => {
         e.preventDefault()
         openLoading()
         await axios.post(`${PORT_URL}login`, changeData)
             .then(resp => {
-                // console.log(resp)
+                // console.log(resp.data)
                 localStorage.setItem('token', resp.data.token);
                 localStorage.setItem('rols', resp.data.rols);
                 localStorage.setItem('username', resp.data.username);
-                if (changeData.rols === 'admin') {
+                // if (changeData.rols === 'admin') {
+                if (localStorage.getItem('rols') === 'admin') {
                     // localStorage.setItem('rols', changeData.rols);
                     window.location = '/homeadmin'
-                } else if (changeData.rols === 'usuario') {
+                // } else if (changeData.rols === 'usuario') {
+                } else if (localStorage.getItem('rols') === 'usuario') {
                     // localStorage.setItem('rols', changeData.rols);
                     window.location = '/homeuser'
                 }
@@ -141,19 +84,6 @@ const PublicMainMenu = () => {
     //-----------------------------------------------------------
     return (
         <>
-            {/* <AppBar position='fixed' style={{ background: 'linear-gradient(45deg, #00897b 30%, #4db6ac 90%)' }}>
-                <Toolbar>
-                    <img src={logo2emap} style={{ width: 110, height: 60 }} alt="#" />
-                    <div style={{ flexGrow: 1 }}>
-                        <Button size='small' component={Link} to='/informacion'>informacion</Button>
-                        <Button size='small' component={Link} to='/consultas'>consultas</Button>
-                    </div>
-                    <Typography style={{ color: 'black', marginRight: '0.5rem' }} >LOGIN</Typography>
-                    <IconButton onClick={openCloseModalLogin}>
-                        <AccountCircleIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar> */}
             <Button style={{ color: 'white' }} startIcon={<AccountCircleIcon />} variant='outlined' color='inherit' onClick={openCloseModalLogin}>login</Button>
             <Dialog
                 maxWidth='xs'
@@ -166,16 +96,6 @@ const PublicMainMenu = () => {
                         <Typography className={classes.spacingBott} variant='h5'>Iniciar Sesión</Typography>
                     </div>
                     <form onSubmit={iniciarSesion}>
-                        {/* <TextField
-                            name='email'
-                            label='Correo Electronico'
-                            variant='outlined'
-                            type='email'
-                            fullWidth
-                            className={classes.spacingBott}
-                            onChange={handleChange}
-                            required
-                        /> */}
                         <TextField
                             name='username'
                             label='Nombre de Usuario'
@@ -197,7 +117,7 @@ const PublicMainMenu = () => {
                             required
                             size='small'
                         />
-                        <div align='center'>
+                        {/* <div align='center'>
                             <TextField
                                 name='rols'
                                 variant="outlined"
@@ -212,7 +132,7 @@ const PublicMainMenu = () => {
                                 <MenuItem value={'usuario'}>Usuario</MenuItem>
                                 <MenuItem value={'admin'}>Administrador</MenuItem>
                             </TextField>
-                        </div>
+                        </div> */}
                         <Grid container direction='column' alignItems='center' style={{ marginBottom: '2rem' }}>
                             <Backdrop className={classes.backdrop} open={loading} onClick={closeLoading}>
                                 <CircularProgress color='inherit' />
@@ -223,89 +143,6 @@ const PublicMainMenu = () => {
                     <div align='center'>
                         <Link underline='none' className={classes.spacingBott} component='button' onClick={goPassword}>¿Olvidaste tu Contraseña?</Link>
                     </div>
-                </Paper>
-            </Dialog>
-            {/*------------------------REGISTRAR PRIMER USUARIO---------------------*/}
-            <Dialog
-                open={openAddUser}
-                onClose={closeModalAddUser}
-                maxWidth='xs'
-            >
-                <Paper component={Box} p={2}>
-                    <Typography align='center' variant='subtitle1'>REGISTRO 1° USUARIO</Typography>
-                    <form onSubmit={postUser}>
-                        <TextField
-                            name='username'
-                            label='Nombre de Usuario'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                            required
-                        />
-                        <TextField
-                            name='password'
-                            label='Contraseña'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            type='password'
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                            required
-                        />
-                        <TextField
-                            name='repitPassword'
-                            label='Repita Contraseña'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            type='password'
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                            required
-                        />
-                        <TextField
-                            name='email'
-                            label='Correo Electronico'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                            required
-                        />
-                        <TextField
-                            name='sexo'
-                            label='Sexo'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                            value={changeDataUser.sexo}
-                            required
-                            select
-                        >
-                            <MenuItem value='M'>Maculino</MenuItem>
-                            <MenuItem value='F'>Femenino</MenuItem>
-                        </TextField>
-                        <TextField
-                            name='telefono'
-                            label='Telefono'
-                            variant='outlined'
-                            size='small'
-                            fullWidth
-                            type='number'
-                            className={classes.spacingBott}
-                            onChange={handleChangeUser}
-                        />
-                        <Grid container justifyContent='space-evenly'>
-                            <Button size='small' variant='contained' color='primary' type='submit'>aceptar</Button>
-                            <Button size='small' variant='contained' color='secondary' onClick={closeModalAddUser}>cancelar</Button>
-                        </Grid>
-                    </form>
                 </Paper>
             </Dialog>
 

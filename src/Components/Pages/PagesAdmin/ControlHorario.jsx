@@ -1,4 +1,4 @@
-import { Button, Box, Container, Dialog, makeStyles, Paper, Typography, Grid, TextField, MenuItem, Checkbox, FormControlLabel, Switch, Tabs, Tab } from '@material-ui/core'
+import { Button, Box, Container, Dialog, makeStyles, Paper, Typography, Grid, TextField, MenuItem, Checkbox, FormControlLabel, Tabs, Tab } from '@material-ui/core'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -19,8 +19,8 @@ const ControlHorario = () => {
     const [openEditHrs, setOpenEditHrs] = useState(false)
     const [openDeleteHrs, setOpenDeleteHrs] = useState(false)
     const [horario, setHorario] = useState([])
-    const [hrsContinuo, setHrsContinuo] = useState([])
-    const [openCambio, setOpenCambio] = useState(false)
+    // const [hrsContinuo, setHrsContinuo] = useState([])
+    // const [openCambio, setOpenCambio] = useState(false)
     const [changeData, setChangeData] = useState({
         descripcion: '',
         cod: '',

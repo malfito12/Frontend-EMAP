@@ -44,9 +44,9 @@ const ControlVacaciones = () => {
         e.preventDefault()
         await axios.post(`${PORT_URL}vacacion`, changeData)
             .then(resp => {
-                if (resp.data == 'la vacacion ya existe de ese mes') {
+                if (resp.data === 'la vacacion ya existe de ese mes') {
                     alert(resp.data)
-                } else if (resp.data == "0" ||resp.data == "1" || resp.data == "2" || resp.data == "3" || resp.data == "4" || resp.data == "5" || resp.data == "6" || resp.data == "7" || resp.data == "8" || resp.data == "9" || resp.data == "10" || resp.data == "11" || resp.data == "12" || resp.data == "13" || resp.data == "14" || resp.data == "15" || resp.data == "16") {
+                } else if (resp.data === "0" ||resp.data === "1" || resp.data === "2" || resp.data === "3" || resp.data === "4" || resp.data === "5" || resp.data === "6" || resp.data === "7" || resp.data === "8" || resp.data === "9" || resp.data === "10" || resp.data === "11" || resp.data === "12" || resp.data === "13" || resp.data === "14" || resp.data === "15" || resp.data === "16") {
                     // } else if (resp.data=='hola') {
                     alert('error en los dias de vacacion, tienes ' + resp.data + ' dias')
                 }else if(resp.data==='los'){

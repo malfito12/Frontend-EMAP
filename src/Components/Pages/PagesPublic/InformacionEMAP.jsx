@@ -1,21 +1,12 @@
-import { Container, Grid, Typography, useMediaQuery, useTheme, makeStyles } from '@material-ui/core'
+import { Container, Typography, useMediaQuery, useTheme } from '@material-ui/core'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import DrawerMenuPublic from '../../Organismsm/PublicMenu/DrawerMenuPublic'
 import PublicMainMenu from '../../Organismsm/PublicMenu/PublicMainMenu'
-import image1 from '../../../images/imagesEmap/emap1.jpg'
-
-const useStyles = makeStyles((theme) => ({
-    sizeArticle1: {
-        // paddingTop:0,
-        [theme.breakpoints.down('sm')]: {
-            padding: 0,
-        }
-    },
-}))
+import image7 from '../../../images/imagesEmap/emap7.jpg'
+import image8 from '../../../images/imagesEmap/emap8.jpg'
 
 const InformacionEMAP = () => {
-    const classes = useStyles()
     const theme = useTheme()
     const isMatch = useMediaQuery(theme.breakpoints.down('sm'))
     return (
@@ -38,7 +29,7 @@ const InformacionEMAP = () => {
                     <Container>
                         <div className='contenedor-sobre-nosotros'>
                             <div className='contenedor-imagen1'>
-                                <img src={image1} alt="#" className='imagen-about-us'/>
+                                <img src={image7} alt="#" className='imagen-about-us'/>
                             </div>
                             <div className="contenido-textos1">
                                 <Typography variant='h4' style={{ color: 'white' }}>¿Quienes Somos?</Typography>
@@ -55,7 +46,7 @@ const InformacionEMAP = () => {
                                 <Typography variant='subtitle1'>Entidad líder y posicionada e la prestación de servicio integral en manejo de residuos sólidos, con capacidad financiera, respuesta técnica y estructura organizacional solida certificada bajo sistemas de calidad que reflejen estandarización y conformidad </Typography>
                             </div>
                             <div className='contenedor-imagen2'>
-                                <img src={image1} alt="#" className='imagen-about-us2'/>
+                                <img src={image8} alt="#" className='imagen-about-us2'/>
                             </div>
                         </div>
                     </Container>
